@@ -2,8 +2,9 @@ import logging
 
 from fastapi import FastAPI, HTTPException
 
-from models import AnalyzeEmailRequest, ChangeSignal
-from rule_detector import detect_changes
+from models import AnalyzeEmailRequest, ChangeEvidence, ChangeSignal
+from rule_detector import detect_changes_with_evidence
+import re
 
 
 logging.basicConfig(
@@ -53,7 +54,7 @@ async def analyze_email(
                 detail="Email subject or body is required.",
             )
 
-        change_types = detect_changes(
+        change_types, matched_terms = detect_changes_with_evidence(
             request.subject,
             request.body,
         )
@@ -87,6 +88,10 @@ async def analyze_email(
             breakingChange=breaking_change,
             migrationRequired=migration_required,
             confidence=confidence,
+            evidence=ChangeEvidence(
+                matchedTerms=matched_terms,
+                urls=re.findall(r"https?://[^\s)]+", f"{request.subject} {request.body}"),
+            ),
         )
 
         logger.info(

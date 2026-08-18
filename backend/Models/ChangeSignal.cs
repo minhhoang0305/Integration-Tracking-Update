@@ -25,4 +25,12 @@ public sealed class ChangeSignal
     public List<string> DocumentationUrls { get; set; } = [];
 
     public double Confidence { get; set; }
+
+    public ChangeEvidence Evidence { get; set; } = new();
+}
+
+public sealed class ChangeEvidence
+{
+    public List<string> MatchedTerms { get; set; } = [];
+    public List<string> Urls { get; set; } = [];
 }

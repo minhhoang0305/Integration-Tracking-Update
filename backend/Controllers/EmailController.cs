@@ -6,76 +6,42 @@ namespace IntegrationTracking.Api.Controllers;
 
 [ApiController]
 [Route("api/emails")]
-public sealed class EmailController : ControllerBase
+public sealed class EmailController(EmailAnalysisService emailAnalysisService) : ControllerBase
 {
-    private readonly EmailAnalysisService _emailAnalysisService;
-    private readonly ILogger<EmailController> _logger;
-
-    public EmailController(
-        EmailAnalysisService emailAnalysisService,
-        ILogger<EmailController> logger)
-    {
-        _emailAnalysisService = emailAnalysisService;
-        _logger = logger;
-    }
-
     [HttpPost("analyze")]
-    [ProducesResponseType(typeof(ChangeSignal), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AnalysisStatusResponse), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status502BadGateway)]
-    [ProducesResponseType(StatusCodes.Status504GatewayTimeout)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<ChangeSignal>> Analyze(
+    public async Task<ActionResult<AnalysisStatusResponse>> Analyze(
         [FromBody] AnalyzeEmailRequest request,
         CancellationToken cancellationToken)
     {
         try
         {
-            var result = await _emailAnalysisService.AnalyzeAsync(
-                request,
-                cancellationToken);
-
-            return Ok(result);
+            var result = await emailAnalysisService.QueueAsync(request, cancellationToken);
+            return AcceptedAtAction(nameof(GetStatus), new { emailId = result.EmailId }, result);
         }
         catch (ArgumentException exception)
         {
-            return BadRequest(new
-            {
-                error = exception.Message
-            });
-        }
-        catch (TimeoutException exception)
-        {
-            return StatusCode(
-                StatusCodes.Status504GatewayTimeout,
-                new
-                {
-                    error = exception.Message
-                });
-        }
-        catch (HttpRequestException exception)
-        {
-            return StatusCode(
-                StatusCodes.Status502BadGateway,
-                new
-                {
-                    error = "Python analyzer is unavailable.",
-                    detail = exception.Message
-                });
+            return BadRequest(new { error = exception.Message });
         }
         catch (Exception exception)
         {
-            _logger.LogError(
-                exception,
-                "Unexpected error while analyzing email {EmailId}",
-                request.EmailId);
-
-            return StatusCode(
-                StatusCodes.Status500InternalServerError,
-                new
-                {
-                    error = "Unexpected internal server error."
-                });
+            return StatusCode(StatusCodes.Status502BadGateway, new
+            {
+                error = "Message broker is unavailable.", detail = exception.Message
+            });
         }
+    }
+
+    [HttpGet("/api/email-analyses/{emailId}")]
+    [ProducesResponseType(typeof(AnalysisStatusResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<AnalysisStatusResponse>> GetStatus(
+        string emailId,
+        CancellationToken cancellationToken)
+    {
+        var result = await emailAnalysisService.GetStatusAsync(emailId, cancellationToken);
+        return result is null ? NotFound() : Ok(result);
     }
 }

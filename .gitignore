@@ -6,6 +6,7 @@
 appsettings.Development.json
 appsettings.*.local.json
 secrets.json
+imap-msal.cache
 *.pem
 *.key
 *.pfx

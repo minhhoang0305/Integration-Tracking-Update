@@ -32,7 +32,7 @@ Approve / Reject
 
 # Phase 1 - Base Communication
 
-**Status: IN PROGRESS**
+**Status: COMPLETED**
 
 ## Goal
 
@@ -96,7 +96,7 @@ và trả về `ChangeSignal` đúng contract.
 
 # Phase 2 - RabbitMQ Communication
 
-**Status: NOT STARTED**
+**Status: IN PROGRESS**
 
 ## Goal
 

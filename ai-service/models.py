@@ -35,3 +35,10 @@ class ChangeSignal(BaseModel):
     documentationUrls: list[str] = Field(default_factory=list)
 
     confidence: float = 0.0
+
+    evidence: "ChangeEvidence" = Field(default_factory=lambda: ChangeEvidence())
+
+
+class ChangeEvidence(BaseModel):
+    matchedTerms: list[str] = Field(default_factory=list)
+    urls: list[str] = Field(default_factory=list)

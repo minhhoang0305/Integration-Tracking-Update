@@ -4,7 +4,8 @@ namespace IntegrationTracking.Api.Models;
 
 public sealed class AnalyzeEmailRequest
 {
-    public string EmailId { get; set; } = Guid.NewGuid().ToString();
+    [Required]
+    public string EmailId { get; set; } = string.Empty;
 
     [Required]
     public string Sender { get; set; } = string.Empty;

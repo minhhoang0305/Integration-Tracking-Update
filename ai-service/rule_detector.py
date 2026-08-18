@@ -76,3 +76,20 @@ def detect_changes(
     )
 
     return detected
+
+
+def detect_changes_with_evidence(
+    subject: str,
+    body: str,
+) -> tuple[list[str], list[str]]:
+    text = f"{subject} {body}".lower()
+    change_types: list[str] = []
+    matched_terms: list[str] = []
+
+    for change_type, keywords in API_CHANGE_KEYWORDS.items():
+        matches = [keyword for keyword in keywords if keyword in text]
+        if matches:
+            change_types.append(change_type)
+            matched_terms.extend(matches)
+
+    return change_types, list(dict.fromkeys(matched_terms))
