@@ -1,0 +1,15 @@
+{
+  "providers": [
+    {
+      "provider": "demo-provider",
+      "senderDomains": ["gmail.com"],
+      "documentationDomains": ["developers.google.com"],
+      "integrations": [
+        {
+          "id": "demo-integration",
+          "manifestPath": "integrations/demo-integration/actions_manifest.json"
+        }
+      ]
+    }
+  ]
+}

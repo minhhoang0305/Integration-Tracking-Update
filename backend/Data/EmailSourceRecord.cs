@@ -5,8 +5,8 @@ public sealed class EmailSourceRecord
     public string Id { get; set; } = Guid.NewGuid().ToString("N");
     public string Mailbox { get; set; } = string.Empty;
     public string Folder { get; set; } = "INBOX";
-    public long UidValidity { get; set; }
-    public long ImapUid { get; set; }
+    public string GmailMessageId { get; set; } = string.Empty;
+    public string GmailThreadId { get; set; } = string.Empty;
     public string SourceMessageId { get; set; } = string.Empty;
     public string InternetMessageId { get; set; } = string.Empty;
     public string ContentHash { get; set; } = string.Empty;
@@ -19,11 +19,11 @@ public sealed class EmailSourceRecord
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
 
-public sealed class ImapSyncState
+public sealed class GmailSyncState
 {
     public string Mailbox { get; set; } = string.Empty;
     public string Folder { get; set; } = "INBOX";
-    public long UidValidity { get; set; }
-    public long LastUid { get; set; }
+    public string HistoryId { get; set; } = string.Empty;
+    public DateTime? WatchExpiresAt { get; set; }
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

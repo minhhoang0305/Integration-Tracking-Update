@@ -10,6 +10,8 @@ public sealed class RabbitMqTopology
     public const string ReceivedRoutingKey = "email.received";
     public const string FilteredRoutingKey = "email.filtered";
     public const string ProviderUpdateRoutingKey = "provider.update.detected";
+    public const string IntegrationProposalRoutingKey = "integration.update.proposed";
+    public const string IntegrationReviewRoutingKey = "integration.update.reviewed";
     public const string CompletedRoutingKey = "email.analysis.completed";
     public const string FailedRoutingKey = "email.analysis.failed";
     public const string DeadLetterRoutingKey = "email.analysis.dlq";
@@ -17,6 +19,8 @@ public sealed class RabbitMqTopology
     public const string BackendQueue = "email.analysis.backend";
     public const string DeadLetterQueue = "email.analysis.dlq";
     public const string ProviderUpdateQueue = "provider.update.handoff";
+    public const string IntegrationProposalQueue = "integration.update.proposed";
+    public const string IntegrationReviewQueue = "integration.update.reviewed";
 
     public void Declare(IModel channel)
     {
@@ -31,6 +35,10 @@ public sealed class RabbitMqTopology
         channel.QueueBind(DeadLetterQueue, EventsExchange, DeadLetterRoutingKey);
         channel.QueueDeclare(ProviderUpdateQueue, durable: true, exclusive: false, autoDelete: false);
         channel.QueueBind(ProviderUpdateQueue, EventsExchange, ProviderUpdateRoutingKey);
+        channel.QueueDeclare(IntegrationProposalQueue, durable: true, exclusive: false, autoDelete: false);
+        channel.QueueBind(IntegrationProposalQueue, EventsExchange, IntegrationProposalRoutingKey);
+        channel.QueueDeclare(IntegrationReviewQueue, durable: true, exclusive: false, autoDelete: false);
+        channel.QueueBind(IntegrationReviewQueue, EventsExchange, IntegrationReviewRoutingKey);
 
         DeclareRetryQueue(channel, 10);
         DeclareRetryQueue(channel, 30);

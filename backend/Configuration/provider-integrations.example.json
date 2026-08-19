@@ -1,0 +1,15 @@
+{
+  "providers": [
+    {
+      "provider": "stripe",
+      "senderDomains": ["stripe.com"],
+      "documentationDomains": ["docs.stripe.com", "stripe.com"],
+      "integrations": [
+        {
+          "id": "stripe-payments",
+          "manifestPath": "integrations/stripe-payments/actions_manifest.json"
+        }
+      ]
+    }
+  ]
+}

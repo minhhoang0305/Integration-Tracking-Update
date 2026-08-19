@@ -34,7 +34,8 @@ public sealed class AnalysisResultConsumer(
         {
             var body = Encoding.UTF8.GetString(args.Body.ToArray());
             using var scope = scopeFactory.CreateScope();
-            var database = scope.ServiceProvider.GetRequiredService<IntegrationTrackingDbContext>();
+                var database = scope.ServiceProvider.GetRequiredService<IntegrationTrackingDbContext>();
+            var proposals = scope.ServiceProvider.GetRequiredService<IntegrationTracking.Api.Templates.TemplateProposalService>();
 
             if (args.RoutingKey == RabbitMqTopology.CompletedRoutingKey)
             {
@@ -70,6 +71,7 @@ public sealed class AnalysisResultConsumer(
                     analysis.ErrorMessage = null;
                     analysis.UpdatedAt = DateTime.UtcNow;
                     database.SaveChanges();
+                    proposals.GenerateAsync(analysis, message.Payload, CancellationToken.None).GetAwaiter().GetResult();
                 }
                 logger.LogInformation("Analysis {EmailId} completed.", message.CorrelationId);
             }

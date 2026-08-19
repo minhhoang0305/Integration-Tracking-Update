@@ -5,8 +5,11 @@
 *.local.json
 appsettings.Development.json
 appsettings.*.local.json
+appsettings.Local.json
 secrets.json
 imap-msal.cache
+google-oauth-client.json
+*.token
 *.pem
 *.key
 *.pfx

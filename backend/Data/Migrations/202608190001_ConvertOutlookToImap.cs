@@ -1,9 +1,11 @@
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace IntegrationTracking.Api.Data.Migrations;
 
+[DbContext(typeof(IntegrationTrackingDbContext))]
 [Migration("202608190001_ConvertOutlookToImap")]
 public partial class ConvertOutlookToImap : Migration
 {

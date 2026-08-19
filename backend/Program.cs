@@ -1,9 +1,12 @@
 using IntegrationTracking.Api.Services;
 using IntegrationTracking.Api.Data;
-using IntegrationTracking.Api.Imap;
+using IntegrationTracking.Api.Gmail;
+using IntegrationTracking.Api.Templates;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+// Local secrets are outside the repository. Production must provide the same values through its secret store/environment.
+builder.Configuration.AddUserSecrets<Program>(optional: true);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -16,15 +19,22 @@ builder.Services.AddDbContext<IntegrationTrackingDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
 builder.Services.AddSingleton<RabbitMqConnection>();
 builder.Services.AddSingleton<RabbitMqTopology>();
-builder.Services.AddScoped<RabbitMqPublisher>();
+builder.Services.AddSingleton<RabbitMqPublisher>();
 builder.Services.AddScoped<EmailAnalysisService>();
 builder.Services.AddHostedService<AnalysisResultConsumer>();
-builder.Services.Configure<ImapOptions>(builder.Configuration.GetSection("Imap"));
+builder.Services.Configure<GmailOptions>(builder.Configuration.GetSection("Gmail"));
+builder.Services.Configure<TemplateOptions>(builder.Configuration.GetSection("Templates"));
+builder.Services.Configure<ProposalLlmOptions>(builder.Configuration.GetSection("ProposalLlm"));
 builder.Services.AddScoped<ProviderEmailFilter>();
 builder.Services.AddScoped<EmailNormalizer>();
-builder.Services.AddSingleton<ImapOAuthTokenService>();
-builder.Services.AddScoped<ImapMailService>();
-builder.Services.AddHostedService<ImapIngestionWorker>();
+builder.Services.AddSingleton<GmailOAuthService>();
+builder.Services.AddSingleton<GmailSyncTrigger>();
+builder.Services.AddScoped<GmailIngestionService>();
+builder.Services.AddHostedService<GmailIngestionWorker>();
+builder.Services.AddSingleton<TemplateRegistryService>();
+builder.Services.AddHttpClient<DocumentationEvidenceService>();
+builder.Services.AddHttpClient<ProposalLlmClient>();
+builder.Services.AddScoped<TemplateProposalService>();
 
 var app = builder.Build();
 
