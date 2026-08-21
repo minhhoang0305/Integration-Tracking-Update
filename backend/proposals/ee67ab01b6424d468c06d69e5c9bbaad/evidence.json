@@ -1,0 +1,318 @@
+{
+  "source": "verified_snapshot",
+  "snapshotPath": "test-fixtures/u301/actions_manifest.new.json",
+  "deprecatedEndpoints": [],
+  "announcedEndpoints": [],
+  "diff": {
+    "currentHash": "C6298D1CDE1004A57CC00183B8CDC0B4E45E0B865835CCB3C60AFBCF79980AA5",
+    "proposedHash": "40311AAF4930ABC72997730DA882317A554EA06CD164DA48E4B7D225BADED3C2",
+    "removedActions": [
+      {
+        "name": "get-domain-info",
+        "httpMethod": "GET",
+        "endpoint": "/domains/{domain}",
+        "rawJson": "{\r\n      \u0022name\u0022: \u0022get-domain-info\u0022,\r\n      \u0022description\u0022: \u0022Retrieve information about a specific domain.\u0022,\r\n      \u0022http_method\u0022: \u0022GET\u0022,\r\n      \u0022endpoint\u0022: \u0022/domains/{domain}\u0022,\r\n      \u0022input_schema\u0022: {\r\n        \u0022type\u0022: \u0022object\u0022,\r\n        \u0022properties\u0022: {\r\n          \u0022domain\u0022: {\r\n            \u0022type\u0022: \u0022string\u0022,\r\n            \u0022description\u0022: \u0022The domain to query.\u0022\r\n          }\r\n        },\r\n        \u0022required\u0022: [\r\n          \u0022domain\u0022\r\n        ]\r\n      }\r\n    }"
+      },
+      {
+        "name": "get-site-audit",
+        "httpMethod": "GET",
+        "endpoint": "/domains/{domain}/audit",
+        "rawJson": "{\r\n      \u0022name\u0022: \u0022get-site-audit\u0022,\r\n      \u0022description\u0022: \u0022Perform a site audit for a given domain.\u0022,\r\n      \u0022http_method\u0022: \u0022GET\u0022,\r\n      \u0022endpoint\u0022: \u0022/domains/{domain}/audit\u0022,\r\n      \u0022input_schema\u0022: {\r\n        \u0022type\u0022: \u0022object\u0022,\r\n        \u0022properties\u0022: {\r\n          \u0022domain\u0022: {\r\n            \u0022type\u0022: \u0022string\u0022,\r\n            \u0022description\u0022: \u0022The domain to audit.\u0022\r\n          }\r\n        },\r\n        \u0022required\u0022: [\r\n          \u0022domain\u0022\r\n        ]\r\n      }\r\n    }"
+      },
+      {
+        "name": "get-backlink-count",
+        "httpMethod": "GET",
+        "endpoint": "/domains/{domain}/backlinks/count",
+        "rawJson": "{\r\n      \u0022name\u0022: \u0022get-backlink-count\u0022,\r\n      \u0022description\u0022: \u0022Get the number of backlinks for a domain.\u0022,\r\n      \u0022http_method\u0022: \u0022GET\u0022,\r\n      \u0022endpoint\u0022: \u0022/domains/{domain}/backlinks/count\u0022,\r\n      \u0022input_schema\u0022: {\r\n        \u0022type\u0022: \u0022object\u0022,\r\n        \u0022properties\u0022: {\r\n          \u0022domain\u0022: {\r\n            \u0022type\u0022: \u0022string\u0022,\r\n            \u0022description\u0022: \u0022The domain to query.\u0022\r\n          }\r\n        },\r\n        \u0022required\u0022: [\r\n          \u0022domain\u0022\r\n        ]\r\n      }\r\n    }"
+      },
+      {
+        "name": "get-competitors",
+        "httpMethod": "GET",
+        "endpoint": "/domains/{domain}/competitors",
+        "rawJson": "{\r\n      \u0022name\u0022: \u0022get-competitors\u0022,\r\n      \u0022description\u0022: \u0022Retrieve a list of competitors for a given domain.\u0022,\r\n      \u0022http_method\u0022: \u0022GET\u0022,\r\n      \u0022endpoint\u0022: \u0022/domains/{domain}/competitors\u0022,\r\n      \u0022input_schema\u0022: {\r\n        \u0022type\u0022: \u0022object\u0022,\r\n        \u0022properties\u0022: {\r\n          \u0022domain\u0022: {\r\n            \u0022type\u0022: \u0022string\u0022,\r\n            \u0022description\u0022: \u0022The domain to query.\u0022\r\n          }\r\n        },\r\n        \u0022required\u0022: [\r\n          \u0022domain\u0022\r\n        ]\r\n      }\r\n    }"
+      },
+      {
+        "name": "get-ranking-history",
+        "httpMethod": "GET",
+        "endpoint": "/keywords/{keyword}/domains/{domain}/history",
+        "rawJson": "{\r\n      \u0022name\u0022: \u0022get-ranking-history\u0022,\r\n      \u0022description\u0022: \u0022Retrieve the ranking history for a keyword and domain.\u0022,\r\n      \u0022http_method\u0022: \u0022GET\u0022,\r\n      \u0022endpoint\u0022: \u0022/keywords/{keyword}/domains/{domain}/history\u0022,\r\n      \u0022input_schema\u0022: {\r\n        \u0022type\u0022: \u0022object\u0022,\r\n        \u0022properties\u0022: {\r\n          \u0022keyword\u0022: {\r\n            \u0022type\u0022: \u0022string\u0022,\r\n            \u0022description\u0022: \u0022The keyword to query.\u0022\r\n          },\r\n          \u0022domain\u0022: {\r\n            \u0022type\u0022: \u0022string\u0022,\r\n            \u0022description\u0022: \u0022The domain to query.\u0022\r\n          }\r\n        },\r\n        \u0022required\u0022: [\r\n          \u0022keyword\u0022,\r\n          \u0022domain\u0022\r\n        ]\r\n      }\r\n    }"
+      },
+      {
+        "name": "get-keyword-overview",
+        "httpMethod": "GET",
+        "endpoint": "/keywords/{keyword}/overview",
+        "rawJson": "{\r\n      \u0022name\u0022: \u0022get-keyword-overview\u0022,\r\n      \u0022description\u0022: \u0022Get an overview of a keyword\u0027s performance.\u0022,\r\n      \u0022http_method\u0022: \u0022GET\u0022,\r\n      \u0022endpoint\u0022: \u0022/keywords/{keyword}/overview\u0022,\r\n      \u0022input_schema\u0022: {\r\n        \u0022type\u0022: \u0022object\u0022,\r\n        \u0022properties\u0022: {\r\n          \u0022keyword\u0022: {\r\n            \u0022type\u0022: \u0022string\u0022,\r\n            \u0022description\u0022: \u0022The keyword to query.\u0022\r\n          }\r\n        },\r\n        \u0022required\u0022: [\r\n          \u0022keyword\u0022\r\n        ]\r\n      }\r\n    }"
+      },
+      {
+        "name": "get-keyword-suggestions",
+        "httpMethod": "GET",
+        "endpoint": "/keywords/{keyword}/suggestions",
+        "rawJson": "{\r\n      \u0022name\u0022: \u0022get-keyword-suggestions\u0022,\r\n      \u0022description\u0022: \u0022Retrieve keyword suggestions based on a seed keyword.\u0022,\r\n      \u0022http_method\u0022: \u0022GET\u0022,\r\n      \u0022endpoint\u0022: \u0022/keywords/{keyword}/suggestions\u0022,\r\n      \u0022input_schema\u0022: {\r\n        \u0022type\u0022: \u0022object\u0022,\r\n        \u0022properties\u0022: {\r\n          \u0022keyword\u0022: {\r\n            \u0022type\u0022: \u0022string\u0022,\r\n            \u0022description\u0022: \u0022The seed keyword.\u0022\r\n          }\r\n        },\r\n        \u0022required\u0022: [\r\n          \u0022keyword\u0022\r\n        ]\r\n      }\r\n    }"
+      },
+      {
+        "name": "search-keywords",
+        "httpMethod": "GET",
+        "endpoint": "/keywords/search",
+        "rawJson": "{\r\n      \u0022name\u0022: \u0022search-keywords\u0022,\r\n      \u0022description\u0022: \u0022Search for keywords based on a query.\u0022,\r\n      \u0022http_method\u0022: \u0022GET\u0022,\r\n      \u0022endpoint\u0022: \u0022/keywords/search\u0022,\r\n      \u0022input_schema\u0022: {\r\n        \u0022type\u0022: \u0022object\u0022,\r\n        \u0022properties\u0022: {\r\n          \u0022query\u0022: {\r\n            \u0022type\u0022: \u0022string\u0022,\r\n            \u0022description\u0022: \u0022The search query.\u0022\r\n          }\r\n        },\r\n        \u0022required\u0022: [\r\n          \u0022query\u0022\r\n        ]\r\n      }\r\n    }"
+      }
+    ],
+    "addedActions": [
+      {
+        "name": "delete_links",
+        "httpMethod": "DELETE",
+        "endpoint": "/v3/shorten/{shortlink}",
+        "rawJson": "{\n  \u0022name\u0022: \u0022delete_links\u0022,\n  \u0022http_method\u0022: \u0022DELETE\u0022,\n  \u0022endpoint\u0022: \u0022/v3/shorten/{shortlink}\u0022,\n  \u0022description\u0022: \u0022Delete a shortened link.\u0022,\n  \u0022input_schema\u0022: {\n    \u0022type\u0022: \u0022object\u0022,\n    \u0022properties\u0022: {\n      \u0022shortlink\u0022: {\n        \u0022type\u0022: \u0022string\u0022,\n        \u0022description\u0022: \u0022Short link code.\u0022\n      }\n    },\n    \u0022required\u0022: [\n      \u0022shortlink\u0022\n    ]\n  }\n}"
+      },
+      {
+        "name": "delete_domain",
+        "httpMethod": "DELETE",
+        "endpoint": "/v3/shorten/domains/{domain}",
+        "rawJson": "{\n  \u0022name\u0022: \u0022delete_domain\u0022,\n  \u0022http_method\u0022: \u0022DELETE\u0022,\n  \u0022endpoint\u0022: \u0022/v3/shorten/domains/{domain}\u0022,\n  \u0022description\u0022: \u0022Delete a domain.\u0022,\n  \u0022input_schema\u0022: {\n    \u0022type\u0022: \u0022object\u0022,\n    \u0022properties\u0022: {\n      \u0022domain\u0022: {\n        \u0022type\u0022: \u0022string\u0022,\n        \u0022description\u0022: \u0022Domain name.\u0022\n      }\n    },\n    \u0022required\u0022: [\n      \u0022domain\u0022\n    ]\n  }\n}"
+      },
+      {
+        "name": "get_links",
+        "httpMethod": "GET",
+        "endpoint": "/v3/shorten/{shortlink}",
+        "rawJson": "{\n      \u0022name\u0022: \u0022get_links\u0022,\n      \u0022http_method\u0022: \u0022GET\u0022,\n      \u0022endpoint\u0022: \u0022/v3/shorten/{shortlink}\u0022,\n      \u0022description\u0022: \u0022\u0022,\n      \u0022input_schema\u0022: {\n        \u0022type\u0022: \u0022object\u0022,\n        \u0022properties\u0022: {\n          \u0022shortlink\u0022: {\n            \u0022type\u0022: \u0022string\u0022,\n            \u0022description\u0022: \u0022\u0022\n          }\n        },\n        \u0022required\u0022: [\n          \u0022shortlink\u0022\n        ]\n      }\n    }"
+      },
+      {
+        "name": "get_click",
+        "httpMethod": "GET",
+        "endpoint": "/v3/shorten/analytics/clicks",
+        "rawJson": "{\n  \u0022name\u0022: \u0022get_click\u0022,\n  \u0022http_method\u0022: \u0022GET\u0022,\n  \u0022endpoint\u0022: \u0022/v3/shorten/analytics/clicks\u0022,\n  \u0022description\u0022: \u0022Get click analytics for the configured workspace.\u0022,\n  \u0022input_schema\u0022: {\n    \u0022type\u0022: \u0022object\u0022,\n    \u0022properties\u0022: {\n      \u0022range\u0022: {\n        \u0022type\u0022: \u0022string\u0022,\n        \u0022description\u0022: \u0022Analytics date range.\u0022\n      },\n      \u0022granularity\u0022: {\n        \u0022type\u0022: \u0022string\u0022,\n        \u0022description\u0022: \u0022Analytics granularity.\u0022\n      },\n      \u0022timezone\u0022: {\n        \u0022type\u0022: \u0022string\u0022,\n        \u0022description\u0022: \u0022Optional analytics timezone.\u0022\n      }\n    },\n    \u0022required\u0022: [\n      \u0022range\u0022,\n      \u0022granularity\u0022\n    ]\n  }\n}"
+      },
+      {
+        "name": "list_domain",
+        "httpMethod": "GET",
+        "endpoint": "/v3/shorten/domains",
+        "rawJson": "{\n  \u0022name\u0022: \u0022list_domain\u0022,\n  \u0022http_method\u0022: \u0022GET\u0022,\n  \u0022endpoint\u0022: \u0022/v3/shorten/domains\u0022,\n  \u0022description\u0022: \u0022List domains in the configured workspace.\u0022,\n  \u0022input_schema\u0022: {\n    \u0022type\u0022: \u0022object\u0022,\n    \u0022properties\u0022: {}\n  }\n}"
+      },
+      {
+        "name": "get_domain_detail",
+        "httpMethod": "GET",
+        "endpoint": "/v3/shorten/domains/{domain}",
+        "rawJson": "{\n  \u0022name\u0022: \u0022get_domain_detail\u0022,\n  \u0022http_method\u0022: \u0022GET\u0022,\n  \u0022endpoint\u0022: \u0022/v3/shorten/domains/{domain}\u0022,\n  \u0022description\u0022: \u0022Get details for a domain.\u0022,\n  \u0022input_schema\u0022: {\n    \u0022type\u0022: \u0022object\u0022,\n    \u0022properties\u0022: {\n      \u0022domain\u0022: {\n        \u0022type\u0022: \u0022string\u0022,\n        \u0022description\u0022: \u0022Domain name.\u0022\n      }\n    },\n    \u0022required\u0022: [\n      \u0022domain\u0022\n    ]\n  }\n}"
+      },
+      {
+        "name": "list_links",
+        "httpMethod": "GET",
+        "endpoint": "/v3/shorten/list",
+        "rawJson": "{\n  \u0022name\u0022: \u0022list_links\u0022,\n  \u0022http_method\u0022: \u0022GET\u0022,\n  \u0022endpoint\u0022: \u0022/v3/shorten/list\u0022,\n  \u0022description\u0022: \u0022List shortened links in the configured workspace.\u0022,\n  \u0022input_schema\u0022: {\n    \u0022type\u0022: \u0022object\u0022,\n    \u0022properties\u0022: {\n      \u0022page\u0022: {\n        \u0022type\u0022: \u0022integer\u0022,\n        \u0022description\u0022: \u0022Page number.\u0022\n      },\n      \u0022perPage\u0022: {\n        \u0022type\u0022: \u0022integer\u0022,\n        \u0022description\u0022: \u0022Number of links per page.\u0022,\n        \u0022default\u0022: 10\n      }\n    },\n    \u0022required\u0022: [\n      \u0022page\u0022\n    ]\n  }\n}"
+      },
+      {
+        "name": "get_active_status",
+        "httpMethod": "PATCH",
+        "endpoint": "/v3/shorten/domains/active/{domain}",
+        "rawJson": "{\n  \u0022name\u0022: \u0022get_active_status\u0022,\n  \u0022http_method\u0022: \u0022PATCH\u0022,\n  \u0022endpoint\u0022: \u0022/v3/shorten/domains/active/{domain}\u0022,\n  \u0022description\u0022: \u0022Set or toggle the active domain.\u0022,\n  \u0022input_schema\u0022: {\n    \u0022type\u0022: \u0022object\u0022,\n    \u0022properties\u0022: {\n      \u0022domain\u0022: {\n        \u0022type\u0022: \u0022string\u0022,\n        \u0022description\u0022: \u0022Domain name.\u0022\n      }\n    },\n    \u0022required\u0022: [\n      \u0022domain\u0022\n    ]\n  }\n}"
+      },
+      {
+        "name": "create_links",
+        "httpMethod": "POST",
+        "endpoint": "/v3/shorten/bulk",
+        "rawJson": "{\n      \u0022name\u0022: \u0022create_links\u0022,\n      \u0022http_method\u0022: \u0022POST\u0022,\n      \u0022endpoint\u0022: \u0022/v3/shorten/bulk\u0022,\n      \u0022description\u0022: \u0022Create links\u0022,\n      \u0022input_schema\u0022: {\n        \u0022type\u0022: \u0022object\u0022,\n        \u0022properties\u0022: {\n          \u0022url\u0022: {\n            \u0022type\u0022: \u0022string\u0022,\n            \u0022description\u0022: \u0022\u0022\n          }\n        },\n        \u0022required\u0022: [\n          \u0022url\u0022\n        ]\n      }\n    }"
+      },
+      {
+        "name": "create_domains",
+        "httpMethod": "PUT",
+        "endpoint": "/v3/shorten/domains",
+        "rawJson": "{\n  \u0022name\u0022: \u0022create_domains\u0022,\n  \u0022http_method\u0022: \u0022PUT\u0022,\n  \u0022endpoint\u0022: \u0022/v3/shorten/domains\u0022,\n  \u0022description\u0022: \u0022Create a custom short-link domain.\u0022,\n  \u0022input_schema\u0022: {\n    \u0022type\u0022: \u0022object\u0022,\n    \u0022properties\u0022: {\n      \u0022domain\u0022: {\n        \u0022type\u0022: \u0022string\u0022,\n        \u0022description\u0022: \u0022Domain name.\u0022\n      },\n      \u0022shortCodeLength\u0022: {\n        \u0022type\u0022: \u0022integer\u0022,\n        \u0022description\u0022: \u0022Default short-code length.\u0022,\n        \u0022default\u0022: 6\n      }\n    },\n    \u0022required\u0022: [\n      \u0022domain\u0022\n    ]\n  }\n}"
+      }
+    ],
+    "changedActions": [],
+    "topLevelChanges": [
+      "executor",
+      "provider_config",
+      "skill_source"
+    ]
+  },
+  "impact": {
+    "provider": "u301",
+    "integrationId": "u301-shortener",
+    "currentManifestHash": "C6298D1CDE1004A57CC00183B8CDC0B4E45E0B865835CCB3C60AFBCF79980AA5",
+    "proposedManifestHash": "40311AAF4930ABC72997730DA882317A554EA06CD164DA48E4B7D225BADED3C2",
+    "overallSeverity": "High",
+    "affectedActions": [
+      {
+        "name": "get-domain-info",
+        "method": "GET",
+        "endpoint": "/domains/{domain}",
+        "impactType": "RemovedAction",
+        "severity": "High",
+        "reason": "The current action is absent from the verified provider snapshot.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "get-site-audit",
+        "method": "GET",
+        "endpoint": "/domains/{domain}/audit",
+        "impactType": "RemovedAction",
+        "severity": "High",
+        "reason": "The current action is absent from the verified provider snapshot.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "get-backlink-count",
+        "method": "GET",
+        "endpoint": "/domains/{domain}/backlinks/count",
+        "impactType": "RemovedAction",
+        "severity": "High",
+        "reason": "The current action is absent from the verified provider snapshot.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "get-competitors",
+        "method": "GET",
+        "endpoint": "/domains/{domain}/competitors",
+        "impactType": "RemovedAction",
+        "severity": "High",
+        "reason": "The current action is absent from the verified provider snapshot.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "get-ranking-history",
+        "method": "GET",
+        "endpoint": "/keywords/{keyword}/domains/{domain}/history",
+        "impactType": "RemovedAction",
+        "severity": "High",
+        "reason": "The current action is absent from the verified provider snapshot.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "get-keyword-overview",
+        "method": "GET",
+        "endpoint": "/keywords/{keyword}/overview",
+        "impactType": "RemovedAction",
+        "severity": "High",
+        "reason": "The current action is absent from the verified provider snapshot.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "get-keyword-suggestions",
+        "method": "GET",
+        "endpoint": "/keywords/{keyword}/suggestions",
+        "impactType": "RemovedAction",
+        "severity": "High",
+        "reason": "The current action is absent from the verified provider snapshot.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "search-keywords",
+        "method": "GET",
+        "endpoint": "/keywords/search",
+        "impactType": "RemovedAction",
+        "severity": "High",
+        "reason": "The current action is absent from the verified provider snapshot.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      }
+    ],
+    "newActions": [
+      {
+        "name": "delete_links",
+        "method": "DELETE",
+        "endpoint": "/v3/shorten/{shortlink}",
+        "impactType": "AddedAction",
+        "severity": "Low",
+        "reason": "A new provider capability is available; no existing action is broken.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "delete_domain",
+        "method": "DELETE",
+        "endpoint": "/v3/shorten/domains/{domain}",
+        "impactType": "AddedAction",
+        "severity": "Low",
+        "reason": "A new provider capability is available; no existing action is broken.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "get_links",
+        "method": "GET",
+        "endpoint": "/v3/shorten/{shortlink}",
+        "impactType": "AddedAction",
+        "severity": "Low",
+        "reason": "A new provider capability is available; no existing action is broken.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "get_click",
+        "method": "GET",
+        "endpoint": "/v3/shorten/analytics/clicks",
+        "impactType": "AddedAction",
+        "severity": "Low",
+        "reason": "A new provider capability is available; no existing action is broken.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "list_domain",
+        "method": "GET",
+        "endpoint": "/v3/shorten/domains",
+        "impactType": "AddedAction",
+        "severity": "Low",
+        "reason": "A new provider capability is available; no existing action is broken.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "get_domain_detail",
+        "method": "GET",
+        "endpoint": "/v3/shorten/domains/{domain}",
+        "impactType": "AddedAction",
+        "severity": "Low",
+        "reason": "A new provider capability is available; no existing action is broken.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "list_links",
+        "method": "GET",
+        "endpoint": "/v3/shorten/list",
+        "impactType": "AddedAction",
+        "severity": "Low",
+        "reason": "A new provider capability is available; no existing action is broken.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "get_active_status",
+        "method": "PATCH",
+        "endpoint": "/v3/shorten/domains/active/{domain}",
+        "impactType": "AddedAction",
+        "severity": "Low",
+        "reason": "A new provider capability is available; no existing action is broken.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "create_links",
+        "method": "POST",
+        "endpoint": "/v3/shorten/bulk",
+        "impactType": "AddedAction",
+        "severity": "Low",
+        "reason": "A new provider capability is available; no existing action is broken.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      },
+      {
+        "name": "create_domains",
+        "method": "PUT",
+        "endpoint": "/v3/shorten/domains",
+        "impactType": "AddedAction",
+        "severity": "Low",
+        "reason": "A new provider capability is available; no existing action is broken.",
+        "evidenceStatus": "VerifiedSnapshotOnly"
+      }
+    ],
+    "integrationConfigChanges": [
+      {
+        "property": "executor",
+        "severity": "High",
+        "reason": "Integration-level runtime configuration changed."
+      },
+      {
+        "property": "provider_config",
+        "severity": "High",
+        "reason": "Integration-level runtime configuration changed."
+      },
+      {
+        "property": "skill_source",
+        "severity": "Medium",
+        "reason": "Integration-level runtime configuration changed."
+      }
+    ]
+  }
+}

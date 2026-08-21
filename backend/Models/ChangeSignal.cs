@@ -16,6 +16,10 @@ public sealed class ChangeSignal
 
     public List<string> AffectedEndpoints { get; set; } = [];
 
+    public List<ApiEndpoint> DeprecatedEndpoints { get; set; } = [];
+
+    public List<ApiEndpoint> AnnouncedEndpoints { get; set; } = [];
+
     public bool BreakingChange { get; set; }
 
     public bool MigrationRequired { get; set; }
@@ -27,6 +31,12 @@ public sealed class ChangeSignal
     public double Confidence { get; set; }
 
     public ChangeEvidence Evidence { get; set; } = new();
+}
+
+public sealed class ApiEndpoint
+{
+    public string Method { get; set; } = string.Empty;
+    public string Path { get; set; } = string.Empty;
 }
 
 public sealed class ChangeEvidence

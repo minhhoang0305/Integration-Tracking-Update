@@ -20,6 +20,7 @@ $env:Gmail__ClientId = "<oauth-client-id>"
 $env:Gmail__ClientSecret = "<oauth-client-secret>"
 $env:Gmail__ServiceMailbox = "provider-notifications@gmail.com"
 $env:Gmail__PubSubTopic = "projects/<project-id>/topics/gmail-provider-updates"
+$env:Gmail__TokenEncryptionKey = "<base64-encoded-32-byte-key>"
 $env:Gmail__AllowedSenderDomains__0 = "stripe.com"
 $env:ProposalLlm__ApiKey = "<llm-api-key>"
 $env:ProposalLlm__Model = "<structured-json-capable-model>"
@@ -33,7 +34,7 @@ dotnet run
 Invoke-RestMethod -Method Post -Uri "http://localhost:5000/api/gmail/oauth/bootstrap"
 ```
 
-The refresh token is encrypted with Windows DPAPI at `%LOCALAPPDATA%\IntegrationTracking\gmail`.
+The refresh token is encrypted with AES-256-GCM at the configured cache directory. Set `Gmail__TokenEncryptionKey` to a stable Base64-encoded 32-byte secret. This works on Windows, macOS, and Linux; rotating the key requires a new OAuth bootstrap.
 
 ## Registry and manifests
 

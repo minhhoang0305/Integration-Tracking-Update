@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using IntegrationTracking.Api.Data;
 using IntegrationTracking.Api.Models;
+using IntegrationTracking.Api.Templates;
 using Microsoft.EntityFrameworkCore;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -13,6 +14,7 @@ public sealed class AnalysisResultConsumer(
     RabbitMqTopology topology,
     IServiceScopeFactory scopeFactory,
     RabbitMqPublisher publisher,
+    TemplateRegistryService registry,
     ILogger<AnalysisResultConsumer> logger) : BackgroundService
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
@@ -44,12 +46,15 @@ public sealed class AnalysisResultConsumer(
                 var analysis = database.EmailAnalyses.Find(message.CorrelationId);
                 if (analysis is not null && analysis.Status != AnalysisStatuses.Completed)
                 {
-                    var provider = analysis.Sender.Split('@').LastOrDefault() ?? "unknown";
+                    var providerRegistration = registry.FindProvider(analysis.Sender);
+                    var provider = providerRegistration?.Provider ?? TemplateRegistryService.SenderDomain(analysis.Sender);
+                    var integrationId = providerRegistration?.Integrations.Count == 1 ? providerRegistration.Integrations[0].Id : null;
                     var providerUpdate = new ProviderUpdateEvent
                     {
                         EventId = analysis.EmailId,
                         EmailId = analysis.EmailId,
                         Provider = provider,
+                        IntegrationId = integrationId,
                         Source = new ProviderEmailSource
                         {
                             Sender = analysis.Sender,

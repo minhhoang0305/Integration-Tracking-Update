@@ -3,6 +3,7 @@ using IntegrationTracking.Api.Services;
 using IntegrationTracking.Api.Templates;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace IntegrationTracking.Api.Controllers;
 
@@ -18,10 +19,16 @@ public sealed class ReviewsController(IntegrationTrackingDbContext database, Tem
     {
         var proposal = await database.TemplateProposals.FindAsync([id], ct);
         if (proposal is null) return NotFound();
-        var directory = string.IsNullOrWhiteSpace(proposal.ArtifactDirectory) ? null : registry.AbsolutePath(proposal.ArtifactDirectory);
+        var directory = string.IsNullOrWhiteSpace(proposal.ArtifactDirectory) ? null : registry.ContentPath(proposal.ArtifactDirectory);
         var registration = registry.Load().Providers.FirstOrDefault(x => x.Provider.Equals(proposal.Provider, StringComparison.OrdinalIgnoreCase))?.Integrations.FirstOrDefault(x => x.Id == proposal.IntegrationId);
-        var original = registration is null ? null : ReadAbsolute(registry.AbsolutePath(registration.ManifestPath));
-        return Ok(new { proposal, originalManifest = original, artifacts = directory is not null && Directory.Exists(directory) ? new { manifest = Read(directory, "actions_manifest.json"), changelog = Read(directory, "CHANGELOG.md"), diff = Read(directory, "diff.patch"), evidence = Read(directory, "evidence.json") } : null });
+        var original = registration is null ? null : ReadAbsolute(registry.WorkspacePath(registration.ManifestPath));
+        return Ok(new
+        {
+            proposal,
+            impact = ParseJson(proposal.ImpactJson),
+            originalManifest = original,
+            artifacts = directory is not null && Directory.Exists(directory) ? new { manifest = Read(directory, "actions_manifest.json"), changelog = Read(directory, "CHANGELOG.md"), diff = Read(directory, "diff.patch"), evidence = Read(directory, "evidence.json"), impact = Read(directory, "impact.json") } : null
+        });
     }
 
     [HttpPost("{id}/approve")]
@@ -48,6 +55,11 @@ public sealed class ReviewsController(IntegrationTrackingDbContext database, Tem
     }
     private static string? Read(string directory, string name) { var path = Path.Combine(directory, name); return System.IO.File.Exists(path) ? System.IO.File.ReadAllText(path) : null; }
     private static string? ReadAbsolute(string path) => System.IO.File.Exists(path) ? System.IO.File.ReadAllText(path) : null;
+    private static JsonElement? ParseJson(string json)
+    {
+        try { using var document = JsonDocument.Parse(json); return document.RootElement.Clone(); }
+        catch (JsonException) { return null; }
+    }
 }
 
 public sealed class ReviewRequest { public string AdminIdentity { get; set; } = string.Empty; public string? Note { get; set; } }

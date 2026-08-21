@@ -1,0 +1,190 @@
+{
+  "provider": "u301",
+  "integrationId": "u301-shortener",
+  "currentManifestHash": "C6298D1CDE1004A57CC00183B8CDC0B4E45E0B865835CCB3C60AFBCF79980AA5",
+  "proposedManifestHash": "40311AAF4930ABC72997730DA882317A554EA06CD164DA48E4B7D225BADED3C2",
+  "overallSeverity": "High",
+  "affectedActions": [
+    {
+      "name": "get-domain-info",
+      "method": "GET",
+      "endpoint": "/domains/{domain}",
+      "impactType": "RemovedAction",
+      "severity": "High",
+      "reason": "The current action is absent from the verified provider snapshot.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "get-site-audit",
+      "method": "GET",
+      "endpoint": "/domains/{domain}/audit",
+      "impactType": "RemovedAction",
+      "severity": "High",
+      "reason": "The current action is absent from the verified provider snapshot.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "get-backlink-count",
+      "method": "GET",
+      "endpoint": "/domains/{domain}/backlinks/count",
+      "impactType": "RemovedAction",
+      "severity": "High",
+      "reason": "The current action is absent from the verified provider snapshot.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "get-competitors",
+      "method": "GET",
+      "endpoint": "/domains/{domain}/competitors",
+      "impactType": "RemovedAction",
+      "severity": "High",
+      "reason": "The current action is absent from the verified provider snapshot.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "get-ranking-history",
+      "method": "GET",
+      "endpoint": "/keywords/{keyword}/domains/{domain}/history",
+      "impactType": "RemovedAction",
+      "severity": "High",
+      "reason": "The current action is absent from the verified provider snapshot.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "get-keyword-overview",
+      "method": "GET",
+      "endpoint": "/keywords/{keyword}/overview",
+      "impactType": "RemovedAction",
+      "severity": "High",
+      "reason": "The current action is absent from the verified provider snapshot.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "get-keyword-suggestions",
+      "method": "GET",
+      "endpoint": "/keywords/{keyword}/suggestions",
+      "impactType": "RemovedAction",
+      "severity": "High",
+      "reason": "The current action is absent from the verified provider snapshot.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "search-keywords",
+      "method": "GET",
+      "endpoint": "/keywords/search",
+      "impactType": "RemovedAction",
+      "severity": "High",
+      "reason": "The current action is absent from the verified provider snapshot.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    }
+  ],
+  "newActions": [
+    {
+      "name": "delete_links",
+      "method": "DELETE",
+      "endpoint": "/v3/shorten/{shortlink}",
+      "impactType": "AddedAction",
+      "severity": "Low",
+      "reason": "A new provider capability is available; no existing action is broken.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "delete_domain",
+      "method": "DELETE",
+      "endpoint": "/v3/shorten/domains/{domain}",
+      "impactType": "AddedAction",
+      "severity": "Low",
+      "reason": "A new provider capability is available; no existing action is broken.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "get_links",
+      "method": "GET",
+      "endpoint": "/v3/shorten/{shortlink}",
+      "impactType": "AddedAction",
+      "severity": "Low",
+      "reason": "A new provider capability is available; no existing action is broken.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "get_click",
+      "method": "GET",
+      "endpoint": "/v3/shorten/analytics/clicks",
+      "impactType": "AddedAction",
+      "severity": "Low",
+      "reason": "A new provider capability is available; no existing action is broken.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "list_domain",
+      "method": "GET",
+      "endpoint": "/v3/shorten/domains",
+      "impactType": "AddedAction",
+      "severity": "Low",
+      "reason": "A new provider capability is available; no existing action is broken.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "get_domain_detail",
+      "method": "GET",
+      "endpoint": "/v3/shorten/domains/{domain}",
+      "impactType": "AddedAction",
+      "severity": "Low",
+      "reason": "A new provider capability is available; no existing action is broken.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "list_links",
+      "method": "GET",
+      "endpoint": "/v3/shorten/list",
+      "impactType": "AddedAction",
+      "severity": "Low",
+      "reason": "A new provider capability is available; no existing action is broken.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "get_active_status",
+      "method": "PATCH",
+      "endpoint": "/v3/shorten/domains/active/{domain}",
+      "impactType": "AddedAction",
+      "severity": "Low",
+      "reason": "A new provider capability is available; no existing action is broken.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "create_links",
+      "method": "POST",
+      "endpoint": "/v3/shorten/bulk",
+      "impactType": "AddedAction",
+      "severity": "Low",
+      "reason": "A new provider capability is available; no existing action is broken.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    },
+    {
+      "name": "create_domains",
+      "method": "PUT",
+      "endpoint": "/v3/shorten/domains",
+      "impactType": "AddedAction",
+      "severity": "Low",
+      "reason": "A new provider capability is available; no existing action is broken.",
+      "evidenceStatus": "VerifiedSnapshotOnly"
+    }
+  ],
+  "integrationConfigChanges": [
+    {
+      "property": "executor",
+      "severity": "High",
+      "reason": "Integration-level runtime configuration changed."
+    },
+    {
+      "property": "provider_config",
+      "severity": "High",
+      "reason": "Integration-level runtime configuration changed."
+    },
+    {
+      "property": "skill_source",
+      "severity": "Medium",
+      "reason": "Integration-level runtime configuration changed."
+    }
+  ]
+}

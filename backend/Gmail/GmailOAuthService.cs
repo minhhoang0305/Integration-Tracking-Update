@@ -26,7 +26,7 @@ public sealed class GmailOAuthService(IOptions<GmailOptions> options)
         {
             ClientSecrets = new ClientSecrets { ClientId = _options.ClientId, ClientSecret = _options.ClientSecret },
             Scopes = [ReadonlyScope],
-            DataStore = new GmailTokenStore(directory)
+            DataStore = new GmailTokenStore(directory, _options.TokenEncryptionKey)
         });
         var token = await flow.LoadTokenAsync(_options.ServiceMailbox, cancellationToken);
         if (token is null || string.IsNullOrWhiteSpace(token.RefreshToken))
@@ -47,7 +47,7 @@ public sealed class GmailOAuthService(IOptions<GmailOptions> options)
         var flow = new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
         {
             ClientSecrets = new ClientSecrets { ClientId = _options.ClientId, ClientSecret = _options.ClientSecret },
-            Scopes = [ReadonlyScope], DataStore = new GmailTokenStore(directory)
+            Scopes = [ReadonlyScope], DataStore = new GmailTokenStore(directory, _options.TokenEncryptionKey)
         });
         var receiver = new LocalServerCodeReceiver();
         _credential = await new AuthorizationCodeInstalledApp(flow, receiver)

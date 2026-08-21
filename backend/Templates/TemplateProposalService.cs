@@ -11,7 +11,7 @@ namespace IntegrationTracking.Api.Templates;
 
 public sealed class TemplateProposalService(
     IntegrationTrackingDbContext database, TemplateRegistryService registry, DocumentationEvidenceService documentation,
-    ProposalLlmClient llm, RabbitMqPublisher publisher, IOptions<TemplateOptions> options, ILogger<TemplateProposalService> logger)
+    ProposalLlmClient llm, ManifestDiffService diffService, ImpactAnalysisService impactService, RabbitMqPublisher publisher, IOptions<TemplateOptions> options, ILogger<TemplateProposalService> logger)
 {
     private readonly TemplateOptions _options = options.Value;
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { WriteIndented = true };
@@ -36,26 +36,63 @@ public sealed class TemplateProposalService(
         database.TemplateProposals.Add(proposal);
         try
         {
-            var manifestPath = registry.AbsolutePath(integration.ManifestPath);
+            var manifestPath = registry.WorkspacePath(integration.ManifestPath);
             if (!File.Exists(manifestPath)) throw new InvalidOperationException("Registered actions_manifest.json was not found.");
             var current = await File.ReadAllTextAsync(manifestPath, cancellationToken);
             using var currentJson = JsonDocument.Parse(current);
-            ValidateManifest(currentJson.RootElement);
+            ManifestDiffService.ValidateManifest(currentJson.RootElement);
             proposal.BaseManifestHash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(current)));
-            var evidence = await documentation.ReadAsync(signal.DocumentationUrls.Concat(signal.Evidence.Urls), provider.DocumentationDomains, cancellationToken);
-            if (evidence.Count == 0) throw new InvalidOperationException("No allow-listed documentation evidence was available.");
-            var generated = await llm.GenerateAsync(provider.Provider, integration.Id, current, evidence, cancellationToken);
-            ValidateManifest(generated.Manifest);
+
+            string proposedJson;
+            string changelog;
+            string risk;
+            object evidence;
+            IntegrationImpactAnalysis? impact = null;
+            if (integration.ProposalMode.Equals("verified_snapshot", StringComparison.OrdinalIgnoreCase))
+            {
+                if (string.IsNullOrWhiteSpace(integration.VerifiedManifestPath)) throw new InvalidOperationException("verified_snapshot mode requires verifiedManifestPath.");
+                var verifiedPath = registry.WorkspacePath(integration.VerifiedManifestPath);
+                if (!File.Exists(verifiedPath)) throw new InvalidOperationException("Verified manifest snapshot was not found.");
+                proposedJson = await File.ReadAllTextAsync(verifiedPath, cancellationToken);
+                var diff = diffService.Compare(current, proposedJson);
+                impact = impactService.Analyze(provider.Provider, integration.Id, diff, signal);
+                changelog = BuildVerifiedSnapshotChangelog(analysis, signal, diff, impact);
+                risk = "High: this proposal removes legacy endpoints and replaces the integration action set.";
+                evidence = new
+                {
+                    source = "verified_snapshot",
+                    snapshotPath = integration.VerifiedManifestPath,
+                    signal.DeprecatedEndpoints,
+                    signal.AnnouncedEndpoints,
+                    diff,
+                    impact
+                };
+            }
+            else
+            {
+                var documentationEvidence = await documentation.ReadAsync(signal.DocumentationUrls.Concat(signal.Evidence.Urls), provider.DocumentationDomains, cancellationToken);
+                if (documentationEvidence.Count == 0) throw new InvalidOperationException("No allow-listed documentation evidence was available.");
+                var generated = await llm.GenerateAsync(provider.Provider, integration.Id, current, documentationEvidence, cancellationToken);
+                ManifestDiffService.ValidateManifest(generated.Manifest);
+                proposedJson = JsonSerializer.Serialize(generated.Manifest, JsonOptions);
+                changelog = BuildLlmChangelog(analysis, signal, generated);
+                risk = generated.Risk;
+                evidence = new { source = "llm", urls = signal.DocumentationUrls, documentationEvidence, generated.Risk };
+            }
+
             var relativeDirectory = Path.Combine(_options.ArtifactRoot, proposal.Id).Replace('\\', '/');
-            var directory = registry.AbsolutePath(relativeDirectory);
+            var directory = registry.ContentPath(relativeDirectory);
             Directory.CreateDirectory(directory);
-            var proposedJson = JsonSerializer.Serialize(generated.Manifest, JsonOptions);
             await File.WriteAllTextAsync(Path.Combine(directory, "actions_manifest.json"), proposedJson, cancellationToken);
-            await File.WriteAllTextAsync(Path.Combine(directory, "CHANGELOG.md"), BuildChangelog(analysis, signal, generated), cancellationToken);
-            await File.WriteAllTextAsync(Path.Combine(directory, "diff.patch"), BuildUnifiedDiff(current, proposedJson), cancellationToken);
-            await File.WriteAllTextAsync(Path.Combine(directory, "evidence.json"), JsonSerializer.Serialize(new { urls = signal.DocumentationUrls, evidence, risk = generated.Risk }, JsonOptions), cancellationToken);
+            await File.WriteAllTextAsync(Path.Combine(directory, "CHANGELOG.md"), changelog, cancellationToken);
+            await File.WriteAllTextAsync(Path.Combine(directory, "diff.patch"), ManifestDiffService.BuildUnifiedDiff(current, proposedJson), cancellationToken);
+            await File.WriteAllTextAsync(Path.Combine(directory, "evidence.json"), JsonSerializer.Serialize(evidence, JsonOptions), cancellationToken);
+            if (impact is not null)
+                await File.WriteAllTextAsync(Path.Combine(directory, "impact.json"), JsonSerializer.Serialize(impact, JsonOptions), cancellationToken);
             proposal.ArtifactDirectory = relativeDirectory;
-            proposal.EvidenceJson = JsonSerializer.Serialize(new { signal.DocumentationUrls, signal.Evidence, generated.Risk }, JsonOptions);
+            proposal.EvidenceJson = JsonSerializer.Serialize(evidence, JsonOptions);
+            proposal.ImpactJson = impact is null ? "{}" : JsonSerializer.Serialize(impact, JsonOptions);
+            proposal.ImpactSeverity = impact?.OverallSeverity ?? "Unknown";
             proposal.Status = ProposalStatuses.Pending;
             proposal.UpdatedAt = DateTime.UtcNow;
             await database.SaveChangesAsync(cancellationToken);
@@ -77,11 +114,6 @@ public sealed class TemplateProposalService(
         database.TemplateProposals.Add(new TemplateProposal { EmailId = analysis.EmailId, Provider = provider, IntegrationId = "unmapped", Status = ProposalStatuses.NeedsReview, ErrorMessage = reason });
         await database.SaveChangesAsync(ct);
     }
-    private static void ValidateManifest(JsonElement manifest)
-    {
-        if (manifest.ValueKind != JsonValueKind.Object || !manifest.TryGetProperty("actions", out var actions) || actions.ValueKind != JsonValueKind.Array)
-            throw new InvalidOperationException("Proposed actions_manifest.json must be an object containing an actions array.");
-    }
-    private static string BuildChangelog(EmailAnalysis analysis, ChangeSignal signal, LlmProposal proposal) => $"# Proposed change\n\nProvider notification: **{analysis.Subject}**\n\n## Summary\n\n{signal.Summary}\n\n## Generated change notes\n\n{proposal.Changelog}\n\n## Risk\n\n{proposal.Risk}\n";
-    private static string BuildUnifiedDiff(string current, string proposed) => $"--- a/actions_manifest.json\n+++ b/actions_manifest.json\n@@ -1,{current.Split('\n').Length} +1,{proposed.Split('\n').Length} @@\n" + string.Join('\n', current.Split('\n').Select(x => "-" + x)) + "\n" + string.Join('\n', proposed.Split('\n').Select(x => "+" + x)) + "\n";
+    private static string BuildLlmChangelog(EmailAnalysis analysis, ChangeSignal signal, LlmProposal proposal) => $"# Proposed change\n\nProvider notification: **{analysis.Subject}**\n\n## Summary\n\n{signal.Summary}\n\n## Generated change notes\n\n{proposal.Changelog}\n\n## Risk\n\n{proposal.Risk}\n";
+    private static string BuildVerifiedSnapshotChangelog(EmailAnalysis analysis, ChangeSignal signal, ManifestDiff diff, IntegrationImpactAnalysis impact) => $"# Verified snapshot proposal\n\nProvider notification: **{analysis.Subject}**\n\n## Summary\n\n{signal.Summary}\n\n## Action changes\n\n- Removed: {diff.RemovedActions.Count}\n- Added: {diff.AddedActions.Count}\n- Changed: {diff.ChangedActions.Count}\n- Top-level configuration changes: {(diff.TopLevelChanges.Count == 0 ? "none" : string.Join(", ", diff.TopLevelChanges))}\n\n## Impact\n\n- Overall severity: **{impact.OverallSeverity}**\n- Affected existing actions: {impact.AffectedActions.Count}\n- New actions: {impact.NewActions.Count}\n\n## Risk\n\nHigh: legacy actions are removed. Review and apply through Git only after approval.\n";
 }

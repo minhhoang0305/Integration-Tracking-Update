@@ -1,0 +1,254 @@
+{
+  "provider": "u301",
+  "auth_type": "api_key",
+  "base_url": "https://api.u301.com",
+  "category": "seo",
+  "stub": false,
+  "actions": [
+    {
+      "name": "create_links",
+      "http_method": "POST",
+      "endpoint": "/v3/shorten/bulk",
+      "description": "Create links",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "url"
+        ]
+      }
+    },
+    {
+      "name": "get_links",
+      "http_method": "GET",
+      "endpoint": "/v3/shorten/{shortlink}",
+      "description": "",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "shortlink": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "shortlink"
+        ]
+      }
+    },
+{
+  "name": "delete_links",
+  "http_method": "DELETE",
+  "endpoint": "/v3/shorten/{shortlink}",
+  "description": "Delete a shortened link.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "shortlink": {
+        "type": "string",
+        "description": "Short link code."
+      }
+    },
+    "required": [
+      "shortlink"
+    ]
+  }
+},
+{
+  "name": "list_links",
+  "http_method": "GET",
+  "endpoint": "/v3/shorten/list",
+  "description": "List shortened links in the configured workspace.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "page": {
+        "type": "integer",
+        "description": "Page number."
+      },
+      "perPage": {
+        "type": "integer",
+        "description": "Number of links per page.",
+        "default": 10
+      }
+    },
+    "required": [
+      "page"
+    ]
+  }
+},
+{
+  "name": "list_domain",
+  "http_method": "GET",
+  "endpoint": "/v3/shorten/domains",
+  "description": "List domains in the configured workspace.",
+  "input_schema": {
+    "type": "object",
+    "properties": {}
+  }
+},
+{
+  "name": "create_domains",
+  "http_method": "PUT",
+  "endpoint": "/v3/shorten/domains",
+  "description": "Create a custom short-link domain.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "domain": {
+        "type": "string",
+        "description": "Domain name."
+      },
+      "shortCodeLength": {
+        "type": "integer",
+        "description": "Default short-code length.",
+        "default": 6
+      }
+    },
+    "required": [
+      "domain"
+    ]
+  }
+},
+{
+  "name": "get_active_status",
+  "http_method": "PATCH",
+  "endpoint": "/v3/shorten/domains/active/{domain}",
+  "description": "Set or toggle the active domain.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "domain": {
+        "type": "string",
+        "description": "Domain name."
+      }
+    },
+    "required": [
+      "domain"
+    ]
+  }
+},
+{
+  "name": "get_domain_detail",
+  "http_method": "GET",
+  "endpoint": "/v3/shorten/domains/{domain}",
+  "description": "Get details for a domain.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "domain": {
+        "type": "string",
+        "description": "Domain name."
+      }
+    },
+    "required": [
+      "domain"
+    ]
+  }
+},
+{
+  "name": "delete_domain",
+  "http_method": "DELETE",
+  "endpoint": "/v3/shorten/domains/{domain}",
+  "description": "Delete a domain.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "domain": {
+        "type": "string",
+        "description": "Domain name."
+      }
+    },
+    "required": [
+      "domain"
+    ]
+  }
+},
+{
+  "name": "get_click",
+  "http_method": "GET",
+  "endpoint": "/v3/shorten/analytics/clicks",
+  "description": "Get click analytics for the configured workspace.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "range": {
+        "type": "string",
+        "description": "Analytics date range."
+      },
+      "granularity": {
+        "type": "string",
+        "description": "Analytics granularity."
+      },
+      "timezone": {
+        "type": "string",
+        "description": "Optional analytics timezone."
+      }
+    },
+    "required": [
+      "range",
+      "granularity"
+    ]
+  }
+}
+  ],
+  "syncs": [
+    {
+      "name": "domain_rankings",
+      "description": "Sync keyword rankings for a domain.",
+      "entity": "DomainRankings",
+      "frequency": "daily"
+    },
+    {
+      "name": "backlink_counts",
+      "description": "Sync backlink counts for domains.",
+      "entity": "BacklinkCounts",
+      "frequency": "weekly"
+    }
+  ],
+  "provider_config": {
+    "display_name": "U301",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://docs.u301.com/",
+    "setup_guide_url": "https://u301.com/",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.u301.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset",
+        "limit_param": "limit",
+        "offset_param": "offset"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    },
+    "connection_config": {
+      "workspace_id": {
+        "type": "string",
+        "title": "Workspace ID",
+        "description": "",
+        "required": true
+      }
+    }
+  },
+  "executor": "custom"
+}

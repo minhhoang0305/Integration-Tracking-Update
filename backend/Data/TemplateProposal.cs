@@ -11,6 +11,8 @@ public sealed class TemplateProposal
     public string? ErrorMessage { get; set; }
     public string ArtifactDirectory { get; set; } = string.Empty;
     public string EvidenceJson { get; set; } = "{}";
+    public string ImpactJson { get; set; } = "{}";
+    public string ImpactSeverity { get; set; } = "Unknown";
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

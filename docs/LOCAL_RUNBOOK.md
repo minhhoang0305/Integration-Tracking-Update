@@ -29,6 +29,7 @@ dotnet user-secrets set "Gmail:ClientId" "<google-oauth-client-id>"
 dotnet user-secrets set "Gmail:ClientSecret" "<google-oauth-client-secret>"
 dotnet user-secrets set "Gmail:ServiceMailbox" "provider-notifications@gmail.com"
 dotnet user-secrets set "Gmail:PubSubTopic" "projects/<project-id>/topics/gmail-provider-updates"
+dotnet user-secrets set "Gmail:TokenEncryptionKey" "<base64-encoded-32-byte-key>"
 dotnet user-secrets set "Gmail:AllowedSenderDomains:0" "gmail.com"
 dotnet user-secrets set "ProposalLlm:ApiKey" "<llm-api-key>"
 dotnet user-secrets set "ProposalLlm:Model" "<model-name>"
@@ -42,6 +43,7 @@ Không dán output của `dotnet user-secrets list` vào chat hoặc Git. Khi de
 | `Gmail__ClientSecret` | Có | OAuth Desktop Client ở Google Cloud |
 | `Gmail__ServiceMailbox` | Có | Gmail chuyên nhận provider notification, ví dụ `provider-notifications@gmail.com` |
 | `Gmail__PubSubTopic` | Có | `projects/<project-id>/topics/<topic-id>` |
+| `Gmail__TokenEncryptionKey` | Có | Khóa Base64 32-byte để mã hóa cache refresh token trên mọi OS |
 | `Gmail__AllowedSenderDomains__0` | Có | Domain provider đầu tiên, ví dụ `stripe.com`; khi test Gmail dùng `gmail.com` |
 | `Gmail__AllowedSenderDomains__1` | Không | Domain provider thứ hai |
 | `ProposalLlm__ApiKey` | Cần để tạo proposal/diff | API key LLM compatible với endpoint đã cấu hình |
@@ -98,6 +100,7 @@ $env:Gmail__ClientId = "<google-oauth-client-id>"
 $env:Gmail__ClientSecret = "<google-oauth-client-secret>"
 $env:Gmail__ServiceMailbox = "provider-notifications@gmail.com"
 $env:Gmail__PubSubTopic = "projects/<project-id>/topics/gmail-provider-updates"
+$env:Gmail__TokenEncryptionKey = "<base64-encoded-32-byte-key>"
 $env:Gmail__AllowedSenderDomains__0 = "gmail.com"
 
 # Chỉ bắt buộc khi test generate proposal/diff.
@@ -127,11 +130,13 @@ Chỉ thực hiện khi kết nối một Gmail mới hoặc refresh token bị 
 Invoke-RestMethod -Method Post -Uri "http://localhost:5000/api/gmail/oauth/bootstrap"
 ```
 
-Trình duyệt mở ra: đăng nhập đúng `Gmail__ServiceMailbox` và chọn **Allow**. Token cache local được mã hóa Windows DPAPI tại:
+Trình duyệt mở ra: đăng nhập đúng `Gmail__ServiceMailbox` và chọn **Allow**. Token cache local được mã hóa AES-256-GCM tại:
 
 ```text
 %LOCALAPPDATA%\IntegrationTracking\gmail
 ```
+
+Tạo khóa một lần trên macOS/Linux bằng `openssl rand -base64 32`, rồi lưu nó trong User Secrets. Giữ khóa ổn định; nếu đổi hoặc mất khóa, cần xóa token cache và bootstrap OAuth lại. Token cache cũ dùng Windows DPAPI không tương thích và cũng cần bootstrap lại.
 
 ### Terminal 4 — Python AI worker
 

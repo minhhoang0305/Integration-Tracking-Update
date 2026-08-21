@@ -52,6 +52,8 @@ public sealed class IntegrationTrackingDbContext(DbContextOptions<IntegrationTra
         proposal.Property(x => x.IntegrationId).HasMaxLength(256);
         proposal.Property(x => x.Status).HasMaxLength(32);
         proposal.Property(x => x.BaseManifestHash).HasMaxLength(64);
+        proposal.Property(x => x.ImpactJson).HasColumnType("jsonb");
+        proposal.Property(x => x.ImpactSeverity).HasMaxLength(32);
         proposal.HasIndex(x => new { x.EmailId, x.IntegrationId }).IsUnique();
 
         var review = modelBuilder.Entity<ReviewDecision>();

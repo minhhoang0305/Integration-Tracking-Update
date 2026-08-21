@@ -26,4 +26,6 @@ public sealed class IntegrationRegistration
 {
     public string Id { get; set; } = string.Empty;
     public string ManifestPath { get; set; } = string.Empty;
+    public string? VerifiedManifestPath { get; set; }
+    public string ProposalMode { get; set; } = "llm";
 }

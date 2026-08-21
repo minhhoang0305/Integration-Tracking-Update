@@ -1,0 +1,17 @@
+{
+  "providers": [
+    {
+      "provider": "u301",
+      "senderDomains": ["gmail.com"],
+      "documentationDomains": ["docs.u301.com", "u301.com"],
+      "integrations": [
+        {
+          "id": "u301-shortener",
+          "manifestPath": "integrations/u301/actions_manifest.json",
+          "verifiedManifestPath": "test-fixtures/u301/actions_manifest.new.json",
+          "proposalMode": "verified_snapshot"
+        }
+      ]
+    }
+  ]
+}

@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 // Local secrets are outside the repository. Production must provide the same values through its secret store/environment.
 builder.Configuration.AddUserSecrets<Program>(optional: true);
+// Environment variables must override local User Secrets so Docker/local profiles can disable Gmail safely.
+builder.Configuration.AddEnvironmentVariables();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -30,8 +32,11 @@ builder.Services.AddScoped<EmailNormalizer>();
 builder.Services.AddSingleton<GmailOAuthService>();
 builder.Services.AddSingleton<GmailSyncTrigger>();
 builder.Services.AddScoped<GmailIngestionService>();
-builder.Services.AddHostedService<GmailIngestionWorker>();
+if (builder.Configuration.GetValue<bool?>("Gmail:Enabled") ?? true)
+    builder.Services.AddHostedService<GmailIngestionWorker>();
 builder.Services.AddSingleton<TemplateRegistryService>();
+builder.Services.AddSingleton<ManifestDiffService>();
+builder.Services.AddSingleton<ImpactAnalysisService>();
 builder.Services.AddHttpClient<DocumentationEvidenceService>();
 builder.Services.AddHttpClient<ProposalLlmClient>();
 builder.Services.AddScoped<TemplateProposalService>();

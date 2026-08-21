@@ -8,7 +8,7 @@ from typing import Any
 import aio_pika
 
 from models import AnalyzeEmailRequest, ChangeEvidence, ChangeSignal
-from rule_detector import detect_changes_with_evidence
+from rule_detector import detect_changes_with_evidence, extract_endpoint_changes
 import re
 
 logger = logging.getLogger(__name__)
@@ -78,6 +78,7 @@ class AnalysisWorker:
             try:
                 request = AnalyzeEmailRequest.model_validate(envelope["payload"])
                 change_types, matched_terms = detect_changes_with_evidence(request.subject, request.body)
+                deprecated_endpoints, announced_endpoints = extract_endpoint_changes(request.subject, request.body)
                 detected = bool(change_types)
                 result = ChangeSignal(
                     emailId=request.emailId,
@@ -85,6 +86,9 @@ class AnalysisWorker:
                     changeDetected=detected,
                     changeTypes=change_types,
                     summary="Potential API change detected." if detected else "No API change detected.",
+                    affectedEndpoints=[endpoint.path for endpoint in [*deprecated_endpoints, *announced_endpoints]],
+                    deprecatedEndpoints=deprecated_endpoints,
+                    announcedEndpoints=announced_endpoints,
                     breakingChange=("BREAKING_CHANGE" in change_types or "DEPRECATION" in change_types),
                     migrationRequired=("VERSION_CHANGE" in change_types or "DEPRECATION" in change_types),
                     confidence=min(0.5 + len(change_types) * 0.1, 0.95) if detected else 0.0,

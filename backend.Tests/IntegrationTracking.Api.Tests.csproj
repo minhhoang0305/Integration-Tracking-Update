@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../backend/IntegrationTracking.Api.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <None Include="../integrations/u301/actions_manifest.json" Link="fixtures/actions_manifest.old.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../test-fixtures/u301/actions_manifest.new.json" Link="fixtures/actions_manifest.new.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

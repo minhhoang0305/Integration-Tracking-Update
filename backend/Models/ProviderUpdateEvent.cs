@@ -6,6 +6,7 @@ public sealed class ProviderUpdateEvent
     public string EventId { get; init; } = string.Empty;
     public string EmailId { get; init; } = string.Empty;
     public string Provider { get; init; } = string.Empty;
+    public string? IntegrationId { get; init; }
     public ProviderEmailSource Source { get; init; } = new();
     public List<string> ChangeTypes { get; init; } = [];
     public string? Summary { get; init; }

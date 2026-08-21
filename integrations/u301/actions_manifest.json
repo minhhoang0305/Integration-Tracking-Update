@@ -1,0 +1,216 @@
+{
+  "provider": "u301",
+  "auth_type": "api_key",
+  "base_url": "https://api.u301.com",
+  "category": "seo",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-domain-info",
+      "description": "Retrieve information about a specific domain.",
+      "http_method": "GET",
+      "endpoint": "/domains/{domain}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "The domain to query."
+          }
+        },
+        "required": [
+          "domain"
+        ]
+      }
+    },
+    {
+      "name": "get-keyword-overview",
+      "description": "Get an overview of a keyword's performance.",
+      "http_method": "GET",
+      "endpoint": "/keywords/{keyword}/overview",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "The keyword to query."
+          }
+        },
+        "required": [
+          "keyword"
+        ]
+      }
+    },
+    {
+      "name": "get-keyword-suggestions",
+      "description": "Retrieve keyword suggestions based on a seed keyword.",
+      "http_method": "GET",
+      "endpoint": "/keywords/{keyword}/suggestions",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "The seed keyword."
+          }
+        },
+        "required": [
+          "keyword"
+        ]
+      }
+    },
+    {
+      "name": "get-backlink-count",
+      "description": "Get the number of backlinks for a domain.",
+      "http_method": "GET",
+      "endpoint": "/domains/{domain}/backlinks/count",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "The domain to query."
+          }
+        },
+        "required": [
+          "domain"
+        ]
+      }
+    },
+    {
+      "name": "get-competitors",
+      "description": "Retrieve a list of competitors for a given domain.",
+      "http_method": "GET",
+      "endpoint": "/domains/{domain}/competitors",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "The domain to query."
+          }
+        },
+        "required": [
+          "domain"
+        ]
+      }
+    },
+    {
+      "name": "get-ranking-history",
+      "description": "Retrieve the ranking history for a keyword and domain.",
+      "http_method": "GET",
+      "endpoint": "/keywords/{keyword}/domains/{domain}/history",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "The keyword to query."
+          },
+          "domain": {
+            "type": "string",
+            "description": "The domain to query."
+          }
+        },
+        "required": [
+          "keyword",
+          "domain"
+        ]
+      }
+    },
+    {
+      "name": "get-site-audit",
+      "description": "Perform a site audit for a given domain.",
+      "http_method": "GET",
+      "endpoint": "/domains/{domain}/audit",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "The domain to audit."
+          }
+        },
+        "required": [
+          "domain"
+        ]
+      }
+    },
+    {
+      "name": "search-keywords",
+      "description": "Search for keywords based on a query.",
+      "http_method": "GET",
+      "endpoint": "/keywords/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "domain_rankings",
+      "description": "Sync keyword rankings for a domain.",
+      "entity": "DomainRankings",
+      "frequency": "daily"
+    },
+    {
+      "name": "backlink_counts",
+      "description": "Sync backlink counts for domains.",
+      "entity": "BacklinkCounts",
+      "frequency": "weekly"
+    }
+  ],
+  "provider_config": {
+    "display_name": "U301",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://docs.u301.com/",
+    "setup_guide_url": "https://docs.u301.com/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.u301.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset",
+        "limit_param": "limit",
+        "offset_param": "offset"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "u301-automation",
+    "display_name": "u301-automation",
+    "description": "Automate U301 tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "u301",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH",
+      "U301"
+    ]
+  }
+}

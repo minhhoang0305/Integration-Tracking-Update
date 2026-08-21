@@ -26,6 +26,10 @@ class ChangeSignal(BaseModel):
 
     affectedEndpoints: list[str] = Field(default_factory=list)
 
+    deprecatedEndpoints: list["ApiEndpoint"] = Field(default_factory=list)
+
+    announcedEndpoints: list["ApiEndpoint"] = Field(default_factory=list)
+
     breakingChange: bool = False
 
     migrationRequired: bool = False
@@ -42,3 +46,8 @@ class ChangeSignal(BaseModel):
 class ChangeEvidence(BaseModel):
     matchedTerms: list[str] = Field(default_factory=list)
     urls: list[str] = Field(default_factory=list)
+
+
+class ApiEndpoint(BaseModel):
+    method: str
+    path: str
