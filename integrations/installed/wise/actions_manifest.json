@@ -1,0 +1,101 @@
+{
+  "provider": "wise",
+  "auth_type": "oauth2",
+  "base_url": "https://api.wise.com",
+  "category": "payments",
+  "actions": [
+    {
+      "name": "list-profiles",
+      "description": "List personal and business profiles for the authenticated Wise user.",
+      "http_method": "GET",
+      "endpoint": "/v2/profiles",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "list-transfers",
+      "description": "List transfers for a specific Wise profile.",
+      "http_method": "GET",
+      "endpoint": "/v1/transfers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "profile": {
+            "type": "integer",
+            "description": "The Wise profile ID"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of transfers to return (max 100)"
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination"
+          },
+          "status": {
+            "type": "string",
+            "description": "Filter by status (e.g. incoming_payment_waiting, processing, funds_converted, outgoing_payment_sent)"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      }
+    },
+    {
+      "name": "list-accounts",
+      "description": "List borderless (multi-currency) accounts for a Wise profile.",
+      "http_method": "GET",
+      "endpoint": "/v4/profiles/{profileId}/balances",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "type": "integer",
+            "description": "The Wise profile ID"
+          },
+          "types": {
+            "type": "string",
+            "description": "Account types to include (e.g. STANDARD)"
+          }
+        },
+        "required": [
+          "profileId"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Wise",
+    "authorization_url": "https://api.wise.com/oauth/authorize",
+    "token_url": "https://api.wise.com/oauth/token",
+    "disable_pkce": false,
+    "default_scopes": "transfers:read balances:read profiles:read",
+    "scope_separator": " ",
+    "docs": "https://docs.wise.com/api-docs/",
+    "setup_guide_url": "https://docs.wise.com/api-docs/features/authentication-access",
+    "proxy": {
+      "base_url": "https://api.wise.com",
+      "headers": {
+        "Authorization": "Bearer ${accessToken}"
+      },
+      "retry": {
+        "at": [
+          "retry-after"
+        ],
+        "error_code": [
+          "429",
+          "500",
+          "502",
+          "503",
+          "504"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http"
+}

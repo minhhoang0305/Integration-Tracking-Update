@@ -1,0 +1,66 @@
+{
+  "provider": "zoho-mail",
+  "executor": "generic_http",
+  "auth_type": "oauth2",
+  "base_url": "",
+  "category": "uncategorized",
+  "stub": false,
+  "skill_source": {
+    "composio_skill_folder": "zoho-mail-automation",
+    "display_name": "zoho-mail-automation",
+    "description": "Automate Zoho Mail tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "zoho_mail",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  },
+  "actions": [
+    { "name": "list-accounts", "description": "List all Zoho Mail accounts for the authenticated user.", "http_method": "GET", "endpoint": "/accounts", "input_schema": { "type": "object", "properties": {} } },
+    { "name": "list-messages", "description": "List messages in a mail account.", "http_method": "GET", "endpoint": "/accounts/{account_id}/messages/view", "input_schema": { "type": "object", "properties": { "account_id": { "type": "string" }, "folderId": { "type": "string" }, "limit": { "type": "integer" }, "start": { "type": "integer" } }, "required": ["account_id"] } },
+    { "name": "get-message", "description": "Get the full content of a specific email message.", "http_method": "GET", "endpoint": "/accounts/{account_id}/messages/{message_id}/content", "input_schema": { "type": "object", "properties": { "account_id": { "type": "string" }, "message_id": { "type": "string" } }, "required": ["account_id", "message_id"] } },
+    { "name": "send-email", "description": "Send an email from a Zoho Mail account.", "http_method": "POST", "endpoint": "/accounts/{account_id}/messages", "input_schema": { "type": "object", "properties": { "account_id": { "type": "string" }, "fromAddress": { "type": "string" }, "toAddress": { "type": "string" }, "subject": { "type": "string" }, "content": { "type": "string" }, "mailFormat": { "type": "string", "default": "html" } }, "required": ["account_id", "toAddress", "subject", "content"] } },
+    { "name": "delete-message", "description": "Delete a specific email message.", "http_method": "DELETE", "endpoint": "/accounts/{account_id}/messages/{message_id}", "input_schema": { "type": "object", "properties": { "account_id": { "type": "string" }, "message_id": { "type": "string" } }, "required": ["account_id", "message_id"] } },
+    { "name": "move-message", "description": "Move an email message to a different folder.", "http_method": "POST", "endpoint": "/accounts/{account_id}/messages/{message_id}/move", "input_schema": { "type": "object", "properties": { "account_id": { "type": "string" }, "message_id": { "type": "string" }, "folder_id": { "type": "string" } }, "required": ["account_id", "message_id", "folder_id"] } },
+    { "name": "mark-as-read", "description": "Mark an email message as read.", "http_method": "PUT", "endpoint": "/accounts/{account_id}/updatemessage", "input_schema": { "type": "object", "properties": { "account_id": { "type": "string" }, "message_id": { "type": "string" } }, "required": ["account_id", "message_id"] } },
+    { "name": "mark-as-unread", "description": "Mark an email message as unread.", "http_method": "PUT", "endpoint": "/accounts/{account_id}/updatemessage", "input_schema": { "type": "object", "properties": { "account_id": { "type": "string" }, "message_id": { "type": "string" } }, "required": ["account_id", "message_id"] } },
+    { "name": "list-folders", "description": "List all folders in a Zoho Mail account.", "http_method": "GET", "endpoint": "/accounts/{account_id}/folders", "input_schema": { "type": "object", "properties": { "account_id": { "type": "string" } }, "required": ["account_id"] } },
+    { "name": "create-folder", "description": "Create a new mail folder.", "http_method": "POST", "endpoint": "/accounts/{account_id}/folders", "input_schema": { "type": "object", "properties": { "account_id": { "type": "string" }, "folder_name": { "type": "string" }, "parent_folder_id": { "type": "string" } }, "required": ["account_id", "folder_name"] } },
+    { "name": "delete-folder", "description": "Delete a mail folder.", "http_method": "DELETE", "endpoint": "/accounts/{account_id}/folders/{folder_id}", "input_schema": { "type": "object", "properties": { "account_id": { "type": "string" }, "folder_id": { "type": "string" } }, "required": ["account_id", "folder_id"] } },
+    { "name": "list-attachments", "description": "List attachments in an email message.", "http_method": "GET", "endpoint": "/accounts/{account_id}/messages/{message_id}/attachmentinfo", "input_schema": { "type": "object", "properties": { "account_id": { "type": "string" }, "message_id": { "type": "string" } }, "required": ["account_id", "message_id"] } },
+    { "name": "search-messages", "description": "Search email messages in a Zoho Mail account.", "http_method": "GET", "endpoint": "/accounts/{account_id}/messages/search", "input_schema": { "type": "object", "properties": { "account_id": { "type": "string" }, "searchKey": { "type": "string" }, "folderId": { "type": "string" }, "limit": { "type": "integer" } }, "required": ["account_id", "searchKey"] } }
+  ],
+  "syncs": [
+    { "name": "emails", "description": "Sync emails from Zoho Mail.", "entity": "Email", "frequency": "15m" }
+  ],
+  "documentation_url": "https://composio.dev/toolkits/zoho_mail",
+  "provider_config": {
+    "authorization_url": "https://accounts.zoho.${connectionConfig.extension}/oauth/v2/auth || https://accounts.zoho.com/oauth/v2/auth",
+    "token_url": "https://accounts.zoho.${connectionConfig.extension}/oauth/v2/token || ${connectionConfig.accounts-server}/oauth/v2/token",
+    "revocation_url": "https://accounts.zoho.${connectionConfig.extension}/oauth/v2/token/revoke || ${connectionConfig.accounts-server}/oauth/v2/token/revoke",
+    "authorization_params": {
+      "prompt": "consent",
+      "access_type": "offline"
+    },
+    "display_name": "Zoho Mail",
+    "post_connection_script": "zohoPostConnection",
+    "connection_config": {
+      "extension": {
+        "type": "string",
+        "title": "Domain Extension",
+        "description": "The domain extension of your Zoho Mail account",
+        "pattern": "^[a-z.]+$",
+        "prefix": "https://mail.zoho.",
+        "example": "com",
+        "optional": true,
+        "suffix": "/"
+      }
+    },
+    "docs": "https://connect.uplizd.ai/docs/integrations/all/zoho-mail",
+    "docs_connect": "https://connect.uplizd.ai/docs/integrations/all/zoho-mail/connect",
+    "proxy": {
+      "base_url": "https://mail.zoho.${connectionConfig.extension}"
+    }
+  }
+}

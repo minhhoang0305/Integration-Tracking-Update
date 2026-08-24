@@ -1,0 +1,21 @@
+{
+  "provider": "yayoi",
+  "sections": [
+    {
+      "title": "Overview",
+      "content": "Yayoi is a widely-used Japanese accounting software by Yayoi Co., Ltd., offering bookkeeping, invoicing, and payroll management for small and medium businesses in Japan. This integration uses the Yayoi API to access accounting data including invoices, journals, and chart of accounts."
+    },
+    {
+      "title": "Prerequisites",
+      "content": "You need a Yayoi account with API access enabled. Contact Yayoi support at yayoi-kk.co.jp to request API credentials. You will receive an API key and the API endpoint URL for your account. API access may require a specific subscription plan."
+    },
+    {
+      "title": "How to Connect",
+      "content": "In the connection form, paste your Yayoi API key in the API Key field. Provide the API base URL in the api_url connection config field as provided by Yayoi support. The integration authenticates requests using a Bearer token in the Authorization header."
+    },
+    {
+      "title": "Available Actions",
+      "content": "list-invoices: List invoices with optional limit, offset, and fiscal year filters. list-journals: List journal entries with optional date range and pagination parameters. list-accounts: List chart of accounts entries with optional limit."
+    }
+  ]
+}

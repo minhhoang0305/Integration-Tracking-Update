@@ -1,0 +1,218 @@
+{
+  "provider": "wit-ai",
+  "auth_type": "api_key",
+  "base_url": "https://api.wit.ai",
+  "category": "ai_machine_learning",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-app",
+      "description": "Retrieve information about a specific Wit.ai application.",
+      "http_method": "GET",
+      "endpoint": "/apps/{app_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "description": "The ID of the Wit.ai application."
+          }
+        },
+        "required": [
+          "app_id"
+        ]
+      }
+    },
+    {
+      "name": "create-intent",
+      "description": "Create a new intent within a Wit.ai application.",
+      "http_method": "POST",
+      "endpoint": "/apps/{app_id}/intents",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "description": "The ID of the Wit.ai application."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the intent."
+          }
+        },
+        "required": [
+          "app_id",
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "get-intent",
+      "description": "Retrieve a specific intent from a Wit.ai application.",
+      "http_method": "GET",
+      "endpoint": "/apps/{app_id}/intents/{intent_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "description": "The ID of the Wit.ai application."
+          },
+          "intent_id": {
+            "type": "string",
+            "description": "The ID of the intent."
+          }
+        },
+        "required": [
+          "app_id",
+          "intent_id"
+        ]
+      }
+    },
+    {
+      "name": "update-intent",
+      "description": "Update an existing intent within a Wit.ai application.",
+      "http_method": "PUT",
+      "endpoint": "/apps/{app_id}/intents/{intent_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "description": "The ID of the Wit.ai application."
+          },
+          "intent_id": {
+            "type": "string",
+            "description": "The ID of the intent."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name of the intent."
+          }
+        },
+        "required": [
+          "app_id",
+          "intent_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-intent",
+      "description": "Delete an intent from a Wit.ai application.",
+      "http_method": "DELETE",
+      "endpoint": "/apps/{app_id}/intents/{intent_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "description": "The ID of the Wit.ai application."
+          },
+          "intent_id": {
+            "type": "string",
+            "description": "The ID of the intent."
+          }
+        },
+        "required": [
+          "app_id",
+          "intent_id"
+        ]
+      }
+    },
+    {
+      "name": "list-utterances",
+      "description": "List utterances for a specific intent.",
+      "http_method": "GET",
+      "endpoint": "/apps/{app_id}/intents/{intent_id}/utterances",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "description": "The ID of the Wit.ai application."
+          },
+          "intent_id": {
+            "type": "string",
+            "description": "The ID of the intent."
+          }
+        },
+        "required": [
+          "app_id",
+          "intent_id"
+        ]
+      }
+    },
+    {
+      "name": "create-utterance",
+      "description": "Create a new utterance for a specific intent.",
+      "http_method": "POST",
+      "endpoint": "/apps/{app_id}/intents/{intent_id}/utterances",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "description": "The ID of the Wit.ai application."
+          },
+          "intent_id": {
+            "type": "string",
+            "description": "The ID of the intent."
+          },
+          "text": {
+            "type": "string",
+            "description": "The text of the utterance."
+          }
+        },
+        "required": [
+          "app_id",
+          "intent_id",
+          "text"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Wit.ai",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://wit.ai/docs",
+    "setup_guide_url": "https://wit.ai/docs/quickstart",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.wit.ai",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "wit-ai-automation",
+    "display_name": "wit-ai-automation",
+    "description": "Automate Wit AI tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "wit_ai",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

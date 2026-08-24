@@ -1,0 +1,26 @@
+{
+  "overview": "Workiom uses API key authentication. You generate an API key in your Workiom account settings and pass it with every API request. No OAuth flow is required — the key identifies and authenticates your application directly.",
+  "steps": [
+    {
+      "title": "Open the Workiom API settings",
+      "description": "Go to the Workiom developer portal or account settings page to find or generate your API key.",
+      "url": "https://developers.workiom.com/docs/getting-started",
+      "url_label": "Open Workiom Settings"
+    },
+    {
+      "title": "Generate or copy your API key",
+      "description": "In the API settings page, generate a new API key or copy an existing one. Store it securely — treat it like a password.",
+      "warning": "Never share your API key publicly or commit it to source control."
+    },
+    {
+      "title": "Create the connection",
+      "description": "POST to /api/v1/connections with your Workiom credentials:\n{\n  \"provider_config_key\": \"workiom\",\n  \"connection_id\": \"your-user-or-account-id\",\n  \"credentials\": { ... your credentials here ... }\n}",
+      "tip": "Use a unique connection_id per user or account to support multiple connections."
+    }
+  ],
+  "tips": [
+    "Store your API key in environment variables — never hardcode it.",
+    "If your key is compromised, regenerate it immediately from the Workiom settings.",
+    "Official API documentation: https://developers.workiom.com/"
+  ]
+}

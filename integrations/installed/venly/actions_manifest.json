@@ -1,0 +1,218 @@
+{
+  "provider": "venly",
+  "auth_type": "oauth2",
+  "base_url": "https://api.venly.io",
+  "category": "NFT Marketplace",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-nft",
+      "description": "Get details of a specific NFT by its ID.",
+      "http_method": "GET",
+      "endpoint": "/nfts/{nft_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "nft_id": {
+            "type": "string",
+            "description": "The ID of the NFT."
+          }
+        },
+        "required": [
+          "nft_id"
+        ]
+      }
+    },
+    {
+      "name": "list-nfts",
+      "description": "List NFTs owned by a specific wallet address.",
+      "http_method": "GET",
+      "endpoint": "/wallets/{wallet_address}/nfts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "wallet_address": {
+            "type": "string",
+            "description": "The wallet address."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of NFTs to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": [
+          "wallet_address"
+        ]
+      }
+    },
+    {
+      "name": "create-offer",
+      "description": "Create an offer for an NFT.",
+      "http_method": "POST",
+      "endpoint": "/offers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "nft_id": {
+            "type": "string",
+            "description": "The ID of the NFT."
+          },
+          "price": {
+            "type": "number",
+            "description": "The price of the offer."
+          },
+          "buyer_address": {
+            "type": "string",
+            "description": "The address of the buyer."
+          }
+        },
+        "required": [
+          "nft_id",
+          "price",
+          "buyer_address"
+        ]
+      }
+    },
+    {
+      "name": "accept-offer",
+      "description": "Accept an offer for an NFT.",
+      "http_method": "POST",
+      "endpoint": "/offers/{offer_id}/accept",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "offer_id": {
+            "type": "string",
+            "description": "The ID of the offer."
+          }
+        },
+        "required": [
+          "offer_id"
+        ]
+      }
+    },
+    {
+      "name": "cancel-offer",
+      "description": "Cancel an offer for an NFT.",
+      "http_method": "POST",
+      "endpoint": "/offers/{offer_id}/cancel",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "offer_id": {
+            "type": "string",
+            "description": "The ID of the offer."
+          }
+        },
+        "required": [
+          "offer_id"
+        ]
+      }
+    },
+    {
+      "name": "get-transaction",
+      "description": "Get details of a specific transaction by its ID.",
+      "http_method": "GET",
+      "endpoint": "/transactions/{transaction_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "transaction_id": {
+            "type": "string",
+            "description": "The ID of the transaction."
+          }
+        },
+        "required": [
+          "transaction_id"
+        ]
+      }
+    },
+    {
+      "name": "list-transactions",
+      "description": "List transactions for a specific wallet address.",
+      "http_method": "GET",
+      "endpoint": "/wallets/{wallet_address}/transactions",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "wallet_address": {
+            "type": "string",
+            "description": "The wallet address."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of transactions to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": [
+          "wallet_address"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "nft_sync",
+      "description": "Sync NFTs owned by a wallet.",
+      "entity": "NFT",
+      "frequency": "daily"
+    },
+    {
+      "name": "transaction_sync",
+      "description": "Sync transactions for a wallet.",
+      "entity": "Transaction",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Venly",
+    "authorization_url": "https://venly.io/oauth/authorize",
+    "token_url": "https://venly.io/oauth/token",
+    "disable_pkce": false,
+    "default_scopes": "read:nfts,read:transactions,write:offers",
+    "docs": "https://docs.venly.io/",
+    "setup_guide_url": "",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.venly.io",
+      "headers": {
+        "authorization": "Bearer ${accessToken}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "venly-automation",
+    "display_name": "venly-automation",
+    "description": "Automate Venly tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "venly",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

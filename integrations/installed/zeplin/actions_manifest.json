@@ -1,0 +1,184 @@
+{
+  "provider": "zeplin",
+  "auth_type": "api_key",
+  "base_url": "https://api.zeplin.dev",
+  "category": "design",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-project",
+      "description": "Get a specific project by ID.",
+      "http_method": "GET",
+      "endpoint": "/projects/{project_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "The ID of the project."
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    },
+    {
+      "name": "list-projects",
+      "description": "List all projects.",
+      "http_method": "GET",
+      "endpoint": "/projects",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of projects to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get-style-guide",
+      "description": "Get a specific style guide by ID.",
+      "http_method": "GET",
+      "endpoint": "/styleguides/{styleguide_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "styleguide_id": {
+            "type": "string",
+            "description": "The ID of the style guide."
+          }
+        },
+        "required": [
+          "styleguide_id"
+        ]
+      }
+    },
+    {
+      "name": "list-style-guides",
+      "description": "List all style guides.",
+      "http_method": "GET",
+      "endpoint": "/styleguides",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of style guides to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get-component",
+      "description": "Get a specific component by ID.",
+      "http_method": "GET",
+      "endpoint": "/components/{component_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "component_id": {
+            "type": "string",
+            "description": "The ID of the component."
+          }
+        },
+        "required": [
+          "component_id"
+        ]
+      }
+    },
+    {
+      "name": "list-components",
+      "description": "List all components within a project.",
+      "http_method": "GET",
+      "endpoint": "/projects/{project_id}/components",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "The ID of the project."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of components to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "projects",
+      "description": "Sync all projects.",
+      "entity": "Project",
+      "frequency": "daily"
+    },
+    {
+      "name": "styleguides",
+      "description": "Sync all style guides.",
+      "entity": "Styleguide",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Zeplin",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://api.zeplin.dev/documentation",
+    "setup_guide_url": "https://api.zeplin.dev/documentation/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.zeplin.dev",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zeplin-automation",
+    "display_name": "zeplin-automation",
+    "description": "Automate Zeplin tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "zeplin",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

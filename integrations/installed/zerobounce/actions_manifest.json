@@ -1,0 +1,140 @@
+{
+  "provider": "zerobounce",
+  "auth_type": "api_key",
+  "base_url": "https://api.zerobounce.net",
+  "category": "email_verification",
+  "stub": false,
+  "actions": [
+    {
+      "name": "validate-email",
+      "description": "Validate a single email address.",
+      "http_method": "POST",
+      "endpoint": "/v2/validate",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address to validate."
+          },
+          "ip_address": {
+            "type": "string",
+            "description": "The IP address of the sender (optional)."
+          }
+        },
+        "required": [
+          "email"
+        ]
+      }
+    },
+    {
+      "name": "validate-email-batch",
+      "description": "Validate multiple email addresses in a batch.",
+      "http_method": "POST",
+      "endpoint": "/v2/validate/batch",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "emails": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of email addresses to validate."
+          }
+        },
+        "required": [
+          "emails"
+        ]
+      }
+    },
+    {
+      "name": "get-email-info",
+      "description": "Retrieve detailed information about an email address.",
+      "http_method": "GET",
+      "endpoint": "/v2/info/{email}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address to retrieve information for."
+          }
+        },
+        "required": [
+          "email"
+        ]
+      }
+    },
+    {
+      "name": "check-domain",
+      "description": "Check the validity and reputation of a domain.",
+      "http_method": "GET",
+      "endpoint": "/v2/domain/{domain}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "The domain to check."
+          }
+        },
+        "required": [
+          "domain"
+        ]
+      }
+    },
+    {
+      "name": "get-account-status",
+      "description": "Get the current account status and credit balance.",
+      "http_method": "GET",
+      "endpoint": "/v2/account",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "ZeroBounce",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://www.zerobounce.net/docs/",
+    "setup_guide_url": "https://www.zerobounce.net/docs/api/",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.zerobounce.net",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "none"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zerobounce-automation",
+    "display_name": "zerobounce-automation",
+    "description": "Automate Zerobounce tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "zerobounce",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

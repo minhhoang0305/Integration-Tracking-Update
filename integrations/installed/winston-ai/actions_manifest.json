@@ -1,0 +1,215 @@
+{
+  "provider": "winston-ai",
+  "auth_type": "api_key",
+  "base_url": "https://api.winstonai.com",
+  "category": "ai_machine_learning",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-model",
+      "description": "Retrieve a specific AI model.",
+      "http_method": "GET",
+      "endpoint": "/models/{model_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "model_id": {
+            "type": "string",
+            "description": "The ID of the model to retrieve."
+          }
+        },
+        "required": [
+          "model_id"
+        ]
+      }
+    },
+    {
+      "name": "list-models",
+      "description": "List all available AI models.",
+      "http_method": "GET",
+      "endpoint": "/models",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of models to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-model",
+      "description": "Create a new AI model.",
+      "http_method": "POST",
+      "endpoint": "/models",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the model."
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the model."
+          },
+          "data_source": {
+            "type": "string",
+            "description": "The data source for the model."
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "data_source"
+        ]
+      }
+    },
+    {
+      "name": "update-model",
+      "description": "Update an existing AI model.",
+      "http_method": "PUT",
+      "endpoint": "/models/{model_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "model_id": {
+            "type": "string",
+            "description": "The ID of the model to update."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name of the model."
+          },
+          "type": {
+            "type": "string",
+            "description": "The new type of the model."
+          }
+        },
+        "required": [
+          "model_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-model",
+      "description": "Delete an AI model.",
+      "http_method": "DELETE",
+      "endpoint": "/models/{model_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "model_id": {
+            "type": "string",
+            "description": "The ID of the model to delete."
+          }
+        },
+        "required": [
+          "model_id"
+        ]
+      }
+    },
+    {
+      "name": "run-prediction",
+      "description": "Run a prediction using a specific model.",
+      "http_method": "POST",
+      "endpoint": "/models/{model_id}/predict",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "model_id": {
+            "type": "string",
+            "description": "The ID of the model to use for prediction."
+          },
+          "input_data": {
+            "type": "object",
+            "description": "The input data for the prediction."
+          }
+        },
+        "required": [
+          "model_id",
+          "input_data"
+        ]
+      }
+    },
+    {
+      "name": "search-models",
+      "description": "Search for AI models based on criteria.",
+      "http_method": "GET",
+      "endpoint": "/models/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query."
+          },
+          "type": {
+            "type": "string",
+            "description": "Filter by model type."
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "models",
+      "description": "Sync all AI models.",
+      "entity": "Model",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Winston AI",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://docs.winstonai.com/",
+    "setup_guide_url": "https://docs.winstonai.com/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.winstonai.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset",
+        "limit_param": "limit",
+        "offset_param": "offset"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "winston-ai-automation",
+    "display_name": "winston-ai-automation",
+    "description": "Automate Winston AI tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "winston_ai",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

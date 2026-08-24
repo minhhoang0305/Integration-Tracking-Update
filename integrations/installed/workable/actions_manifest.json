@@ -1,0 +1,59 @@
+{
+  "provider": "workable",
+  "executor": "generic_http",
+  "auth_type": "oauth2",
+  "base_url": "",
+  "category": "uncategorized",
+  "stub": true,
+  "skill_source": {
+    "composio_skill_folder": "workable-automation",
+    "display_name": "workable-automation",
+    "description": "Automate Workable tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "workable",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  },
+  "actions": [],
+  "syncs": [],
+  "documentation_url": "https://composio.dev/toolkits/workable",
+  "provider_config": {
+    "display_name": "Workable (API Key)",
+    "post_connection_script": "workablePostConnection",
+    "credentials": {
+      "apiKey": {
+        "type": "string",
+        "title": "API Key",
+        "description": "The API key for your Workable account",
+        "doc_section": "#step-1-finding-workable-api-key"
+      }
+    },
+    "connection_config": {
+      "subdomain": {
+        "type": "string",
+        "title": "Workable Domain",
+        "description": "The subdomain of your Workable account",
+        "pattern": "^[a-z0-9_-]+$",
+        "example": "domain",
+        "suffix": ".workable.com",
+        "prefix": "https://",
+        "optional": true
+      }
+    },
+    "docs": "https://connect.uplizd.ai/docs/integrations/all/workable",
+    "docs_connect": "https://connect.uplizd.ai/docs/integrations/all/workable/connect",
+    "proxy": {
+      "base_url": "https://${connectionConfig.subdomain}.workable.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "retry": {
+        "at": [
+          "x-rate-limit-reset"
+        ]
+      }
+    }
+  }
+}

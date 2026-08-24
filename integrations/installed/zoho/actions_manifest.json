@@ -1,0 +1,259 @@
+{
+  "provider": "zoho",
+  "auth_type": "oauth2",
+  "base_url": "https://www.zohoapis.com",
+  "category": "crm",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-contact",
+      "description": "Retrieve a specific contact by ID.",
+      "http_method": "GET",
+      "endpoint": "/crm/v2/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact to retrieve."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "list-contacts",
+      "description": "List all contacts.",
+      "http_method": "GET",
+      "endpoint": "/crm/v2/contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of contacts per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-contact",
+      "description": "Create a new contact.",
+      "http_method": "POST",
+      "endpoint": "/crm/v2/contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "description": "The first name of the contact."
+          },
+          "last_name": {
+            "type": "string",
+            "description": "The last name of the contact."
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the contact."
+          }
+        },
+        "required": [
+          "first_name",
+          "last_name",
+          "email"
+        ]
+      }
+    },
+    {
+      "name": "update-contact",
+      "description": "Update an existing contact.",
+      "http_method": "PUT",
+      "endpoint": "/crm/v2/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact to update."
+          },
+          "first_name": {
+            "type": "string",
+            "description": "The first name of the contact."
+          },
+          "last_name": {
+            "type": "string",
+            "description": "The last name of the contact."
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the contact."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-contact",
+      "description": "Delete a contact.",
+      "http_method": "DELETE",
+      "endpoint": "/crm/v2/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact to delete."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "search-contacts",
+      "description": "Search for contacts based on a query.",
+      "http_method": "GET",
+      "endpoint": "/crm/v2/contacts/search?q={query}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    },
+    {
+      "name": "get-deal",
+      "description": "Retrieve a specific deal by ID.",
+      "http_method": "GET",
+      "endpoint": "/crm/v2/deals/{deal_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "deal_id": {
+            "type": "string",
+            "description": "The ID of the deal to retrieve."
+          }
+        },
+        "required": [
+          "deal_id"
+        ]
+      }
+    },
+    {
+      "name": "list-deals",
+      "description": "List all deals.",
+      "http_method": "GET",
+      "endpoint": "/crm/v2/deals",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of deals per page."
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "contacts",
+      "description": "Sync all contacts from Zoho CRM.",
+      "entity": "Contact",
+      "frequency": "daily"
+    },
+    {
+      "name": "deals",
+      "description": "Sync all deals from Zoho CRM.",
+      "entity": "Deal",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Zoho CRM",
+    "authorization_url": "https://accounts.zoho.com/oauth/v2/auth",
+    "token_url": "https://accounts.zoho.com/oauth/v2/token",
+    "revocation_url": "https://accounts.zoho.com/oauth/v2/token/revoke",
+    "disable_pkce": false,
+    "default_scopes": "crmapi.contacts.all,crmapi.deals.all",
+    "docs": "https://www.zoho.com/crm/developer/api/v2/",
+    "setup_guide_url": "https://www.zoho.com/crm/developer/api/v2/getting-started.html",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://www.zohoapis.com",
+      "headers": {
+        "authorization": "Bearer ${accessToken}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    },
+    "authorization_params": {
+      "prompt": "consent",
+      "access_type": "offline"
+    },
+    "connection_config": {
+      "extension": {
+        "type": "string",
+        "title": "Domain Extension",
+        "description": "The domain extension of your Zoho account",
+        "pattern": "^[a-z.]+$",
+        "prefix": "https://accounts.zoho.",
+        "example": "com",
+        "optional": true,
+        "suffix": "/"
+      },
+      "accounts-server": {
+        "type": "string",
+        "title": "",
+        "description": "",
+        "automated": true
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zoho-automation",
+    "display_name": "zoho-automation",
+    "description": "Automate Zoho tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "zoho",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

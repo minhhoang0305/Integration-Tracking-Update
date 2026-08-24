@@ -1,0 +1,144 @@
+{
+  "provider": "zyte-api",
+  "auth_type": "api_key",
+  "base_url": "https://api.zyte.com/crawl",
+  "category": "web_scraping",
+  "stub": false,
+  "actions": [
+    {
+      "name": "start-crawl",
+      "description": "Start a new web crawl.",
+      "http_method": "POST",
+      "endpoint": "/v1/crawl",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "spider": {
+            "type": "string",
+            "description": "The name of the spider to use for the crawl."
+          },
+          "url": {
+            "type": "string",
+            "description": "The starting URL for the crawl."
+          },
+          "options": {
+            "type": "object",
+            "description": "Optional crawl options."
+          }
+        },
+        "required": [
+          "spider",
+          "url"
+        ]
+      }
+    },
+    {
+      "name": "get-crawl-status",
+      "description": "Get the status of a running or completed crawl.",
+      "http_method": "GET",
+      "endpoint": "/v1/crawl/{crawl_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "crawl_id": {
+            "type": "string",
+            "description": "The ID of the crawl to check."
+          }
+        },
+        "required": [
+          "crawl_id"
+        ]
+      }
+    },
+    {
+      "name": "get-crawl-results",
+      "description": "Get the results of a completed crawl.",
+      "http_method": "GET",
+      "endpoint": "/v1/crawl/{crawl_id}/results",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "crawl_id": {
+            "type": "string",
+            "description": "The ID of the crawl to retrieve results for."
+          }
+        },
+        "required": [
+          "crawl_id"
+        ]
+      }
+    },
+    {
+      "name": "list-spiders",
+      "description": "List available spiders.",
+      "http_method": "GET",
+      "endpoint": "/v1/spiders",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "get-spider-details",
+      "description": "Get details for a specific spider.",
+      "http_method": "GET",
+      "endpoint": "/v1/spiders/{spider_name}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "spider_name": {
+            "type": "string",
+            "description": "The name of the spider."
+          }
+        },
+        "required": [
+          "spider_name"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Zyte API",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://zyte.com/api/documentation",
+    "setup_guide_url": "https://zyte.com/api/documentation/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.zyte.com/crawl",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zyte-api-automation",
+    "display_name": "zyte-api-automation",
+    "description": "Automate Zyte API tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "zyte_api",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

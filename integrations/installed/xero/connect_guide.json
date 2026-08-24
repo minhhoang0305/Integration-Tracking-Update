@@ -1,0 +1,35 @@
+{
+  "overview": "Xero uses OAuth 2.0. You register an OAuth application in the Xero developer console, receive a Client ID and Client Secret, then redirect users through Xero's authorisation flow. Xero issues a scoped access token on completion.",
+  "steps": [
+    {
+      "title": "Open the Xero developer console",
+      "description": "Go to the Xero developer portal or OAuth application settings page to register a new OAuth application.",
+      "url": "https://developer.xero.com/myapps/",
+      "url_label": "Open Xero Settings"
+    },
+    {
+      "title": "Create an OAuth application",
+      "description": "Register a new OAuth app (sometimes called 'OAuth Integration', 'API App', or 'Client Application'). Enter an application name and any required details.",
+      "tip": "The app name is shown to users on the Xero authorisation screen — use something recognisable."
+    },
+    {
+      "title": "Set the redirect (callback) URL",
+      "description": "Add the Nolixan callback URL as an allowed redirect URI in the OAuth app settings. The exact callback URL is shown in your Nolixan environment settings.",
+      "warning": "The callback URL must match exactly. Mismatches cause 'redirect_uri_mismatch' errors during auth."
+    },
+    {
+      "title": "Copy Client ID and Client Secret",
+      "description": "After creating the app, Xero will display a Client ID and Client Secret. Copy both and store them securely. The Client Secret may only be shown once.",
+      "warning": "Never expose the Client Secret in client-side code or public repositories."
+    },
+    {
+      "title": "Configure and connect",
+      "description": "In Nolixan, create an integration config with the Xero Client ID, Client Secret, and required scopes. Then initiate the OAuth flow for each user.",
+      "code": "GET /api/v1/oauth/request/xero?provider=xero&connection_id=user-123&environment_id=1"
+    }
+  ],
+  "tips": [
+    "Access tokens expire — Nolixan auto-refreshes them using the refresh token.",
+    "If a user revokes access, they must re-authorise via the OAuth flow."
+  ]
+}

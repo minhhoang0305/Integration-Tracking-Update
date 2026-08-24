@@ -1,0 +1,215 @@
+{
+  "provider": "vero",
+  "auth_type": "api_key",
+  "base_url": "https://api.verosystems.com",
+  "category": "marketing",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-subscriber",
+      "description": "Retrieve a specific subscriber by ID.",
+      "http_method": "GET",
+      "endpoint": "/subscribers/{subscriber_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "subscriber_id": {
+            "type": "string",
+            "description": "The ID of the subscriber."
+          }
+        },
+        "required": [
+          "subscriber_id"
+        ]
+      }
+    },
+    {
+      "name": "create-subscriber",
+      "description": "Create a new subscriber.",
+      "http_method": "POST",
+      "endpoint": "/subscribers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address of the subscriber."
+          },
+          "first_name": {
+            "type": "string",
+            "description": "The first name of the subscriber."
+          },
+          "last_name": {
+            "type": "string",
+            "description": "The last name of the subscriber."
+          }
+        },
+        "required": [
+          "email"
+        ]
+      }
+    },
+    {
+      "name": "update-subscriber",
+      "description": "Update an existing subscriber.",
+      "http_method": "PUT",
+      "endpoint": "/subscribers/{subscriber_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "subscriber_id": {
+            "type": "string",
+            "description": "The ID of the subscriber."
+          },
+          "first_name": {
+            "type": "string",
+            "description": "The first name of the subscriber."
+          },
+          "last_name": {
+            "type": "string",
+            "description": "The last name of the subscriber."
+          }
+        },
+        "required": [
+          "subscriber_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-subscriber",
+      "description": "Delete a subscriber.",
+      "http_method": "DELETE",
+      "endpoint": "/subscribers/{subscriber_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "subscriber_id": {
+            "type": "string",
+            "description": "The ID of the subscriber."
+          }
+        },
+        "required": [
+          "subscriber_id"
+        ]
+      }
+    },
+    {
+      "name": "list-subscribers",
+      "description": "List all subscribers.",
+      "http_method": "GET",
+      "endpoint": "/subscribers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "The maximum number of subscribers to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "The offset to start the list from."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get-campaign",
+      "description": "Retrieve a specific campaign by ID.",
+      "http_method": "GET",
+      "endpoint": "/campaigns/{campaign_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "campaign_id": {
+            "type": "string",
+            "description": "The ID of the campaign."
+          }
+        },
+        "required": [
+          "campaign_id"
+        ]
+      }
+    },
+    {
+      "name": "create-campaign",
+      "description": "Create a new campaign.",
+      "http_method": "POST",
+      "endpoint": "/campaigns",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the campaign."
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the campaign."
+          }
+        },
+        "required": [
+          "name",
+          "type"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "subscribers",
+      "description": "Sync all subscribers.",
+      "entity": "Subscriber",
+      "frequency": "daily"
+    },
+    {
+      "name": "campaigns",
+      "description": "Sync all campaigns.",
+      "entity": "Campaign",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Vero",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://developer.verosystems.com/",
+    "setup_guide_url": "https://developer.verosystems.com/docs/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.verosystems.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset",
+        "limit_param": "limit",
+        "offset_param": "offset"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "vero-automation",
+    "display_name": "vero-automation",
+    "description": "Automate Vero tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "vero",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

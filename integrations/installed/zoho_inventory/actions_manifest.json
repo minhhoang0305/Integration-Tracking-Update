@@ -1,0 +1,269 @@
+{
+  "provider": "zoho_inventory",
+  "auth_type": "oauth2",
+  "base_url": "https://inventory.zoho.com/api/v1",
+  "category": "ecommerce",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-item",
+      "description": "Get a specific item by ID.",
+      "http_method": "GET",
+      "endpoint": "/items/{item_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "description": "The ID of the item to retrieve."
+          }
+        },
+        "required": [
+          "item_id"
+        ]
+      }
+    },
+    {
+      "name": "list-items",
+      "description": "List all items.",
+      "http_method": "GET",
+      "endpoint": "/items",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of items per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-item",
+      "description": "Create a new item.",
+      "http_method": "POST",
+      "endpoint": "/items",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the item."
+          },
+          "sku": {
+            "type": "string",
+            "description": "The SKU of the item."
+          }
+        },
+        "required": [
+          "name",
+          "sku"
+        ]
+      }
+    },
+    {
+      "name": "update-item",
+      "description": "Update an existing item.",
+      "http_method": "PUT",
+      "endpoint": "/items/{item_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "description": "The ID of the item to update."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name of the item."
+          }
+        },
+        "required": [
+          "item_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-item",
+      "description": "Delete an item.",
+      "http_method": "DELETE",
+      "endpoint": "/items/{item_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "description": "The ID of the item to delete."
+          }
+        },
+        "required": [
+          "item_id"
+        ]
+      }
+    },
+    {
+      "name": "get-order",
+      "description": "Get a specific order by ID.",
+      "http_method": "GET",
+      "endpoint": "/orders/{order_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "description": "The ID of the order to retrieve."
+          }
+        },
+        "required": [
+          "order_id"
+        ]
+      }
+    },
+    {
+      "name": "list-orders",
+      "description": "List all orders.",
+      "http_method": "GET",
+      "endpoint": "/orders",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of orders per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-order",
+      "description": "Create a new order.",
+      "http_method": "POST",
+      "endpoint": "/orders",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "string",
+            "description": "The ID of the customer."
+          }
+        },
+        "required": [
+          "customer_id"
+        ]
+      }
+    },
+    {
+      "name": "update-order",
+      "description": "Update an existing order.",
+      "http_method": "PUT",
+      "endpoint": "/orders/{order_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "description": "The ID of the order to update."
+          },
+          "status": {
+            "type": "string",
+            "description": "The new status of the order."
+          }
+        },
+        "required": [
+          "order_id"
+        ]
+      }
+    },
+    {
+      "name": "search-items",
+      "description": "Search for items by name or SKU.",
+      "http_method": "GET",
+      "endpoint": "/items/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "items",
+      "description": "Sync all items from Zoho Inventory.",
+      "entity": "Item",
+      "frequency": "daily"
+    },
+    {
+      "name": "orders",
+      "description": "Sync all orders from Zoho Inventory.",
+      "entity": "Order",
+      "frequency": "hourly"
+    },
+    {
+      "name": "customers",
+      "description": "Sync all customers from Zoho Inventory.",
+      "entity": "Customer",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Zoho Inventory",
+    "authorization_url": "https://accounts.zoho.com/oauth/v2/auth",
+    "token_url": "https://accounts.zoho.com/oauth/v2/token",
+    "revocation_url": "https://accounts.zoho.com/oauth/v2/token/revoke",
+    "disable_pkce": false,
+    "default_scopes": "inventory.full_access",
+    "docs": "https://www.zoho.com/inventory/api/",
+    "setup_guide_url": "https://www.zoho.com/inventory/api/documentation.html",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://inventory.zoho.com/api/v1",
+      "headers": {
+        "authorization": "Bearer ${accessToken}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zoho_inventory-automation",
+    "display_name": "zoho_inventory-automation",
+    "description": "Automate Zoho Inventory tasks via Rube MCP (Composio): items, orders, warehouses, shipments, and stock management. Always search tools first for current schemas.",
+    "toolkit_slug": "zoho_inventory",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE"
+    ]
+  }
+}

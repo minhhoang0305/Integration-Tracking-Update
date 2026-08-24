@@ -1,0 +1,130 @@
+{
+  "provider": "youtube",
+  "auth_type": "oauth2",
+  "base_url": "https://www.googleapis.com/youtube/v3",
+  "category": "social_media",
+  "actions": [
+    {
+      "name": "list-videos",
+      "description": "List YouTube videos by IDs or chart.",
+      "http_method": "GET",
+      "endpoint": "/videos",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "part": {
+            "type": "string",
+            "description": "Comma-separated resource properties to include (e.g. snippet,statistics)"
+          },
+          "id": {
+            "type": "string",
+            "description": "Comma-separated list of video IDs"
+          },
+          "chart": {
+            "type": "string",
+            "description": "Chart to retrieve: mostPopular"
+          },
+          "maxResults": {
+            "type": "integer",
+            "description": "Maximum number of results (1-50)"
+          }
+        },
+        "required": [
+          "part"
+        ]
+      }
+    },
+    {
+      "name": "search",
+      "description": "Search for YouTube videos, channels, or playlists.",
+      "http_method": "GET",
+      "endpoint": "/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "part": {
+            "type": "string",
+            "description": "Resource properties to include (e.g. snippet)"
+          },
+          "q": {
+            "type": "string",
+            "description": "Search query string"
+          },
+          "type": {
+            "type": "string",
+            "description": "Resource type to search: video, channel, playlist"
+          },
+          "maxResults": {
+            "type": "integer",
+            "description": "Maximum number of results (1-50)"
+          },
+          "pageToken": {
+            "type": "string",
+            "description": "Page token for pagination"
+          }
+        },
+        "required": [
+          "part",
+          "q"
+        ]
+      }
+    },
+    {
+      "name": "list-channels",
+      "description": "List YouTube channels.",
+      "http_method": "GET",
+      "endpoint": "/channels",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "part": {
+            "type": "string",
+            "description": "Resource properties to include (e.g. snippet,statistics)"
+          },
+          "mine": {
+            "type": "boolean",
+            "description": "Set to true to retrieve channels owned by the authenticated user"
+          },
+          "id": {
+            "type": "string",
+            "description": "Comma-separated channel IDs to retrieve"
+          }
+        },
+        "required": [
+          "part"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "YouTube",
+    "authorization_url": "https://accounts.google.com/o/oauth2/v2/auth",
+    "token_url": "https://oauth2.googleapis.com/token",
+    "disable_pkce": false,
+    "default_scopes": "https://www.googleapis.com/auth/youtube.readonly",
+    "docs": "https://developers.google.com/youtube/v3/docs",
+    "setup_guide_url": "https://console.cloud.google.com/apis/library/youtube.googleapis.com",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://www.googleapis.com/youtube/v3",
+      "headers": {
+        "Authorization": "Bearer ${accessToken}"
+      },
+      "retry": {
+        "at": [
+          "retry-after"
+        ],
+        "error_code": [
+          "429",
+          "500",
+          "502",
+          "503",
+          "504"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http"
+}

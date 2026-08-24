@@ -1,0 +1,309 @@
+{
+  "provider": "zendesk",
+  "auth_type": "oauth2",
+  "base_url": "https://{subdomain}.zendesk.com/api/v2",
+  "category": "customer_support",
+  "actions": [
+    {
+      "name": "create-ticket",
+      "description": "Create a new Zendesk support ticket",
+      "http_method": "POST",
+      "endpoint": "/tickets.json",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "urgent",
+              "high",
+              "normal",
+              "low"
+            ]
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requester_id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "subject"
+        ]
+      }
+    },
+    {
+      "name": "get-ticket",
+      "description": "Get a specific Zendesk ticket by ID",
+      "http_method": "GET",
+      "endpoint": "/tickets/{ticket_id}.json",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "ticket_id": {
+            "type": "integer",
+            "description": "Zendesk ticket ID"
+          }
+        },
+        "required": [
+          "ticket_id"
+        ]
+      }
+    },
+    {
+      "name": "list-tickets",
+      "description": "List Zendesk tickets",
+      "http_method": "GET",
+      "endpoint": "/tickets.json",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Filter by status: new, open, pending, hold, solved, closed"
+          },
+          "sort_by": {
+            "type": "string",
+            "description": "Sort field: created_at, updated_at, priority, status"
+          },
+          "sort_order": {
+            "type": "string",
+            "description": "asc or desc"
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100)"
+          }
+        }
+      }
+    },
+    {
+      "name": "update-ticket",
+      "description": "Update a Zendesk ticket",
+      "http_method": "PUT",
+      "endpoint": "/tickets/{ticket_id}.json",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "ticket_id": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "new",
+              "open",
+              "pending",
+              "hold",
+              "solved",
+              "closed"
+            ]
+          },
+          "priority": {
+            "type": "string"
+          },
+          "assignee_id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "ticket_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-ticket",
+      "description": "Delete a Zendesk ticket",
+      "http_method": "DELETE",
+      "endpoint": "/tickets/{ticket_id}.json",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "ticket_id": {
+            "type": "integer",
+            "description": "Ticket ID to delete"
+          }
+        },
+        "required": [
+          "ticket_id"
+        ]
+      }
+    },
+    {
+      "name": "add-comment",
+      "description": "Add a comment to a Zendesk ticket",
+      "http_method": "PUT",
+      "endpoint": "/tickets/{ticket_id}.json",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "ticket_id": {
+            "type": "integer"
+          },
+          "body": {
+            "type": "string"
+          },
+          "public": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "required": [
+          "ticket_id",
+          "body"
+        ]
+      }
+    },
+    {
+      "name": "close-ticket",
+      "description": "Close a Zendesk ticket",
+      "http_method": "PUT",
+      "endpoint": "/tickets/{ticket_id}.json",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "ticket_id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "ticket_id"
+        ]
+      }
+    },
+    {
+      "name": "search-tickets",
+      "description": "Search Zendesk tickets",
+      "http_method": "GET",
+      "endpoint": "/search.json",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Zendesk search query"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    },
+    {
+      "name": "create-user",
+      "description": "Create a new Zendesk user",
+      "http_method": "POST",
+      "endpoint": "/users.json",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "email"
+        ]
+      }
+    },
+    {
+      "name": "get-user",
+      "description": "Get a Zendesk user by ID",
+      "http_method": "GET",
+      "endpoint": "/users/{user_id}.json",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "description": "Zendesk user ID"
+          }
+        },
+        "required": [
+          "user_id"
+        ]
+      }
+    },
+    {
+      "name": "list-users",
+      "description": "List Zendesk users",
+      "http_method": "GET",
+      "endpoint": "/users.json",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Filter by role: end-user, agent, admin"
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100)"
+          }
+        }
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "tickets",
+      "description": "Sync Zendesk tickets",
+      "entity": "Ticket",
+      "frequency": "30m"
+    },
+    {
+      "name": "users",
+      "description": "Sync Zendesk users",
+      "entity": "User",
+      "frequency": "4h"
+    }
+  ],
+  "provider_config": {
+    "authorization_url": "https://${connectionConfig.subdomain}.zendesk.com/oauth/authorizations/new",
+    "token_url": "https://${connectionConfig.subdomain}.zendesk.com/oauth/tokens",
+    "display_name": "Zendesk",
+    "default_scopes": "read write",
+    "connection_config": {
+      "subdomain": {
+        "type": "string",
+        "title": "Zendesk Domain",
+        "description": "The subdomain of your Zendesk account",
+        "pattern": "^[a-z0-9_-]+$",
+        "example": "domain",
+        "suffix": ".zendesk.com",
+        "prefix": "https://",
+        "doc_section": "#step-1-finding-your-subdomain"
+      }
+    },
+    "docs": "https://connect.uplizd.ai/docs/api-integrations/zendesk",
+    "docs_connect": "https://connect.uplizd.ai/docs/api-integrations/zendesk/connect",
+    "setup_guide_url": "https://connect.uplizd.ai/docs/api-integrations/zendesk/how-to-register-your-own-zendesk-api-oauth-app",
+    "proxy": {
+      "base_url": "https://${connectionConfig.subdomain}.zendesk.com",
+      "paginate": {
+        "type": "link",
+        "limit_name_in_request": "per_page",
+        "link_path_in_response_body": "next_page"
+      },
+      "retry": {
+        "after": [
+          "retry-after"
+        ]
+      }
+    }
+  }
+}

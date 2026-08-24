@@ -1,0 +1,91 @@
+{
+  "provider": "ukg-pro",
+  "auth_type": "oauth2",
+  "base_url": "https://api.ultipro.com",
+  "category": "hr",
+  "stub": false,
+  "actions": [
+    {
+      "name": "list-employees",
+      "description": "List employees from UKG Pro",
+      "http_method": "GET",
+      "endpoint": "/personnel/v1/employees",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {"type": "integer", "description": "Page number"},
+          "per_page": {"type": "integer", "description": "Number of results per page"},
+          "employmentStatus": {"type": "string", "description": "Filter by employment status (Active, Inactive, Terminated)"}
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get-employee",
+      "description": "Get a specific employee by ID from UKG Pro",
+      "http_method": "GET",
+      "endpoint": "/personnel/v1/employees/{employeeId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "employeeId": {"type": "string", "description": "The UKG Pro employee ID"}
+        },
+        "required": ["employeeId"]
+      }
+    },
+    {
+      "name": "list-organizational-units",
+      "description": "List organizational units from UKG Pro",
+      "http_method": "GET",
+      "endpoint": "/configuration/v1/org-units",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {"type": "integer", "description": "Page number"},
+          "per_page": {"type": "integer", "description": "Number of results per page"}
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {"name": "employees", "description": "Sync employee records from UKG Pro", "entity": "Employee", "frequency": "daily"}
+  ],
+  "provider_config": {
+    "display_name": "UKG Pro (Ultimate Software)",
+    "authorization_url": "https://api.ultipro.com/oauth/authorize",
+    "token_url": "https://api.ultipro.com/oauth/token",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://connect.ultipro.com/",
+    "setup_guide_url": "https://connect.ultipro.com/",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.ultipro.com",
+      "headers": {
+        "authorization": "Bearer ${accessToken}",
+        "US-Customer-Api-Key": "${connectionConfig.customer_api_key}"
+      },
+      "paginate": {"type": "offset"},
+      "retry": {"at": [], "error_code": ["401", "429", "5xx"]}
+    },
+    "authorization_params": {},
+    "connection_config": {
+      "customer_api_key": {
+        "type": "string",
+        "required": true,
+        "description": "UKG customer API key for identifying your tenant"
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "ukg-pro-automation",
+    "display_name": "UKG Pro Automation",
+    "description": "Automate HR workflows with UKG Pro including employee management and organizational units",
+    "toolkit_slug": "ukg_pro",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": []
+  }
+}

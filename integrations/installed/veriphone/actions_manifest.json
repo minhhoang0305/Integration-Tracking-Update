@@ -1,0 +1,196 @@
+{
+  "provider": "veriphone",
+  "auth_type": "api_key",
+  "base_url": "https://api.veriphone.com",
+  "category": "payments",
+  "stub": false,
+  "actions": [
+    {
+      "name": "verify-credit-card",
+      "description": "Verify a credit card",
+      "http_method": "POST",
+      "endpoint": "/v1/creditcard/verify",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "cardNumber": {
+            "type": "string",
+            "description": "Credit card number"
+          },
+          "expiryMonth": {
+            "type": "integer",
+            "description": "Expiry month (MM)"
+          },
+          "expiryYear": {
+            "type": "integer",
+            "description": "Expiry year (YYYY)"
+          },
+          "cvv": {
+            "type": "string",
+            "description": "CVV code"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Transaction amount"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code (e.g., USD)"
+          }
+        },
+        "required": [
+          "cardNumber",
+          "expiryMonth",
+          "expiryYear",
+          "cvv",
+          "amount",
+          "currency"
+        ]
+      }
+    },
+    {
+      "name": "process-payment",
+      "description": "Process a payment",
+      "http_method": "POST",
+      "endpoint": "/v1/payment/process",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "cardNumber": {
+            "type": "string",
+            "description": "Credit card number"
+          },
+          "expiryMonth": {
+            "type": "integer",
+            "description": "Expiry month (MM)"
+          },
+          "expiryYear": {
+            "type": "integer",
+            "description": "Expiry year (YYYY)"
+          },
+          "cvv": {
+            "type": "string",
+            "description": "CVV code"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Transaction amount"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code (e.g., USD)"
+          }
+        },
+        "required": [
+          "cardNumber",
+          "expiryMonth",
+          "expiryYear",
+          "cvv",
+          "amount",
+          "currency"
+        ]
+      }
+    },
+    {
+      "name": "get-transaction-status",
+      "description": "Get the status of a transaction",
+      "http_method": "GET",
+      "endpoint": "/v1/transaction/{transactionId}/status",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "Transaction ID"
+          }
+        },
+        "required": [
+          "transactionId"
+        ]
+      }
+    },
+    {
+      "name": "refund-transaction",
+      "description": "Refund a transaction",
+      "http_method": "POST",
+      "endpoint": "/v1/transaction/{transactionId}/refund",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "Transaction ID"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Refund amount"
+          }
+        },
+        "required": [
+          "transactionId",
+          "amount"
+        ]
+      }
+    },
+    {
+      "name": "void-transaction",
+      "description": "Void a transaction",
+      "http_method": "POST",
+      "endpoint": "/v1/transaction/{transactionId}/void",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "Transaction ID"
+          }
+        },
+        "required": [
+          "transactionId"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "VeriFone",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://developer.verifone.com/",
+    "setup_guide_url": "https://developer.verifone.com/documentation/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.veriphone.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "none"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "veriphone-automation",
+    "display_name": "veriphone-automation",
+    "description": "Automate Veriphone tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "veriphone",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

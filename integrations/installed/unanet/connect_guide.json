@@ -1,0 +1,29 @@
+{
+  "overview": "Unanet uses API key (Bearer token) authentication. You generate an access token from the Unanet admin panel and include it in the Authorization header with every request.",
+  "steps": [
+    {
+      "title": "Contact your Unanet admin",
+      "description": "API access in Unanet must be enabled by an administrator. Ask your Unanet admin to enable API access for your account.",
+      "url": "https://unanet.com/",
+      "url_label": "Open Unanet"
+    },
+    {
+      "title": "Generate an API token",
+      "description": "In Unanet, go to Admin → API → Access Tokens. Click 'New Token', configure the permissions, and generate. Copy the token immediately.",
+      "warning": "Copy the token immediately — it may only be shown once."
+    },
+    {
+      "title": "Note your instance name",
+      "description": "Your Unanet instance URL is in the format: https://{instance}.unanet.biz. Note the {instance} part — it is required as connection config."
+    },
+    {
+      "title": "Create the connection",
+      "description": "POST to /api/v1/connections with your API token and instance name:\n{\n  \"provider_config_key\": \"unanet\",\n  \"connection_id\": \"your-org-id\",\n  \"credentials\": { \"apiKey\": \"YOUR_API_TOKEN\" },\n  \"connection_config\": { \"instance\": \"yourcompany\" }\n}",
+      "tip": "Use a unique connection_id per Unanet instance."
+    }
+  ],
+  "tips": [
+    "Unanet API tokens can be scoped — request only the permissions your integration needs.",
+    "If a token is compromised, revoke it from Admin → API → Access Tokens and generate a new one."
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "provider": "workday",
+  "executor": "generic_http",
+  "auth_type": "oauth2",
+  "base_url": "",
+  "category": "uncategorized",
+  "stub": true,
+  "skill_source": {
+    "composio_skill_folder": "workday-automation",
+    "display_name": "Workday Automation",
+    "description": "Automate HR operations in Workday -- manage workers, time off requests, absence balances, and employee data through natural language commands.",
+    "toolkit_slug": "workday",
+    "composio_tool_slugs": [
+      "WORKDAY_CREATE_TIME_OFF_REQUEST",
+      "WORKDAY_GET_CURRENT_USER",
+      "WORKDAY_GET_WORKER_TIME_OFF_DETAILS",
+      "WORKDAY_GET_WORKER_VALID_TIME_OFF_DATES",
+      "WORKDAY_LIST_ABSENCE_BALANCES",
+      "WORKDAY_LIST_WORKERS"
+    ],
+    "tool_slugs_hint": [
+      "ISO",
+      "WORKDAY_CREATE_TIME_OFF_REQUEST",
+      "WORKDAY_GET_CURRENT_USER",
+      "WORKDAY_GET_WORKER_TIME_OFF_DETAILS",
+      "WORKDAY_GET_WORKER_VALID_TIME_OFF_DATES",
+      "WORKDAY_LIST_ABSENCE_BALANCES",
+      "WORKDAY_LIST_WORKERS"
+    ]
+  },
+  "actions": [],
+  "syncs": [],
+  "documentation_url": "https://composio.dev/toolkits/workday",
+  "provider_config": {
+    "display_name": "Workday",
+    "credentials": {
+      "username": {
+        "type": "string",
+        "example": "ISU Nolixan@acme",
+        "title": "Username",
+        "description": "Workday API Username",
+        "pattern": "^[^@]+@[^@]+$",
+        "doc_section": "#step-4-generating-your-username"
+      },
+      "password": {
+        "type": "string",
+        "title": "Password",
+        "description": "Workday API Password",
+        "doc_section": "#step-5-finding-your-password"
+      }
+    },
+    "connection_config": {
+      "hostname": {
+        "type": "string",
+        "title": "Hostname",
+        "description": "The hostname of your Workday account",
+        "format": "hostname",
+        "example": "wd3-impl-services1.workday.com",
+        "prefix": "https://",
+        "order": 1,
+        "doc_section": "#step-1-finding-your-hostname"
+      },
+      "tenant": {
+        "type": "string",
+        "title": "Tenant",
+        "description": "The tenant of your Workday account",
+        "example": "acme",
+        "order": 2,
+        "doc_section": "#step-2-finding-your-tenant"
+      }
+    },
+    "docs": "https://connect.uplizd.ai/docs/integrations/all/workday",
+    "docs_connect": "https://connect.uplizd.ai/docs/integrations/all/workday/connect",
+    "proxy": {
+      "base_url": "https://${connectionConfig.hostname}/ccx/service/${connectionConfig.tenant}"
+    }
+  }
+}

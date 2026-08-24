@@ -1,0 +1,222 @@
+{
+  "provider": "waiverfile",
+  "auth_type": "api_key",
+  "base_url": "https://api.waiverfile.com",
+  "category": "legal",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-waiver",
+      "description": "Retrieve a specific waiver by ID.",
+      "http_method": "GET",
+      "endpoint": "/waivers/{waiver_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "waiver_id": {
+            "type": "string",
+            "description": "The ID of the waiver to retrieve."
+          }
+        },
+        "required": [
+          "waiver_id"
+        ]
+      }
+    },
+    {
+      "name": "create-waiver",
+      "description": "Create a new waiver.",
+      "http_method": "POST",
+      "endpoint": "/waivers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the waiver."
+          },
+          "description": {
+            "type": "string",
+            "description": "A description of the waiver."
+          },
+          "content": {
+            "type": "string",
+            "description": "The waiver content (e.g., HTML or text)."
+          }
+        },
+        "required": [
+          "name",
+          "content"
+        ]
+      }
+    },
+    {
+      "name": "update-waiver",
+      "description": "Update an existing waiver.",
+      "http_method": "PUT",
+      "endpoint": "/waivers/{waiver_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "waiver_id": {
+            "type": "string",
+            "description": "The ID of the waiver to update."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name of the waiver."
+          },
+          "description": {
+            "type": "string",
+            "description": "The new description of the waiver."
+          },
+          "content": {
+            "type": "string",
+            "description": "The new waiver content."
+          }
+        },
+        "required": [
+          "waiver_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-waiver",
+      "description": "Delete a waiver.",
+      "http_method": "DELETE",
+      "endpoint": "/waivers/{waiver_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "waiver_id": {
+            "type": "string",
+            "description": "The ID of the waiver to delete."
+          }
+        },
+        "required": [
+          "waiver_id"
+        ]
+      }
+    },
+    {
+      "name": "list-waivers",
+      "description": "List all waivers.",
+      "http_method": "GET",
+      "endpoint": "/waivers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of waivers to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get-waiver-version",
+      "description": "Retrieve a specific version of a waiver.",
+      "http_method": "GET",
+      "endpoint": "/waivers/{waiver_id}/versions/{version_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "waiver_id": {
+            "type": "string",
+            "description": "The ID of the waiver."
+          },
+          "version_id": {
+            "type": "string",
+            "description": "The ID of the waiver version."
+          }
+        },
+        "required": [
+          "waiver_id",
+          "version_id"
+        ]
+      }
+    },
+    {
+      "name": "list-waiver-versions",
+      "description": "List all versions of a waiver.",
+      "http_method": "GET",
+      "endpoint": "/waivers/{waiver_id}/versions",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "waiver_id": {
+            "type": "string",
+            "description": "The ID of the waiver."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of versions to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": [
+          "waiver_id"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "waivers",
+      "description": "Sync all waivers.",
+      "entity": "Waiver",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Waiverfile",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": null,
+    "default_scopes": null,
+    "docs": "https://docs.waiverfile.com/",
+    "setup_guide_url": "https://docs.waiverfile.com/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.waiverfile.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset",
+        "limit_param": "limit",
+        "offset_param": "offset"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "waiverfile-automation",
+    "display_name": "waiverfile-automation",
+    "description": "Automate Waiverfile tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "waiverfile",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

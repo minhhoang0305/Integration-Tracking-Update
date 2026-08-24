@@ -1,0 +1,2289 @@
+{
+  "provider": "zoom",
+  "auth_type": "oauth2",
+  "base_url": "https://api.zoom.us/v2",
+  "category": "video_conferencing",
+  "executor": "python",
+  "syncs": [
+    {
+      "name": "meetings",
+      "description": "Sync Zoom meetings",
+      "interval": "1h"
+    },
+    {
+      "name": "webinars",
+      "description": "Sync Zoom webinars",
+      "interval": "1h"
+    },
+    {
+      "name": "recordings",
+      "description": "Sync Zoom cloud recordings",
+      "interval": "1h"
+    }
+  ],
+  "actions": [
+    {
+      "name": "list-meetings",
+      "description": "List meetings for a user",
+      "http_method": "GET",
+      "endpoint": "/users/{userId}/meetings",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User ID or 'me'"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-meeting",
+      "description": "Get meeting details",
+      "http_method": "GET",
+      "endpoint": "/meetings/{meetingId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "create-meeting",
+      "description": "Create a meeting for a user",
+      "http_method": "POST",
+      "endpoint": "/users/{userId}/meetings",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "type": {
+            "type": "integer"
+          },
+          "start_time": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "agenda": {
+            "type": "string"
+          },
+          "settings": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "topic"
+        ]
+      }
+    },
+    {
+      "name": "update-meeting",
+      "description": "Update a meeting",
+      "http_method": "PATCH",
+      "endpoint": "/meetings/{meetingId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "start_time": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "agenda": {
+            "type": "string"
+          },
+          "settings": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "delete-meeting",
+      "description": "Delete a meeting",
+      "http_method": "DELETE",
+      "endpoint": "/meetings/{meetingId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "end-meeting",
+      "description": "End a meeting in progress",
+      "http_method": "PUT",
+      "endpoint": "/meetings/{meetingId}/status",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "recover-meeting",
+      "description": "Recover a deleted meeting",
+      "http_method": "PUT",
+      "endpoint": "/meetings/{meetingId}/status",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "get-meeting-invitation",
+      "description": "Get the invitation note for a meeting",
+      "http_method": "GET",
+      "endpoint": "/meetings/{meetingId}/invitation",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "get-meeting-summary",
+      "description": "Get AI meeting summary",
+      "http_method": "GET",
+      "endpoint": "/meetings/{meetingId}/summary",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "list-meeting-registrants",
+      "description": "List registrants for a meeting",
+      "http_method": "GET",
+      "endpoint": "/meetings/{meetingId}/registrants",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "add-meeting-registrant",
+      "description": "Add a registrant to a meeting",
+      "http_method": "POST",
+      "endpoint": "/meetings/{meetingId}/registrants",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "email": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "meetingId",
+          "email",
+          "first_name"
+        ]
+      }
+    },
+    {
+      "name": "get-meeting-registrant",
+      "description": "Get a meeting registrant",
+      "http_method": "GET",
+      "endpoint": "/meetings/{meetingId}/registrants/{registrantId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "registrantId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "meetingId",
+          "registrantId"
+        ]
+      }
+    },
+    {
+      "name": "update-meeting-registrant-status",
+      "description": "Approve or deny meeting registrants",
+      "http_method": "PUT",
+      "endpoint": "/meetings/{meetingId}/registrants/status",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "action": {
+            "type": "string",
+            "description": "approve | deny | cancel"
+          },
+          "registrants": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "meetingId",
+          "action"
+        ]
+      }
+    },
+    {
+      "name": "delete-meeting-registrant",
+      "description": "Delete a meeting registrant",
+      "http_method": "DELETE",
+      "endpoint": "/meetings/{meetingId}/registrants/{registrantId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "registrantId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "meetingId",
+          "registrantId"
+        ]
+      }
+    },
+    {
+      "name": "list-meeting-polls",
+      "description": "List polls for a meeting",
+      "http_method": "GET",
+      "endpoint": "/meetings/{meetingId}/polls",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "create-meeting-poll",
+      "description": "Create a poll for a meeting",
+      "http_method": "POST",
+      "endpoint": "/meetings/{meetingId}/polls",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "title": {
+            "type": "string"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "meetingId",
+          "title"
+        ]
+      }
+    },
+    {
+      "name": "get-meeting-poll",
+      "description": "Get a meeting poll",
+      "http_method": "GET",
+      "endpoint": "/meetings/{meetingId}/polls/{pollId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "pollId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "meetingId",
+          "pollId"
+        ]
+      }
+    },
+    {
+      "name": "update-meeting-poll",
+      "description": "Update a meeting poll",
+      "http_method": "PUT",
+      "endpoint": "/meetings/{meetingId}/polls/{pollId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "pollId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "meetingId",
+          "pollId"
+        ]
+      }
+    },
+    {
+      "name": "delete-meeting-poll",
+      "description": "Delete a meeting poll",
+      "http_method": "DELETE",
+      "endpoint": "/meetings/{meetingId}/polls/{pollId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "pollId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "meetingId",
+          "pollId"
+        ]
+      }
+    },
+    {
+      "name": "list-meeting-participants",
+      "description": "List participants of a past meeting (report)",
+      "http_method": "GET",
+      "endpoint": "/report/meetings/{meetingId}/participants",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "get-past-meeting-participants",
+      "description": "Get participants of a past meeting instance",
+      "http_method": "GET",
+      "endpoint": "/past_meetings/{meetingId}/participants",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "list-recordings",
+      "description": "List cloud recordings for a user",
+      "http_method": "GET",
+      "endpoint": "/users/{userId}/recordings",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-recording",
+      "description": "Get cloud recording info for a meeting",
+      "http_method": "GET",
+      "endpoint": "/meetings/{meetingId}/recordings",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "delete-recording",
+      "description": "Delete cloud recordings for a meeting",
+      "http_method": "DELETE",
+      "endpoint": "/meetings/{meetingId}/recordings",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "action": {
+            "type": "string",
+            "description": "trash | delete"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "delete-recording-file",
+      "description": "Delete a specific cloud recording file",
+      "http_method": "DELETE",
+      "endpoint": "/meetings/{meetingId}/recordings/{recordingId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "recordingId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "meetingId",
+          "recordingId"
+        ]
+      }
+    },
+    {
+      "name": "get-recording-settings",
+      "description": "Get settings for a cloud recording",
+      "http_method": "GET",
+      "endpoint": "/meetings/{meetingId}/recordings/settings",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "update-recording-settings",
+      "description": "Update settings for a cloud recording",
+      "http_method": "PATCH",
+      "endpoint": "/meetings/{meetingId}/recordings/settings",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          },
+          "share_recording": {
+            "type": "string"
+          },
+          "recording_authentication": {
+            "type": "boolean"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "recover-recording",
+      "description": "Recover a deleted cloud recording",
+      "http_method": "PUT",
+      "endpoint": "/meetings/{meetingId}/recordings/status",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "Meeting ID"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      }
+    },
+    {
+      "name": "list-webinars",
+      "description": "List webinars for a user",
+      "http_method": "GET",
+      "endpoint": "/users/{userId}/webinars",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-webinar",
+      "description": "Get webinar details",
+      "http_method": "GET",
+      "endpoint": "/webinars/{webinarId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          }
+        },
+        "required": [
+          "webinarId"
+        ]
+      }
+    },
+    {
+      "name": "create-webinar",
+      "description": "Create a webinar",
+      "http_method": "POST",
+      "endpoint": "/users/{userId}/webinars",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "type": {
+            "type": "integer"
+          },
+          "start_time": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "agenda": {
+            "type": "string"
+          },
+          "settings": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "topic"
+        ]
+      }
+    },
+    {
+      "name": "update-webinar",
+      "description": "Update a webinar",
+      "http_method": "PATCH",
+      "endpoint": "/webinars/{webinarId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "start_time": {
+            "type": "string"
+          },
+          "agenda": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "webinarId"
+        ]
+      }
+    },
+    {
+      "name": "delete-webinar",
+      "description": "Delete a webinar",
+      "http_method": "DELETE",
+      "endpoint": "/webinars/{webinarId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          }
+        },
+        "required": [
+          "webinarId"
+        ]
+      }
+    },
+    {
+      "name": "get-webinar-invitation",
+      "description": "Get the invitation note for a webinar",
+      "http_method": "GET",
+      "endpoint": "/webinars/{webinarId}/invitation",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          }
+        },
+        "required": [
+          "webinarId"
+        ]
+      }
+    },
+    {
+      "name": "list-webinar-registrants",
+      "description": "List registrants for a webinar",
+      "http_method": "GET",
+      "endpoint": "/webinars/{webinarId}/registrants",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "webinarId"
+        ]
+      }
+    },
+    {
+      "name": "add-webinar-registrant",
+      "description": "Add a registrant to a webinar",
+      "http_method": "POST",
+      "endpoint": "/webinars/{webinarId}/registrants",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          },
+          "email": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "webinarId",
+          "email",
+          "first_name"
+        ]
+      }
+    },
+    {
+      "name": "update-webinar-registrant-status",
+      "description": "Approve or deny webinar registrants",
+      "http_method": "PUT",
+      "endpoint": "/webinars/{webinarId}/registrants/status",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          },
+          "action": {
+            "type": "string"
+          },
+          "registrants": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "webinarId",
+          "action"
+        ]
+      }
+    },
+    {
+      "name": "delete-webinar-registrant",
+      "description": "Delete a webinar registrant",
+      "http_method": "DELETE",
+      "endpoint": "/webinars/{webinarId}/registrants/{registrantId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          },
+          "registrantId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "webinarId",
+          "registrantId"
+        ]
+      }
+    },
+    {
+      "name": "list-webinar-panelists",
+      "description": "List panelists for a webinar",
+      "http_method": "GET",
+      "endpoint": "/webinars/{webinarId}/panelists",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          }
+        },
+        "required": [
+          "webinarId"
+        ]
+      }
+    },
+    {
+      "name": "add-webinar-panelist",
+      "description": "Add panelists to a webinar",
+      "http_method": "POST",
+      "endpoint": "/webinars/{webinarId}/panelists",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          },
+          "panelists": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "webinarId"
+        ]
+      }
+    },
+    {
+      "name": "delete-webinar-panelist",
+      "description": "Remove a panelist from a webinar",
+      "http_method": "DELETE",
+      "endpoint": "/webinars/{webinarId}/panelists/{panelistId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          },
+          "panelistId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "webinarId",
+          "panelistId"
+        ]
+      }
+    },
+    {
+      "name": "list-webinar-polls",
+      "description": "List polls for a webinar",
+      "http_method": "GET",
+      "endpoint": "/webinars/{webinarId}/polls",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          }
+        },
+        "required": [
+          "webinarId"
+        ]
+      }
+    },
+    {
+      "name": "create-webinar-poll",
+      "description": "Create a poll for a webinar",
+      "http_method": "POST",
+      "endpoint": "/webinars/{webinarId}/polls",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          },
+          "title": {
+            "type": "string"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "webinarId",
+          "title"
+        ]
+      }
+    },
+    {
+      "name": "get-webinar-poll",
+      "description": "Get a webinar poll",
+      "http_method": "GET",
+      "endpoint": "/webinars/{webinarId}/polls/{pollId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          },
+          "pollId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "webinarId",
+          "pollId"
+        ]
+      }
+    },
+    {
+      "name": "update-webinar-poll",
+      "description": "Update a webinar poll",
+      "http_method": "PUT",
+      "endpoint": "/webinars/{webinarId}/polls/{pollId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          },
+          "pollId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "webinarId",
+          "pollId"
+        ]
+      }
+    },
+    {
+      "name": "delete-webinar-poll",
+      "description": "Delete a webinar poll",
+      "http_method": "DELETE",
+      "endpoint": "/webinars/{webinarId}/polls/{pollId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          },
+          "pollId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "webinarId",
+          "pollId"
+        ]
+      }
+    },
+    {
+      "name": "list-users",
+      "description": "List users in your Zoom account",
+      "http_method": "GET",
+      "endpoint": "/users",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "role_id": {
+            "type": "string"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-user",
+      "description": "Get user info",
+      "http_method": "GET",
+      "endpoint": "/users/{userId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User ID or email or 'me'"
+          }
+        }
+      }
+    },
+    {
+      "name": "create-user",
+      "description": "Create a user",
+      "http_method": "POST",
+      "endpoint": "/users",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      }
+    },
+    {
+      "name": "update-user",
+      "description": "Update user info",
+      "http_method": "PATCH",
+      "endpoint": "/users/{userId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "delete-user",
+      "description": "Delete a user",
+      "http_method": "DELETE",
+      "endpoint": "/users/{userId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId"
+        ]
+      }
+    },
+    {
+      "name": "get-user-settings",
+      "description": "Get user settings",
+      "http_method": "GET",
+      "endpoint": "/users/{userId}/settings",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "update-user-settings",
+      "description": "Update user settings",
+      "http_method": "PATCH",
+      "endpoint": "/users/{userId}/settings",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "feature": {
+            "type": "object"
+          },
+          "meeting": {
+            "type": "object"
+          },
+          "recording": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-user-token",
+      "description": "Get user Zoom token",
+      "http_method": "GET",
+      "endpoint": "/users/{userId}/token",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "revoke-user-token",
+      "description": "Revoke user SSO token",
+      "http_method": "DELETE",
+      "endpoint": "/users/{userId}/token",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "list-user-assistants",
+      "description": "List user assistants (schedulers)",
+      "http_method": "GET",
+      "endpoint": "/users/{userId}/assistants",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "delete-user-assistant",
+      "description": "Delete a user assistant",
+      "http_method": "DELETE",
+      "endpoint": "/users/{userId}/assistants/{assistantId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "assistantId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "assistantId"
+        ]
+      }
+    },
+    {
+      "name": "list-groups",
+      "description": "List groups in your account",
+      "http_method": "GET",
+      "endpoint": "/groups",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "get-group",
+      "description": "Get group info",
+      "http_method": "GET",
+      "endpoint": "/groups/{groupId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "groupId"
+        ]
+      }
+    },
+    {
+      "name": "create-group",
+      "description": "Create a group",
+      "http_method": "POST",
+      "endpoint": "/groups",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "update-group",
+      "description": "Update a group",
+      "http_method": "PATCH",
+      "endpoint": "/groups/{groupId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "groupId"
+        ]
+      }
+    },
+    {
+      "name": "delete-group",
+      "description": "Delete a group",
+      "http_method": "DELETE",
+      "endpoint": "/groups/{groupId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "groupId"
+        ]
+      }
+    },
+    {
+      "name": "list-group-members",
+      "description": "List members of a group",
+      "http_method": "GET",
+      "endpoint": "/groups/{groupId}/members",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "string"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "groupId"
+        ]
+      }
+    },
+    {
+      "name": "add-group-members",
+      "description": "Add members to a group",
+      "http_method": "POST",
+      "endpoint": "/groups/{groupId}/members",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "string"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "groupId"
+        ]
+      }
+    },
+    {
+      "name": "delete-group-member",
+      "description": "Remove a member from a group",
+      "http_method": "DELETE",
+      "endpoint": "/groups/{groupId}/members/{memberId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "string"
+          },
+          "memberId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "groupId",
+          "memberId"
+        ]
+      }
+    },
+    {
+      "name": "list-group-admins",
+      "description": "List admins of a group",
+      "http_method": "GET",
+      "endpoint": "/groups/{groupId}/admins",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "string"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "groupId"
+        ]
+      }
+    },
+    {
+      "name": "add-group-admin",
+      "description": "Add admins to a group",
+      "http_method": "POST",
+      "endpoint": "/groups/{groupId}/admins",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "string"
+          },
+          "admins": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "groupId"
+        ]
+      }
+    },
+    {
+      "name": "get-account",
+      "description": "Get account info",
+      "http_method": "GET",
+      "endpoint": "/accounts/{accountId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "update-account",
+      "description": "Update account info",
+      "http_method": "PATCH",
+      "endpoint": "/accounts/{accountId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "company_name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-account-settings",
+      "description": "Get account settings",
+      "http_method": "GET",
+      "endpoint": "/accounts/{accountId}/settings",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "option": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "update-account-settings",
+      "description": "Update account settings",
+      "http_method": "PATCH",
+      "endpoint": "/accounts/{accountId}/settings",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "meeting": {
+            "type": "object"
+          },
+          "recording": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-account-plans",
+      "description": "Get account plans info",
+      "http_method": "GET",
+      "endpoint": "/accounts/{accountId}/plans",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-daily-usage-report",
+      "description": "Get daily usage report",
+      "http_method": "GET",
+      "endpoint": "/report/daily",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer"
+          },
+          "month": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-active-inactive-hosts-report",
+      "description": "Get active/inactive hosts report",
+      "http_method": "GET",
+      "endpoint": "/report/users",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "active | inactive"
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-webinar-participants-report",
+      "description": "Get webinar participants report",
+      "http_method": "GET",
+      "endpoint": "/report/webinars/{webinarId}/participants",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string",
+            "description": "Webinar ID"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "webinarId"
+        ]
+      }
+    },
+    {
+      "name": "get-telephone-report",
+      "description": "Get telephone usage report",
+      "http_method": "GET",
+      "endpoint": "/report/telephone",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-cloud-recording-report",
+      "description": "Get cloud recording usage report",
+      "http_method": "GET",
+      "endpoint": "/report/cloud_recording",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "list-chat-channels",
+      "description": "List chat channels for a user",
+      "http_method": "GET",
+      "endpoint": "/chat/users/me/channels",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "create-chat-channel",
+      "description": "Create a chat channel",
+      "http_method": "POST",
+      "endpoint": "/chat/users/me/channels",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "integer"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "get-chat-channel",
+      "description": "Get a chat channel",
+      "http_method": "GET",
+      "endpoint": "/chat/channels/{channelId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "channelId"
+        ]
+      }
+    },
+    {
+      "name": "update-chat-channel",
+      "description": "Update a chat channel",
+      "http_method": "PATCH",
+      "endpoint": "/chat/channels/{channelId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "channelId"
+        ]
+      }
+    },
+    {
+      "name": "delete-chat-channel",
+      "description": "Delete a chat channel",
+      "http_method": "DELETE",
+      "endpoint": "/chat/channels/{channelId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "channelId"
+        ]
+      }
+    },
+    {
+      "name": "list-chat-messages",
+      "description": "List chat messages",
+      "http_method": "GET",
+      "endpoint": "/chat/users/me/messages",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "to_channel": {
+            "type": "string"
+          },
+          "to_contact": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "send-chat-message",
+      "description": "Send a chat message",
+      "http_method": "POST",
+      "endpoint": "/chat/users/me/messages",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "to_channel": {
+            "type": "string"
+          },
+          "to_contact": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    },
+    {
+      "name": "list-zoom-rooms",
+      "description": "List Zoom Rooms",
+      "http_method": "GET",
+      "endpoint": "/rooms",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-zoom-room",
+      "description": "Get a Zoom Room",
+      "http_method": "GET",
+      "endpoint": "/rooms/{roomId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "roomId"
+        ]
+      }
+    },
+    {
+      "name": "create-zoom-room",
+      "description": "Create a Zoom Room",
+      "http_method": "POST",
+      "endpoint": "/rooms",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "room_type": {
+            "type": "string"
+          },
+          "location_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "update-zoom-room",
+      "description": "Update a Zoom Room",
+      "http_method": "PATCH",
+      "endpoint": "/rooms/{roomId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "roomId"
+        ]
+      }
+    },
+    {
+      "name": "delete-zoom-room",
+      "description": "Delete a Zoom Room",
+      "http_method": "DELETE",
+      "endpoint": "/rooms/{roomId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "roomId"
+        ]
+      }
+    },
+    {
+      "name": "update-chat-message",
+      "description": "Edit the text of a sent chat message.",
+      "http_method": "PUT",
+      "endpoint": "/chat/users/me/messages/{messageId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "to_channel": {
+            "type": "string"
+          },
+          "to_contact": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "messageId",
+          "message"
+        ]
+      }
+    },
+    {
+      "name": "delete-chat-message",
+      "description": "Delete a chat message.",
+      "http_method": "DELETE",
+      "endpoint": "/chat/users/me/messages/{messageId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string"
+          },
+          "to_channel": {
+            "type": "string"
+          },
+          "to_contact": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "messageId"
+        ]
+      }
+    },
+    {
+      "name": "list-chat-channel-members",
+      "description": "List members of a chat channel.",
+      "http_method": "GET",
+      "endpoint": "/chat/channels/{channelId}/members",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "channelId"
+        ]
+      }
+    },
+    {
+      "name": "add-chat-channel-member",
+      "description": "Add members to a chat channel.",
+      "http_method": "POST",
+      "endpoint": "/chat/channels/{channelId}/members",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "channelId",
+          "members"
+        ]
+      }
+    },
+    {
+      "name": "remove-chat-channel-member",
+      "description": "Remove a member from a chat channel.",
+      "http_method": "DELETE",
+      "endpoint": "/chat/channels/{channelId}/members/{memberId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string"
+          },
+          "memberId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "channelId",
+          "memberId"
+        ]
+      }
+    },
+    {
+      "name": "list-roles",
+      "description": "List all roles in the account.",
+      "http_method": "GET",
+      "endpoint": "/roles",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "create-role",
+      "description": "Create a new role.",
+      "http_method": "POST",
+      "endpoint": "/roles",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "privileges": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "get-role",
+      "description": "Get details of a role.",
+      "http_method": "GET",
+      "endpoint": "/roles/{roleId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "roleId"
+        ]
+      }
+    },
+    {
+      "name": "update-role",
+      "description": "Update a role's name, description, or privileges.",
+      "http_method": "PATCH",
+      "endpoint": "/roles/{roleId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "privileges": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "roleId"
+        ]
+      }
+    },
+    {
+      "name": "delete-role",
+      "description": "Delete a role.",
+      "http_method": "DELETE",
+      "endpoint": "/roles/{roleId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "roleId"
+        ]
+      }
+    },
+    {
+      "name": "list-role-members",
+      "description": "List members assigned to a role.",
+      "http_method": "GET",
+      "endpoint": "/roles/{roleId}/members",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "string"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "next_page_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "roleId"
+        ]
+      }
+    },
+    {
+      "name": "add-role-members",
+      "description": "Assign members to a role.",
+      "http_method": "POST",
+      "endpoint": "/roles/{roleId}/members",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "string"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "roleId",
+          "members"
+        ]
+      }
+    },
+    {
+      "name": "delete-group-admin",
+      "description": "Remove an admin from a group.",
+      "http_method": "DELETE",
+      "endpoint": "/groups/{groupId}/admins/{adminId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "string"
+          },
+          "adminId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "groupId",
+          "adminId"
+        ]
+      }
+    },
+    {
+      "name": "add-user-assistant",
+      "description": "Add assistants (scheduling delegates) to a user.",
+      "http_method": "POST",
+      "endpoint": "/users/{userId}/assistants",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User ID or 'me'"
+          },
+          "assistants": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "assistants"
+        ]
+      }
+    },
+    {
+      "name": "get-webinar-detail-report",
+      "description": "Get a detail report for a past webinar.",
+      "http_method": "GET",
+      "endpoint": "/report/webinars/{webinarId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "webinarId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "webinarId"
+        ]
+      }
+    }
+  ],
+  "provider_config": {
+    "authorization_url": "https://zoom.us/oauth/authorize",
+    "token_url": "https://zoom.us/oauth/token",
+    "default_scopes": "",
+    "display_name": "Zoom",
+    "docs": "https://developers.zoom.us/docs/integrations/oauth/"
+  }
+}

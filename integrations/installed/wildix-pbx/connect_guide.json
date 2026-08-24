@@ -1,0 +1,30 @@
+{
+  "overview": "Wildix PBX uses API key (Bearer token) authentication. You generate an API token from the Wildix PBX admin panel and include it as a Bearer token in every API request.",
+  "steps": [
+    {
+      "title": "Log in to Wildix PBX admin panel",
+      "description": "Access your Wildix PBX admin interface at https://{your-pbx-domain}/admin.",
+      "url": "https://wildix.com/",
+      "url_label": "Open Wildix"
+    },
+    {
+      "title": "Generate an API token",
+      "description": "Navigate to Settings → API Tokens (or Integrations → API). Create a new token with the required permissions. Copy the generated token.",
+      "warning": "Copy the token immediately after generation."
+    },
+    {
+      "title": "Note your PBX domain",
+      "description": "Your Wildix PBX domain is the hostname/IP where your PBX is accessible, e.g. pbx.yourcompany.com. This is required as connection config."
+    },
+    {
+      "title": "Create the connection",
+      "description": "POST to /api/v1/connections with your API token and PBX domain:\n{\n  \"provider_config_key\": \"wildix-pbx\",\n  \"connection_id\": \"your-pbx-id\",\n  \"credentials\": { \"apiKey\": \"YOUR_API_TOKEN\" },\n  \"connection_config\": { \"pbx_domain\": \"pbx.yourcompany.com\" }\n}",
+      "tip": "Use a unique connection_id per PBX instance."
+    }
+  ],
+  "tips": [
+    "Wildix PBX must be network-accessible from the Nolixan backend — ensure firewall rules allow it.",
+    "Rotate API tokens periodically for security.",
+    "Wildix API supports real-time events via webhooks for call tracking."
+  ]
+}

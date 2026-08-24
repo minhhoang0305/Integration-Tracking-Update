@@ -1,0 +1,92 @@
+{
+  "provider": "uber-api",
+  "auth_type": "oauth2",
+  "base_url": "https://api.uber.com/v1.2",
+  "category": "mobility",
+  "actions": [
+    {
+      "name": "get-profile",
+      "description": "Get the authenticated Uber user's profile information.",
+      "http_method": "GET",
+      "endpoint": "/me",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "get-trip-history",
+      "description": "Get a paginated list of the authenticated user's past trips.",
+      "http_method": "GET",
+      "endpoint": "/history",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Number of trips to return per page (max 50)"
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-products",
+      "description": "List available Uber products at a given location.",
+      "http_method": "GET",
+      "endpoint": "/products",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "description": "Latitude of the pickup location"
+          },
+          "longitude": {
+            "type": "number",
+            "description": "Longitude of the pickup location"
+          }
+        },
+        "required": [
+          "latitude",
+          "longitude"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Uber API",
+    "authorization_url": "https://login.uber.com/oauth/v2/authorize",
+    "token_url": "https://login.uber.com/oauth/v2/token",
+    "disable_pkce": false,
+    "default_scopes": "profile history",
+    "scope_separator": " ",
+    "docs": "https://developer.uber.com/docs/riders/introduction",
+    "setup_guide_url": "https://developer.uber.com/dashboard",
+    "proxy": {
+      "base_url": "https://api.uber.com/v1.2",
+      "headers": {
+        "Authorization": "Bearer ${accessToken}"
+      },
+      "retry": {
+        "at": [
+          "retry-after"
+        ],
+        "error_code": [
+          "429",
+          "500",
+          "502",
+          "503",
+          "504"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http"
+}

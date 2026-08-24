@@ -31,6 +31,38 @@ services:
       timeout: 5s
       retries: 10
 
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  minio-init:
+    image: minio/mc:latest
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_CATALOG_BUCKET: ${MINIO_CATALOG_BUCKET}
+      MINIO_ARTIFACT_BUCKET: ${MINIO_ARTIFACT_BUCKET}
+    volumes:
+      - ./integrations/installed:/seed/integrations:ro
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["mc alias set local http://minio:9000 \"$${MINIO_ROOT_USER}\" \"$${MINIO_ROOT_PASSWORD}\" && mc mb --ignore-existing local/$${MINIO_CATALOG_BUCKET} && mc mb --ignore-existing local/$${MINIO_ARTIFACT_BUCKET} && mc mirror --overwrite --exclude .DS_Store --exclude __pycache__/** /seed/integrations local/$${MINIO_CATALOG_BUCKET}/integrations"]
+
   backend:
     build:
       context: .
@@ -46,13 +78,18 @@ services:
       RabbitMq__UserName: ${RABBITMQ_USER}
       RabbitMq__Password: ${RABBITMQ_PASSWORD}
       Gmail__Enabled: "false"
+      ObjectStorage__ServiceUrl: http://minio:9000
+      ObjectStorage__AccessKey: ${MINIO_ROOT_USER}
+      ObjectStorage__SecretKey: ${MINIO_ROOT_PASSWORD}
+      ObjectStorage__CatalogBucket: ${MINIO_CATALOG_BUCKET}
+      ObjectStorage__ArtifactBucket: ${MINIO_ARTIFACT_BUCKET}
     depends_on:
       postgres:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
-    volumes:
-      - backend-proposals:/app/proposals
+      minio-init:
+        condition: service_completed_successfully
     restart: unless-stopped
 
   ai-worker:
@@ -69,4 +106,4 @@ services:
 volumes:
   rabbitmq-data:
   postgres-data:
-  backend-proposals:
+  minio-data:

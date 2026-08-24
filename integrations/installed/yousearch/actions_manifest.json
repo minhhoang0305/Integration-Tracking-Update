@@ -1,0 +1,179 @@
+{
+  "provider": "yousearch",
+  "auth_type": "api_key",
+  "base_url": "https://api.yousearch.com",
+  "category": "search",
+  "stub": false,
+  "actions": [
+    {
+      "name": "search-documents",
+      "description": "Search documents based on a query.",
+      "http_method": "GET",
+      "endpoint": "/documents",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query."
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "page_size": {
+            "type": "integer",
+            "description": "Number of results per page."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    },
+    {
+      "name": "get-document",
+      "description": "Retrieve a specific document by ID.",
+      "http_method": "GET",
+      "endpoint": "/documents/{document_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "description": "The ID of the document to retrieve."
+          }
+        },
+        "required": [
+          "document_id"
+        ]
+      }
+    },
+    {
+      "name": "create-index",
+      "description": "Create a new search index.",
+      "http_method": "POST",
+      "endpoint": "/indexes",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the index."
+          },
+          "schema": {
+            "type": "object",
+            "description": "The schema for the index."
+          }
+        },
+        "required": [
+          "name",
+          "schema"
+        ]
+      }
+    },
+    {
+      "name": "get-index",
+      "description": "Retrieve an existing search index.",
+      "http_method": "GET",
+      "endpoint": "/indexes/{index_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "index_id": {
+            "type": "string",
+            "description": "The ID of the index to retrieve."
+          }
+        },
+        "required": [
+          "index_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-index",
+      "description": "Delete an existing search index.",
+      "http_method": "DELETE",
+      "endpoint": "/indexes/{index_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "index_id": {
+            "type": "string",
+            "description": "The ID of the index to delete."
+          }
+        },
+        "required": [
+          "index_id"
+        ]
+      }
+    },
+    {
+      "name": "index-document",
+      "description": "Index a document into a specific index.",
+      "http_method": "POST",
+      "endpoint": "/indexes/{index_id}/documents",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "index_id": {
+            "type": "string",
+            "description": "The ID of the index."
+          },
+          "document": {
+            "type": "object",
+            "description": "The document to index."
+          }
+        },
+        "required": [
+          "index_id",
+          "document"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "YouSearch",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://developers.yousearch.com/docs",
+    "setup_guide_url": "https://developers.yousearch.com/docs/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.yousearch.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "yousearch-automation",
+    "display_name": "yousearch-automation",
+    "description": "Automate Yousearch tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "yousearch",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

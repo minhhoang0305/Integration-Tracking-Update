@@ -1,0 +1,24 @@
+{
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "content": "ZoomInfo Sales is a B2B intelligence platform providing contact and company data for sales and marketing teams. This integration connects to the ZoomInfo Sales API using JWT-based Bearer token authentication. It enables contact search, company search, and data enrichment workflows."
+    },
+    {
+      "id": "prerequisites",
+      "title": "Prerequisites",
+      "content": "You need a ZoomInfo account with API access enabled as part of your subscription. Obtain your ZoomInfo username and password credentials that will be used to generate authentication tokens. Confirm with your ZoomInfo account manager that your license includes API entitlements for the data types you need."
+    },
+    {
+      "id": "connect",
+      "title": "How to Connect",
+      "content": "ZoomInfo uses JWT-based authentication rather than static API keys. Call the /authenticate endpoint with your username and password to receive a JWT access token. Include the token in all subsequent API requests using the Authorization header in the format: Bearer <jwt_token>. Tokens have a limited lifespan and must be refreshed by repeating the authentication call before they expire."
+    },
+    {
+      "id": "actions",
+      "title": "Available Actions",
+      "content": "search-contacts queries the ZoomInfo database for individual contacts by criteria such as name, title, company, or location. search-companies searches for company records using filters like industry, employee count, revenue range, or keyword. enrich-company takes a known company identifier or domain and returns a full enriched profile with firmographic data."
+    }
+  ]
+}

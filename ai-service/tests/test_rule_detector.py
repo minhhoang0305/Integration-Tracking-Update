@@ -1,6 +1,6 @@
 import unittest
 
-from rule_detector import extract_endpoint_changes
+from rule_detector import extract_endpoint_changes, extract_endpoint_changes_with_warnings
 
 
 class EndpointExtractionTests(unittest.TestCase):
@@ -22,3 +22,19 @@ New v3 endpoints
         deprecated, announced = extract_endpoint_changes("Action required", body)
         self.assertEqual([("GET", "/domains/{domain}"), ("GET", "/keywords/search")], [(x.method, x.path) for x in deprecated])
         self.assertEqual([("POST", "/v3/shorten/bulk"), ("GET", "/v3/shorten/list")], [(x.method, x.path) for x in announced])
+
+    def test_uptimerobot_duplicate_deprecated_endpoints_are_not_announced(self) -> None:
+        body = """Deprecated endpoints
+GET /v2/monitors
+POST /v2/monitors
+
+New endpoints
+GET /v3/monitors
+POST /v3/monitors
+GET /v2/monitors
+POST /v2/monitors
+"""
+        deprecated, announced, warnings = extract_endpoint_changes_with_warnings("UptimeRobot API update", body)
+        self.assertEqual([("GET", "/v2/monitors"), ("POST", "/v2/monitors")], [(x.method, x.path) for x in deprecated])
+        self.assertEqual([("GET", "/v3/monitors"), ("POST", "/v3/monitors")], [(x.method, x.path) for x in announced])
+        self.assertTrue(warnings)

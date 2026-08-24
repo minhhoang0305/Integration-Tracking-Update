@@ -1,0 +1,192 @@
+{
+  "provider": "wiz",
+  "auth_type": "api_key",
+  "base_url": "https://api.wiz.io",
+  "category": "security",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-finding",
+      "description": "Retrieve a specific finding by ID.",
+      "http_method": "GET",
+      "endpoint": "/findings/{finding_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "finding_id": {
+            "type": "string",
+            "description": "The ID of the finding to retrieve."
+          }
+        },
+        "required": [
+          "finding_id"
+        ]
+      }
+    },
+    {
+      "name": "list-findings",
+      "description": "List all findings.",
+      "http_method": "GET",
+      "endpoint": "/findings",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of findings to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          },
+          "severity": {
+            "type": "string",
+            "description": "Filter findings by severity (e.g., critical, high, medium, low)."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get-resource",
+      "description": "Retrieve a specific resource by ID.",
+      "http_method": "GET",
+      "endpoint": "/resources/{resource_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "resource_id": {
+            "type": "string",
+            "description": "The ID of the resource to retrieve."
+          }
+        },
+        "required": [
+          "resource_id"
+        ]
+      }
+    },
+    {
+      "name": "list-resources",
+      "description": "List all resources.",
+      "http_method": "GET",
+      "endpoint": "/resources",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of resources to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          },
+          "resource_type": {
+            "type": "string",
+            "description": "Filter resources by type (e.g., vm, container, storage)."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get-policy",
+      "description": "Retrieve a specific policy by ID.",
+      "http_method": "GET",
+      "endpoint": "/policies/{policy_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "policy_id": {
+            "type": "string",
+            "description": "The ID of the policy to retrieve."
+          }
+        },
+        "required": [
+          "policy_id"
+        ]
+      }
+    },
+    {
+      "name": "list-policies",
+      "description": "List all policies.",
+      "http_method": "GET",
+      "endpoint": "/policies",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of policies to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "findings",
+      "description": "Sync all findings from Wiz.",
+      "entity": "Finding",
+      "frequency": "1h"
+    },
+    {
+      "name": "resources",
+      "description": "Sync all resources from Wiz.",
+      "entity": "Resource",
+      "frequency": "1h"
+    },
+    {
+      "name": "policies",
+      "description": "Sync all policies from Wiz.",
+      "entity": "Policy",
+      "frequency": "1h"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Wiz",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": null,
+    "default_scopes": null,
+    "docs": "https://www.wiz.io/docs",
+    "setup_guide_url": "https://www.wiz.io/docs/api/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.wiz.io",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "wiz-automation",
+    "display_name": "wiz-automation",
+    "description": "Automate Wiz tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "wiz",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

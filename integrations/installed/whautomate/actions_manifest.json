@@ -1,0 +1,244 @@
+{
+  "provider": "whautomate",
+  "auth_type": "api_key",
+  "base_url": "https://api.whautomate.com",
+  "category": "automation",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-workflow",
+      "description": "Retrieve a specific workflow by ID.",
+      "http_method": "GET",
+      "endpoint": "/workflows/{workflow_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workflow_id": {
+            "type": "string",
+            "description": "The ID of the workflow to retrieve."
+          }
+        },
+        "required": [
+          "workflow_id"
+        ]
+      }
+    },
+    {
+      "name": "list-workflows",
+      "description": "List all workflows.",
+      "http_method": "GET",
+      "endpoint": "/workflows",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of workflows to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-workflow",
+      "description": "Create a new workflow.",
+      "http_method": "POST",
+      "endpoint": "/workflows",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the workflow."
+          },
+          "description": {
+            "type": "string",
+            "description": "A description of the workflow."
+          },
+          "steps": {
+            "type": "array",
+            "description": "An array of workflow steps."
+          }
+        },
+        "required": [
+          "name",
+          "steps"
+        ]
+      }
+    },
+    {
+      "name": "update-workflow",
+      "description": "Update an existing workflow.",
+      "http_method": "PUT",
+      "endpoint": "/workflows/{workflow_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workflow_id": {
+            "type": "string",
+            "description": "The ID of the workflow to update."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name of the workflow."
+          },
+          "description": {
+            "type": "string",
+            "description": "The new description of the workflow."
+          },
+          "steps": {
+            "type": "array",
+            "description": "The new steps of the workflow."
+          }
+        },
+        "required": [
+          "workflow_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-workflow",
+      "description": "Delete a workflow.",
+      "http_method": "DELETE",
+      "endpoint": "/workflows/{workflow_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workflow_id": {
+            "type": "string",
+            "description": "The ID of the workflow to delete."
+          }
+        },
+        "required": [
+          "workflow_id"
+        ]
+      }
+    },
+    {
+      "name": "run-workflow",
+      "description": "Run a workflow.",
+      "http_method": "POST",
+      "endpoint": "/workflows/{workflow_id}/run",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workflow_id": {
+            "type": "string",
+            "description": "The ID of the workflow to run."
+          },
+          "input_data": {
+            "type": "object",
+            "description": "Input data for the workflow."
+          }
+        },
+        "required": [
+          "workflow_id"
+        ]
+      }
+    },
+    {
+      "name": "get-workflow-run",
+      "description": "Get details of a workflow run.",
+      "http_method": "GET",
+      "endpoint": "/workflows/{workflow_id}/runs/{run_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workflow_id": {
+            "type": "string",
+            "description": "The ID of the workflow."
+          },
+          "run_id": {
+            "type": "string",
+            "description": "The ID of the workflow run."
+          }
+        },
+        "required": [
+          "workflow_id",
+          "run_id"
+        ]
+      }
+    },
+    {
+      "name": "list-workflow-runs",
+      "description": "List workflow runs for a specific workflow.",
+      "http_method": "GET",
+      "endpoint": "/workflows/{workflow_id}/runs",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workflow_id": {
+            "type": "string",
+            "description": "The ID of the workflow."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of runs to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": [
+          "workflow_id"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "workflows",
+      "description": "Sync all workflows.",
+      "entity": "Workflow",
+      "frequency": "15m"
+    }
+  ],
+  "provider_config": {
+    "display_name": "whautomate",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://docs.whautomate.com",
+    "setup_guide_url": "https://docs.whautomate.com/setup",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.whautomate.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "whautomate-automation",
+    "display_name": "whautomate-automation",
+    "description": "Automate Whautomate tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "whautomate",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

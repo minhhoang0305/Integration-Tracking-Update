@@ -1,0 +1,196 @@
+{
+  "provider": "webvizio",
+  "auth_type": "api_key",
+  "base_url": "https://api.webvizio.com",
+  "category": "content_management",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-content",
+      "description": "Retrieve a specific content item by ID.",
+      "http_method": "GET",
+      "endpoint": "/contents/{contentId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contentId": {
+            "type": "string",
+            "description": "The ID of the content item."
+          }
+        },
+        "required": [
+          "contentId"
+        ]
+      }
+    },
+    {
+      "name": "list-contents",
+      "description": "List all content items.",
+      "http_method": "GET",
+      "endpoint": "/contents",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of results to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-content",
+      "description": "Create a new content item.",
+      "http_method": "POST",
+      "endpoint": "/contents",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the content."
+          },
+          "body": {
+            "type": "string",
+            "description": "The content body."
+          },
+          "contentType": {
+            "type": "string",
+            "description": "The type of content."
+          }
+        },
+        "required": [
+          "title",
+          "body",
+          "contentType"
+        ]
+      }
+    },
+    {
+      "name": "update-content",
+      "description": "Update an existing content item.",
+      "http_method": "PUT",
+      "endpoint": "/contents/{contentId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contentId": {
+            "type": "string",
+            "description": "The ID of the content item."
+          },
+          "title": {
+            "type": "string",
+            "description": "The updated title of the content."
+          },
+          "body": {
+            "type": "string",
+            "description": "The updated content body."
+          }
+        },
+        "required": [
+          "contentId"
+        ]
+      }
+    },
+    {
+      "name": "delete-content",
+      "description": "Delete a content item.",
+      "http_method": "DELETE",
+      "endpoint": "/contents/{contentId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contentId": {
+            "type": "string",
+            "description": "The ID of the content item."
+          }
+        },
+        "required": [
+          "contentId"
+        ]
+      }
+    },
+    {
+      "name": "search-contents",
+      "description": "Search for content items based on keywords.",
+      "http_method": "GET",
+      "endpoint": "/contents/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of results to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "sync-contents",
+      "description": "Sync all content items.",
+      "entity": "Content",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Webvizio",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://www.webvizio.com/api-documentation",
+    "setup_guide_url": "https://www.webvizio.com/api-setup",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.webvizio.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset",
+        "limit_param": "limit",
+        "offset_param": "offset"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "webvizio-automation",
+    "display_name": "webvizio-automation",
+    "description": "Automate Webvizio tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "webvizio",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

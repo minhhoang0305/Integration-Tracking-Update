@@ -1,0 +1,118 @@
+{
+  "provider": "visma-business-nw",
+  "auth_type": "oauth2",
+  "base_url": "https://api.vismaonline.com",
+  "category": "accounting",
+  "connection_config_base_url_key": "api_url",
+  "actions": [
+    {
+      "name": "list-invoices",
+      "description": "List invoices from Visma Business (Nordic/Norway).",
+      "http_method": "GET",
+      "endpoint": "/v2/invoices",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "description": "Number of records per page"
+          },
+          "pageIndex": {
+            "type": "integer",
+            "description": "Page index"
+          },
+          "dateFrom": {
+            "type": "string",
+            "description": "Start date (YYYY-MM-DD)"
+          },
+          "dateTo": {
+            "type": "string",
+            "description": "End date (YYYY-MM-DD)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-customers",
+      "description": "List customers from Visma Business.",
+      "http_method": "GET",
+      "endpoint": "/v2/customers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "description": "Number of records per page"
+          },
+          "pageIndex": {
+            "type": "integer",
+            "description": "Page index"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-orders",
+      "description": "List orders from Visma Business.",
+      "http_method": "GET",
+      "endpoint": "/v2/orders",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "description": "Number of records per page"
+          },
+          "pageIndex": {
+            "type": "integer",
+            "description": "Page index"
+          },
+          "status": {
+            "type": "string",
+            "description": "Filter by order status"
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Visma Business NW",
+    "docs": "https://developer.vismaonline.com/apis",
+    "setup_guide_url": "https://developer.vismaonline.com/getting-started",
+    "authorization_url": "https://identity.vismaonline.com/connect/authorize",
+    "token_url": "https://identity.vismaonline.com/connect/token",
+    "default_scopes": "visma-business:general offline_access",
+    "scope_separator": " ",
+    "connection_config": {
+      "api_url": {
+        "type": "string",
+        "title": "API URL",
+        "description": "Visma Business API URL",
+        "example": "https://api.vismaonline.com"
+      }
+    },
+    "proxy": {
+      "base_url": "https://api.vismaonline.com",
+      "headers": {
+        "Authorization": "Bearer ${accessToken}"
+      },
+      "retry": {
+        "at": [
+          "retry-after"
+        ],
+        "error_code": [
+          "429",
+          "500",
+          "502",
+          "503",
+          "504"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http"
+}

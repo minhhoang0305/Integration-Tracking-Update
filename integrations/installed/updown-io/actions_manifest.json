@@ -1,0 +1,200 @@
+{
+  "provider": "updown-io",
+  "auth_type": "api_key",
+  "base_url": "https://api.updown.io",
+  "category": "monitoring",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-check",
+      "description": "Get a specific check by ID.",
+      "http_method": "GET",
+      "endpoint": "/checks/{checkId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "checkId": {
+            "type": "string",
+            "description": "The ID of the check to retrieve."
+          }
+        },
+        "required": [
+          "checkId"
+        ]
+      }
+    },
+    {
+      "name": "list-checks",
+      "description": "List all checks.",
+      "http_method": "GET",
+      "endpoint": "/checks",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "perPage": {
+            "type": "integer",
+            "description": "Number of checks per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-check",
+      "description": "Create a new check.",
+      "http_method": "POST",
+      "endpoint": "/checks",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the check."
+          },
+          "url": {
+            "type": "string",
+            "description": "The URL to monitor."
+          },
+          "period": {
+            "type": "integer",
+            "description": "The monitoring period in seconds."
+          }
+        },
+        "required": [
+          "name",
+          "url",
+          "period"
+        ]
+      }
+    },
+    {
+      "name": "update-check",
+      "description": "Update an existing check.",
+      "http_method": "PATCH",
+      "endpoint": "/checks/{checkId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "checkId": {
+            "type": "string",
+            "description": "The ID of the check to update."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name of the check."
+          },
+          "url": {
+            "type": "string",
+            "description": "The new URL to monitor."
+          },
+          "period": {
+            "type": "integer",
+            "description": "The new monitoring period in seconds."
+          }
+        },
+        "required": [
+          "checkId"
+        ]
+      }
+    },
+    {
+      "name": "delete-check",
+      "description": "Delete a check.",
+      "http_method": "DELETE",
+      "endpoint": "/checks/{checkId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "checkId": {
+            "type": "string",
+            "description": "The ID of the check to delete."
+          }
+        },
+        "required": [
+          "checkId"
+        ]
+      }
+    },
+    {
+      "name": "get-check-history",
+      "description": "Get the history of a check.",
+      "http_method": "GET",
+      "endpoint": "/checks/{checkId}/history",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "checkId": {
+            "type": "string",
+            "description": "The ID of the check."
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "perPage": {
+            "type": "integer",
+            "description": "Number of history items per page."
+          }
+        },
+        "required": [
+          "checkId"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "checks",
+      "description": "Sync all checks.",
+      "entity": "Check",
+      "frequency": "60m"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Updown.io",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": null,
+    "default_scopes": null,
+    "docs": "https://api.updown.io/docs",
+    "setup_guide_url": "https://updown.io/api-documentation",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.updown.io",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "query",
+        "page_param": "page",
+        "per_page_param": "perPage"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "updown-io-automation",
+    "display_name": "updown-io-automation",
+    "description": "Automate Updown IO tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "updown_io",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

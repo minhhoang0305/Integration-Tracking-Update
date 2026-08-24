@@ -1,0 +1,256 @@
+{
+  "provider": "zoho_invoice",
+  "auth_type": "oauth2",
+  "base_url": "https://www.zohoapis.com/invoices",
+  "category": "accounting",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-invoice",
+      "description": "Retrieve a specific invoice by ID.",
+      "http_method": "GET",
+      "endpoint": "/invoices/{invoice_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "description": "The ID of the invoice to retrieve."
+          }
+        },
+        "required": [
+          "invoice_id"
+        ]
+      }
+    },
+    {
+      "name": "list-invoices",
+      "description": "List all invoices.",
+      "http_method": "GET",
+      "endpoint": "/invoices",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of invoices per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-invoice",
+      "description": "Create a new invoice.",
+      "http_method": "POST",
+      "endpoint": "/invoices",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "string",
+            "description": "The ID of the customer."
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Invoice date."
+          },
+          "line_items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "item_name": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer"
+                },
+                "rate": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "item_name",
+                "quantity",
+                "rate"
+              ]
+            }
+          }
+        },
+        "required": [
+          "customer_id",
+          "date",
+          "line_items"
+        ]
+      }
+    },
+    {
+      "name": "update-invoice",
+      "description": "Update an existing invoice.",
+      "http_method": "PUT",
+      "endpoint": "/invoices/{invoice_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "description": "The ID of the invoice to update."
+          },
+          "customer_id": {
+            "type": "string",
+            "description": "The ID of the customer."
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Invoice date."
+          },
+          "line_items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "item_name": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer"
+                },
+                "rate": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "item_name",
+                "quantity",
+                "rate"
+              ]
+            }
+          }
+        },
+        "required": [
+          "invoice_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-invoice",
+      "description": "Delete an invoice.",
+      "http_method": "DELETE",
+      "endpoint": "/invoices/{invoice_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "description": "The ID of the invoice to delete."
+          }
+        },
+        "required": [
+          "invoice_id"
+        ]
+      }
+    },
+    {
+      "name": "get-customer",
+      "description": "Retrieve a specific customer by ID.",
+      "http_method": "GET",
+      "endpoint": "/customers/{customer_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "string",
+            "description": "The ID of the customer to retrieve."
+          }
+        },
+        "required": [
+          "customer_id"
+        ]
+      }
+    },
+    {
+      "name": "list-customers",
+      "description": "List all customers.",
+      "http_method": "GET",
+      "endpoint": "/customers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of customers per page."
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "invoices",
+      "description": "Sync all invoices.",
+      "entity": "Invoice",
+      "frequency": "daily"
+    },
+    {
+      "name": "customers",
+      "description": "Sync all customers.",
+      "entity": "Customer",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Zoho Invoice",
+    "authorization_url": "https://accounts.zoho.com/oauth/v2/auth",
+    "token_url": "https://accounts.zoho.com/oauth/v2/token",
+    "revocation_url": "https://accounts.zoho.com/oauth/v2/token/revoke",
+    "disable_pkce": false,
+    "default_scopes": "invoices.full",
+    "docs": "https://www.zoho.com/invoice/api/",
+    "setup_guide_url": "https://www.zoho.com/invoice/api/docs.html",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://www.zohoapis.com/invoices",
+      "headers": {
+        "authorization": "Bearer ${accessToken}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zoho_invoice-automation",
+    "display_name": "zoho_invoice-automation",
+    "description": "Automate Zoho Invoice tasks via Rube MCP (Composio): invoices, estimates, expenses, clients, and payment tracking. Always search tools first for current schemas.",
+    "toolkit_slug": "zoho_invoice",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE"
+    ]
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "provider": "workiom",
+  "auth_type": "api_key",
+  "base_url": "https://api.workiom.com",
+  "category": "productivity",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-task",
+      "description": "Get a specific task by ID.",
+      "http_method": "GET",
+      "endpoint": "/tasks/{task_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "description": "The ID of the task to retrieve."
+          }
+        },
+        "required": [
+          "task_id"
+        ]
+      }
+    },
+    {
+      "name": "list-tasks",
+      "description": "List all tasks.",
+      "http_method": "GET",
+      "endpoint": "/tasks",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Filter tasks by status (e.g., open, completed)."
+          },
+          "project_id": {
+            "type": "string",
+            "description": "Filter tasks by project ID."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-task",
+      "description": "Create a new task.",
+      "http_method": "POST",
+      "endpoint": "/tasks",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the task."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the task."
+          },
+          "project_id": {
+            "type": "string",
+            "description": "The ID of the project the task belongs to."
+          },
+          "due_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The due date of the task."
+          }
+        },
+        "required": [
+          "title"
+        ]
+      }
+    },
+    {
+      "name": "update-task",
+      "description": "Update an existing task.",
+      "http_method": "PUT",
+      "endpoint": "/tasks/{task_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "description": "The ID of the task to update."
+          },
+          "title": {
+            "type": "string",
+            "description": "The new title of the task."
+          },
+          "description": {
+            "type": "string",
+            "description": "The new description of the task."
+          },
+          "status": {
+            "type": "string",
+            "description": "The new status of the task."
+          }
+        },
+        "required": [
+          "task_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-task",
+      "description": "Delete a task.",
+      "http_method": "DELETE",
+      "endpoint": "/tasks/{task_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "description": "The ID of the task to delete."
+          }
+        },
+        "required": [
+          "task_id"
+        ]
+      }
+    },
+    {
+      "name": "get-project",
+      "description": "Get a specific project by ID.",
+      "http_method": "GET",
+      "endpoint": "/projects/{project_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "The ID of the project to retrieve."
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    },
+    {
+      "name": "list-projects",
+      "description": "List all projects.",
+      "http_method": "GET",
+      "endpoint": "/projects",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "create-project",
+      "description": "Create a new project.",
+      "http_method": "POST",
+      "endpoint": "/projects",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the project."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the project."
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "tasks",
+      "description": "Sync all tasks.",
+      "entity": "Task",
+      "frequency": "15m"
+    },
+    {
+      "name": "projects",
+      "description": "Sync all projects.",
+      "entity": "Project",
+      "frequency": "30m"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Workiom",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://developers.workiom.com/",
+    "setup_guide_url": "https://developers.workiom.com/docs/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.workiom.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "workiom-automation",
+    "display_name": "workiom-automation",
+    "description": "Automate Workiom tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "workiom",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

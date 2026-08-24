@@ -1,0 +1,161 @@
+{
+  "provider": "zenrows",
+  "auth_type": "api_key",
+  "base_url": "https://api.zenrows.com",
+  "category": "data_extraction",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-browser-info",
+      "description": "Get information about the ZenRows browser.",
+      "http_method": "GET",
+      "endpoint": "/browserinfo",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "request-website",
+      "description": "Make a request to a website using ZenRows.",
+      "http_method": "GET",
+      "endpoint": "/get",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL to request."
+          },
+          "params": {
+            "type": "object",
+            "description": "Query parameters to include in the request."
+          },
+          "headers": {
+            "type": "object",
+            "description": "Headers to include in the request."
+          },
+          "timeout": {
+            "type": "integer",
+            "description": "Request timeout in seconds."
+          }
+        },
+        "required": [
+          "url"
+        ]
+      }
+    },
+    {
+      "name": "request-website-post",
+      "description": "Make a POST request to a website using ZenRows.",
+      "http_method": "POST",
+      "endpoint": "/get",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL to request."
+          },
+          "params": {
+            "type": "object",
+            "description": "Query parameters to include in the request."
+          },
+          "headers": {
+            "type": "object",
+            "description": "Headers to include in the request."
+          },
+          "timeout": {
+            "type": "integer",
+            "description": "Request timeout in seconds."
+          },
+          "data": {
+            "type": "string",
+            "description": "The request body."
+          }
+        },
+        "required": [
+          "url"
+        ]
+      }
+    },
+    {
+      "name": "get-credits",
+      "description": "Get the remaining ZenRows credits.",
+      "http_method": "GET",
+      "endpoint": "/credits",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "get-usage",
+      "description": "Get ZenRows usage statistics.",
+      "http_method": "GET",
+      "endpoint": "/usage",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "date_from": {
+            "type": "string",
+            "format": "date",
+            "description": "Start date for usage statistics (YYYY-MM-DD)."
+          },
+          "date_to": {
+            "type": "string",
+            "format": "date",
+            "description": "End date for usage statistics (YYYY-MM-DD)."
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "ZenRows",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://www.zenrows.com/docs",
+    "setup_guide_url": "https://www.zenrows.com/docs/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.zenrows.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "none"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zenrows-automation",
+    "display_name": "zenrows-automation",
+    "description": "Automate Zenrows tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "zenrows",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

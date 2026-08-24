@@ -1,0 +1,128 @@
+{
+  "provider": "verifiedemail",
+  "auth_type": "api_key",
+  "base_url": "https://api.verifiedemail.com/v1",
+  "category": "email_verification",
+  "stub": false,
+  "actions": [
+    {
+      "name": "verify-email",
+      "description": "Verify if an email address is valid and deliverable.",
+      "http_method": "POST",
+      "endpoint": "/verifications",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email address to verify."
+          }
+        },
+        "required": [
+          "email"
+        ]
+      }
+    },
+    {
+      "name": "get-verification-status",
+      "description": "Retrieve the status of a previously submitted email verification.",
+      "http_method": "GET",
+      "endpoint": "/verifications/{verification_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "verification_id": {
+            "type": "string",
+            "description": "The ID of the verification request."
+          }
+        },
+        "required": [
+          "verification_id"
+        ]
+      }
+    },
+    {
+      "name": "list-verifications",
+      "description": "List all email verifications within a specified timeframe.",
+      "http_method": "GET",
+      "endpoint": "/verifications",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of verifications to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "delete-verification",
+      "description": "Delete a verification record.",
+      "http_method": "DELETE",
+      "endpoint": "/verifications/{verification_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "verification_id": {
+            "type": "string",
+            "description": "The ID of the verification request."
+          }
+        },
+        "required": [
+          "verification_id"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "VerifiedEmail",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://verifiedemail.com/docs",
+    "setup_guide_url": "https://verifiedemail.com/docs/quickstart",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.verifiedemail.com/v1",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset",
+        "limit_param": "limit",
+        "offset_param": "offset"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "verifiedemail-automation",
+    "display_name": "verifiedemail-automation",
+    "description": "Automate Verifiedemail tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "verifiedemail",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "provider": "zoho-desk",
+  "auth_type": "oauth2",
+  "base_url": "https://www.zohoapis.com/desk",
+  "category": "customer_support",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-ticket",
+      "description": "Get a specific ticket by ID.",
+      "http_method": "GET",
+      "endpoint": "/api/v1/tickets/{ticket_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "ticket_id": {
+            "type": "integer",
+            "description": "The ID of the ticket to retrieve."
+          }
+        },
+        "required": [
+          "ticket_id"
+        ]
+      }
+    },
+    {
+      "name": "list-tickets",
+      "description": "List all tickets.",
+      "http_method": "GET",
+      "endpoint": "/api/v1/tickets",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of tickets per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-ticket",
+      "description": "Create a new ticket.",
+      "http_method": "POST",
+      "endpoint": "/api/v1/tickets",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string",
+            "description": "The subject of the ticket."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the ticket."
+          },
+          "priority": {
+            "type": "string",
+            "description": "The priority of the ticket (low, medium, high, urgent)."
+          },
+          "customer_id": {
+            "type": "integer",
+            "description": "The ID of the customer associated with the ticket."
+          }
+        },
+        "required": [
+          "subject",
+          "description"
+        ]
+      }
+    },
+    {
+      "name": "update-ticket",
+      "description": "Update an existing ticket.",
+      "http_method": "PUT",
+      "endpoint": "/api/v1/tickets/{ticket_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "ticket_id": {
+            "type": "integer",
+            "description": "The ID of the ticket to update."
+          },
+          "subject": {
+            "type": "string",
+            "description": "The new subject of the ticket."
+          },
+          "description": {
+            "type": "string",
+            "description": "The new description of the ticket."
+          },
+          "status": {
+            "type": "string",
+            "description": "The new status of the ticket (open, in progress, closed, etc.)."
+          }
+        },
+        "required": [
+          "ticket_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-ticket",
+      "description": "Delete a ticket.",
+      "http_method": "DELETE",
+      "endpoint": "/api/v1/tickets/{ticket_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "ticket_id": {
+            "type": "integer",
+            "description": "The ID of the ticket to delete."
+          }
+        },
+        "required": [
+          "ticket_id"
+        ]
+      }
+    },
+    {
+      "name": "get-customer",
+      "description": "Get a specific customer by ID.",
+      "http_method": "GET",
+      "endpoint": "/api/v1/customers/{customer_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "integer",
+            "description": "The ID of the customer to retrieve."
+          }
+        },
+        "required": [
+          "customer_id"
+        ]
+      }
+    },
+    {
+      "name": "list-customers",
+      "description": "List all customers.",
+      "http_method": "GET",
+      "endpoint": "/api/v1/customers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of customers per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-customer",
+      "description": "Create a new customer.",
+      "http_method": "POST",
+      "endpoint": "/api/v1/customers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string" }
+        },
+        "required": ["name", "email"]
+      }
+    },
+    { "name": "update-customer", "description": "Update an existing customer.", "http_method": "PUT", "endpoint": "/api/v1/customers/{customer_id}", "input_schema": { "type": "object", "properties": { "customer_id": { "type": "string" }, "name": { "type": "string" }, "email": { "type": "string" }, "phone": { "type": "string" } }, "required": ["customer_id"] } },
+    { "name": "delete-customer", "description": "Delete a customer.", "http_method": "DELETE", "endpoint": "/api/v1/customers/{customer_id}", "input_schema": { "type": "object", "properties": { "customer_id": { "type": "string" } }, "required": ["customer_id"] } },
+    { "name": "list-ticket-comments", "description": "List all comments for a ticket.", "http_method": "GET", "endpoint": "/api/v1/tickets/{ticket_id}/comments", "input_schema": { "type": "object", "properties": { "ticket_id": { "type": "string" }, "limit": { "type": "integer" }, "from": { "type": "integer" } }, "required": ["ticket_id"] } },
+    { "name": "add-ticket-comment", "description": "Add a comment to a ticket.", "http_method": "POST", "endpoint": "/api/v1/tickets/{ticket_id}/comments", "input_schema": { "type": "object", "properties": { "ticket_id": { "type": "string" }, "content": { "type": "string" }, "contentType": { "type": "string", "default": "html" }, "isPublic": { "type": "boolean", "default": true } }, "required": ["ticket_id", "content"] } },
+    { "name": "list-agents", "description": "List all agents in Zoho Desk.", "http_method": "GET", "endpoint": "/api/v1/agents", "input_schema": { "type": "object", "properties": { "limit": { "type": "integer" }, "from": { "type": "integer" } } } },
+    { "name": "get-agent", "description": "Get a specific agent by ID.", "http_method": "GET", "endpoint": "/api/v1/agents/{agent_id}", "input_schema": { "type": "object", "properties": { "agent_id": { "type": "string" } }, "required": ["agent_id"] } },
+    { "name": "list-departments", "description": "List all departments in Zoho Desk.", "http_method": "GET", "endpoint": "/api/v1/departments", "input_schema": { "type": "object", "properties": { "limit": { "type": "integer" } } } },
+    { "name": "get-department", "description": "Get a specific department by ID.", "http_method": "GET", "endpoint": "/api/v1/departments/{department_id}", "input_schema": { "type": "object", "properties": { "department_id": { "type": "string" } }, "required": ["department_id"] } },
+    { "name": "list-contacts", "description": "List all contacts in Zoho Desk.", "http_method": "GET", "endpoint": "/api/v1/contacts", "input_schema": { "type": "object", "properties": { "limit": { "type": "integer" }, "from": { "type": "integer" } } } },
+    { "name": "search-tickets", "description": "Search tickets in Zoho Desk.", "http_method": "GET", "endpoint": "/api/v1/tickets/search", "input_schema": { "type": "object", "properties": { "q": { "type": "string", "description": "Search query" }, "status": { "type": "string" }, "departmentId": { "type": "string" }, "assigneeId": { "type": "string" } } } }
+  ],
+  "syncs": [
+    {
+      "name": "tickets",
+      "description": "Sync all tickets.",
+      "entity": "Ticket",
+      "frequency": "15m"
+    },
+    {
+      "name": "customers",
+      "description": "Sync all customers.",
+      "entity": "Customer",
+      "frequency": "1h"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Zoho Desk",
+    "authorization_url": "https://accounts.zoho.com/oauth/v2/auth",
+    "token_url": "https://accounts.zoho.com/oauth/v2/token",
+    "revocation_url": "https://accounts.zoho.com/oauth/v2/token/revoke",
+    "disable_pkce": false,
+    "default_scopes": "deskapi.fullaccess",
+    "docs": "https://www.zoho.com/desk/help/api/",
+    "setup_guide_url": "https://www.zoho.com/desk/help/api/getting-started.html",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://www.zohoapis.com/desk",
+      "headers": {
+        "authorization": "Bearer ${accessToken}"
+      },
+      "paginate": {
+        "type": "link",
+        "next_url": "next_url"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    },
+    "authorization_params": {
+      "prompt": "consent",
+      "access_type": "offline"
+    },
+    "connection_config": {
+      "extension": {
+        "type": "string",
+        "title": "Domain Extension",
+        "description": "The domain extension of your Zoho Desk account",
+        "pattern": "^[a-z.]+$",
+        "prefix": "https://desk.zoho.",
+        "example": "com",
+        "optional": true,
+        "suffix": "/"
+      }
+    },
+    "docs_connect": "https://connect.uplizd.ai/docs/integrations/all/zoho-desk/connect"
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zoho-desk-automation",
+    "display_name": "Zoho Desk Automation",
+    "description": "Zoho Desk automation via Rube MCP -- toolkit not currently available in Composio; no ZOHO_DESK_ tools found",
+    "toolkit_slug": "zoho_desk",
+    "composio_tool_slugs": [
+      "FRESHDESK_CREATE_TICKET",
+      "FRESHDESK_UPDATE_TICKET",
+      "HUBSPOT_CREATE_TICKET",
+      "HUBSPOT_LIST_TICKETS",
+      "ZENDESK_CREATE_ZENDESK_TICKET",
+      "ZOHO_CREATE_ZOHO_RECORD",
+      "ZOHO_GET_ZOHO_USERS",
+      "ZOHO_INVOICE_LIST_CONTACTS"
+    ],
+    "tool_slugs_hint": [
+      "CRM",
+      "FRESHDESK_CREATE_TICKET",
+      "FRESHDESK_UPDATE_TICKET",
+      "HUBSPOT_CREATE_TICKET",
+      "HUBSPOT_LIST_TICKETS",
+      "ZENDESK_CREATE_ZENDESK_TICKET",
+      "ZOHO_CREATE_ZOHO_RECORD",
+      "ZOHO_DESK_",
+      "ZOHO_GET_ZOHO_USERS",
+      "ZOHO_INVOICE_LIST_CONTACTS"
+    ]
+  }
+}

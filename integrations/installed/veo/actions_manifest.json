@@ -1,0 +1,188 @@
+{
+  "provider": "veo",
+  "auth_type": "api_key",
+  "base_url": "https://api.veo.io",
+  "category": "mobility",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-vehicle",
+      "description": "Retrieve details for a specific vehicle.",
+      "http_method": "GET",
+      "endpoint": "/vehicles/{vehicle_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "vehicle_id": {
+            "type": "string",
+            "description": "The unique identifier of the vehicle."
+          }
+        },
+        "required": [
+          "vehicle_id"
+        ]
+      }
+    },
+    {
+      "name": "list-vehicles",
+      "description": "List all vehicles associated with the account.",
+      "http_method": "GET",
+      "endpoint": "/vehicles",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of vehicles to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get-ride",
+      "description": "Retrieve details for a specific ride.",
+      "http_method": "GET",
+      "endpoint": "/rides/{ride_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "ride_id": {
+            "type": "string",
+            "description": "The unique identifier of the ride."
+          }
+        },
+        "required": [
+          "ride_id"
+        ]
+      }
+    },
+    {
+      "name": "list-rides",
+      "description": "List all rides associated with the account.",
+      "http_method": "GET",
+      "endpoint": "/rides",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "start_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter rides starting after this time."
+          },
+          "end_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter rides ending before this time."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of rides to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get-user",
+      "description": "Retrieve details for a specific user.",
+      "http_method": "GET",
+      "endpoint": "/users/{user_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "The unique identifier of the user."
+          }
+        },
+        "required": [
+          "user_id"
+        ]
+      }
+    },
+    {
+      "name": "list-users",
+      "description": "List all users associated with the account.",
+      "http_method": "GET",
+      "endpoint": "/users",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of users to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "vehicles",
+      "description": "Sync all vehicles associated with the account.",
+      "entity": "Vehicle",
+      "frequency": "daily"
+    },
+    {
+      "name": "rides",
+      "description": "Sync all rides associated with the account.",
+      "entity": "Ride",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Veo",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://developers.veo.io/",
+    "setup_guide_url": "https://developers.veo.io/docs/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.veo.io",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "veo-automation",
+    "display_name": "veo-automation",
+    "description": "Automate Veo tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "veo",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

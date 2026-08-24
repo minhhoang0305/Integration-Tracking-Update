@@ -1,0 +1,208 @@
+{
+  "provider": "uploadcare",
+  "auth_type": "api_key",
+  "base_url": "https://api.uploadcare.com",
+  "category": "file_management",
+  "stub": false,
+  "actions": [
+    {
+      "name": "upload-file",
+      "description": "Upload a file to Uploadcare.",
+      "http_method": "POST",
+      "endpoint": "/files/",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "The file to upload."
+          }
+        },
+        "required": [
+          "file"
+        ]
+      }
+    },
+    {
+      "name": "get-file",
+      "description": "Get information about a specific file.",
+      "http_method": "GET",
+      "endpoint": "/files/{file_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "file_id": {
+            "type": "string",
+            "description": "The ID of the file."
+          }
+        },
+        "required": [
+          "file_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-file",
+      "description": "Delete a file from Uploadcare.",
+      "http_method": "DELETE",
+      "endpoint": "/files/{file_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "file_id": {
+            "type": "string",
+            "description": "The ID of the file."
+          }
+        },
+        "required": [
+          "file_id"
+        ]
+      }
+    },
+    {
+      "name": "list-files",
+      "description": "List all files in your Uploadcare account.",
+      "http_method": "GET",
+      "endpoint": "/files/",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of files to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-album",
+      "description": "Create a new album.",
+      "http_method": "POST",
+      "endpoint": "/albums/",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the album."
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "get-album",
+      "description": "Get information about a specific album.",
+      "http_method": "GET",
+      "endpoint": "/albums/{album_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "album_id": {
+            "type": "string",
+            "description": "The ID of the album."
+          }
+        },
+        "required": [
+          "album_id"
+        ]
+      }
+    },
+    {
+      "name": "list-albums",
+      "description": "List all albums.",
+      "http_method": "GET",
+      "endpoint": "/albums/",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of albums to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "files",
+      "description": "Sync all files from Uploadcare.",
+      "entity": "File",
+      "frequency": "daily"
+    },
+    {
+      "name": "albums",
+      "description": "Sync all albums from Uploadcare.",
+      "entity": "Album",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Uploadcare",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://uploadcare.com/api/docs/",
+    "setup_guide_url": "https://uploadcare.com/api/getting-started/",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.uploadcare.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "uploadcare-automation",
+    "display_name": "Uploadcare Automation",
+    "description": "Automate Uploadcare file management including listing, storing, inspecting, downloading, and organizing file groups through natural language commands",
+    "toolkit_slug": "uploadcare",
+    "composio_tool_slugs": [
+      "UPLOADCARE_GET_FILE_DOWNLOAD_URL",
+      "UPLOADCARE_GET_FILE_INFO",
+      "UPLOADCARE_LIST_FILES",
+      "UPLOADCARE_LIST_GROUPS",
+      "UPLOADCARE_STORE_FILE"
+    ],
+    "tool_slugs_hint": [
+      "CDN",
+      "ISO",
+      "MIME",
+      "UPLOADCARE_GET_FILE_DOWNLOAD_URL",
+      "UPLOADCARE_GET_FILE_INFO",
+      "UPLOADCARE_LIST_FILES",
+      "UPLOADCARE_LIST_GROUPS",
+      "UPLOADCARE_STORE_FILE",
+      "UUID"
+    ]
+  }
+}

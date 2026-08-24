@@ -1,0 +1,54 @@
+{
+  "overview": "Zoho CRM uses OAuth 2.0. You register an OAuth application in the Zoho API Console, receive a Client ID and Client Secret, then redirect users through Zoho's authorisation flow. Zoho issues a scoped access token on completion.",
+  "credential_help": {
+    "oauth_client_id": {
+      "label": "Client ID",
+      "description": "Found in the Zoho API Console after creating a Server-based Application. Listed under your app's credentials.",
+      "url": "https://api-console.zoho.com/",
+      "url_label": "Open Zoho API Console"
+    },
+    "oauth_client_secret": {
+      "label": "Client Secret",
+      "description": "Found alongside the Client ID in the API Console. Keep it confidential.",
+      "url": "https://api-console.zoho.com/",
+      "url_label": "Open Zoho API Console"
+    }
+  },
+  "steps": [
+    {
+      "title": "Open the Zoho API Console",
+      "description": "Go to api-console.zoho.com and sign in with your Zoho account.",
+      "url": "https://api-console.zoho.com/",
+      "url_label": "Open Zoho API Console"
+    },
+    {
+      "title": "Create a Server-based Application",
+      "description": "Click 'Add Client'. Select 'Server-based Applications'. Enter an application name, homepage URL, and the Nolixan callback URL as the Authorized Redirect URI.",
+      "tip": "Choose 'Server-based Applications' (not 'Self Client') for standard OAuth flows with user authorisation."
+    },
+    {
+      "title": "Set the redirect URI",
+      "description": "Add the Nolixan callback URL as an Authorized Redirect URI.",
+      "warning": "The redirect URI must match exactly. A mismatch causes 'invalid_redirect_uri' errors."
+    },
+    {
+      "title": "Copy Client ID and Client Secret",
+      "description": "After creating the app, Zoho displays the Client ID and Client Secret. Copy both and store them securely.",
+      "warning": "Never expose the Client Secret in client-side code or public repositories."
+    },
+    {
+      "title": "Connect",
+      "description": "In Nolixan, create an integration with the Client ID, Client Secret, and required scopes. Then initiate the OAuth flow.",
+      "code": "GET /api/v1/oauth/request/zoho-crm?provider=zoho-crm&connection_id=user-123&environment_id=1"
+    }
+  ],
+  "tips": [
+    "Access tokens expire after 1 hour — Nolixan auto-refreshes them using the refresh token.",
+    "Zoho CRM has region-specific API endpoints (com, eu, in, com.au). The base URL https://www.zohoapis.com auto-routes to the correct region.",
+    "Use ZohoCRM.modules.ALL for broad access, or specify individual module scopes for tighter control."
+  ],
+  "warnings": [
+    "If a user revokes access, they must re-authorise via the OAuth flow.",
+    "Zoho rate limits API calls per day — monitor usage to avoid hitting the daily limit."
+  ]
+}

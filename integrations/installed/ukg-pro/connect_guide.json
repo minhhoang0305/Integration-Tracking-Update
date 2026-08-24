@@ -1,0 +1,49 @@
+{
+  "overview": "UKG Pro (formerly Ultimate Software UltiPro) uses OAuth 2.0. You register an application through the UKG developer programme, receive a Client ID and Client Secret, and redirect users through UKG Pro's authorisation flow.",
+  "credential_help": {
+    "oauth_client_id": {
+      "label": "Client ID",
+      "description": "Issued after registering your integration at connect.ultipro.com or through UKG's partner programme.",
+      "url": "https://connect.ultipro.com/",
+      "url_label": "Open UKG Pro Connect"
+    },
+    "oauth_client_secret": {
+      "label": "Client Secret",
+      "description": "Issued alongside the Client ID. Keep it confidential.",
+      "url": "https://connect.ultipro.com/",
+      "url_label": "Open UKG Pro Connect"
+    }
+  },
+  "steps": [
+    {
+      "title": "Register for API access",
+      "description": "Go to connect.ultipro.com and apply for API access. UKG Pro API requires partner registration or customer API enablement.",
+      "url": "https://connect.ultipro.com/",
+      "url_label": "Open UKG Pro Connect"
+    },
+    {
+      "title": "Receive credentials",
+      "description": "After approval, UKG provides a Client ID and Client Secret. Note your Customer API Key — it identifies your tenant in API calls.",
+      "tip": "The Customer API Key is separate from the OAuth credentials and required for tenant identification."
+    },
+    {
+      "title": "Configure redirect URL",
+      "description": "Provide the Nolixan callback URL as the authorised redirect URI.",
+      "warning": "Redirect URI must match exactly during the OAuth flow."
+    },
+    {
+      "title": "Connect",
+      "description": "In Nolixan, create the integration with the Client ID, Client Secret, and Customer API Key (as connection config). Then initiate the OAuth flow.",
+      "code": "GET /api/v1/oauth/request/ukg-pro?provider=ukg-pro&connection_id=user-123&environment_id=1"
+    }
+  ],
+  "tips": [
+    "UKG Pro API access requires a formal approval process — allow lead time before integration.",
+    "Access tokens expire and Nolixan handles auto-refresh.",
+    "The Customer API Key is passed as the 'US-Customer-Api-Key' header in all API requests."
+  ],
+  "warnings": [
+    "UKG Pro API is enterprise-grade — ensure your use case qualifies for the access tier you apply for.",
+    "Never expose the Client Secret or Customer API Key in client-side code."
+  ]
+}

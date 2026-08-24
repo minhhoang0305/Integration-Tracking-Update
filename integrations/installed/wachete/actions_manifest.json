@@ -1,0 +1,153 @@
+{
+  "provider": "wachete",
+  "auth_type": "api_key",
+  "base_url": "https://api.wachete.com",
+  "category": "sms",
+  "stub": false,
+  "actions": [
+    {
+      "name": "send-sms",
+      "description": "Send a single SMS message.",
+      "http_method": "POST",
+      "endpoint": "/sms/send",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string",
+            "description": "Recipient phone number."
+          },
+          "from": {
+            "type": "string",
+            "description": "Sender phone number."
+          },
+          "body": {
+            "type": "string",
+            "description": "Message content."
+          }
+        },
+        "required": [
+          "to",
+          "from",
+          "body"
+        ]
+      }
+    },
+    {
+      "name": "get-sms-status",
+      "description": "Get the status of a sent SMS message.",
+      "http_method": "GET",
+      "endpoint": "/sms/{message_id}/status",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string",
+            "description": "The ID of the SMS message."
+          }
+        },
+        "required": [
+          "message_id"
+        ]
+      }
+    },
+    {
+      "name": "get-delivery-report",
+      "description": "Get the delivery report for a sent SMS message.",
+      "http_method": "GET",
+      "endpoint": "/sms/{message_id}/delivery",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string",
+            "description": "The ID of the SMS message."
+          }
+        },
+        "required": [
+          "message_id"
+        ]
+      }
+    },
+    {
+      "name": "get-balance",
+      "description": "Get the account balance.",
+      "http_method": "GET",
+      "endpoint": "/account/balance",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "list-sent-sms",
+      "description": "List sent SMS messages.",
+      "http_method": "GET",
+      "endpoint": "/sms/sent",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of results to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        }
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "sent_sms",
+      "description": "Sync sent SMS messages.",
+      "entity": "SentSms",
+      "frequency": "hourly"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Wachete",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://www.wachete.com/docs",
+    "setup_guide_url": "https://www.wachete.com/docs/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.wachete.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset",
+        "limit_param": "limit",
+        "offset_param": "offset"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "wachete-automation",
+    "display_name": "wachete-automation",
+    "description": "Automate Wachete tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "wachete",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

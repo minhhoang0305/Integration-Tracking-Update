@@ -26,6 +26,7 @@ builder.Services.AddScoped<EmailAnalysisService>();
 builder.Services.AddHostedService<AnalysisResultConsumer>();
 builder.Services.Configure<GmailOptions>(builder.Configuration.GetSection("Gmail"));
 builder.Services.Configure<TemplateOptions>(builder.Configuration.GetSection("Templates"));
+builder.Services.Configure<ObjectStorageOptions>(builder.Configuration.GetSection("ObjectStorage"));
 builder.Services.Configure<ProposalLlmOptions>(builder.Configuration.GetSection("ProposalLlm"));
 builder.Services.AddScoped<ProviderEmailFilter>();
 builder.Services.AddScoped<EmailNormalizer>();
@@ -35,6 +36,8 @@ builder.Services.AddScoped<GmailIngestionService>();
 if (builder.Configuration.GetValue<bool?>("Gmail:Enabled") ?? true)
     builder.Services.AddHostedService<GmailIngestionWorker>();
 builder.Services.AddSingleton<TemplateRegistryService>();
+builder.Services.AddSingleton<IIntegrationStorage, S3IntegrationStorage>();
+builder.Services.AddSingleton<InstalledIntegrationCatalog>();
 builder.Services.AddSingleton<ManifestDiffService>();
 builder.Services.AddSingleton<ImpactAnalysisService>();
 builder.Services.AddHttpClient<DocumentationEvidenceService>();
@@ -47,14 +50,20 @@ using (var scope = app.Services.CreateScope())
 {
     scope.ServiceProvider.GetRequiredService<IntegrationTrackingDbContext>()
         .Database.Migrate();
+    await scope.ServiceProvider.GetRequiredService<IIntegrationStorage>().ValidateCatalogAsync();
+    scope.ServiceProvider.GetRequiredService<InstalledIntegrationCatalog>().Load();
 }
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.MapControllers();
+
+app.MapFallbackToFile("index.html");
 
 app.MapGet("/health", () => Results.Ok(new
 {

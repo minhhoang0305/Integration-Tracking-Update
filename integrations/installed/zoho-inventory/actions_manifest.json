@@ -1,0 +1,290 @@
+{
+  "provider": "zoho-inventory",
+  "auth_type": "oauth2",
+  "base_url": "https://inventory.zoho.com/api/v1",
+  "category": "ecommerce",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-item",
+      "description": "Get a specific item by ID.",
+      "http_method": "GET",
+      "endpoint": "/items/{item_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "description": "The ID of the item to retrieve."
+          }
+        },
+        "required": [
+          "item_id"
+        ]
+      }
+    },
+    {
+      "name": "list-items",
+      "description": "List all items.",
+      "http_method": "GET",
+      "endpoint": "/items",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of items per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-item",
+      "description": "Create a new item.",
+      "http_method": "POST",
+      "endpoint": "/items",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the item."
+          },
+          "sku": {
+            "type": "string",
+            "description": "The SKU of the item."
+          }
+        },
+        "required": [
+          "name",
+          "sku"
+        ]
+      }
+    },
+    {
+      "name": "update-item",
+      "description": "Update an existing item.",
+      "http_method": "PUT",
+      "endpoint": "/items/{item_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "description": "The ID of the item to update."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name of the item."
+          }
+        },
+        "required": [
+          "item_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-item",
+      "description": "Delete an item.",
+      "http_method": "DELETE",
+      "endpoint": "/items/{item_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "description": "The ID of the item to delete."
+          }
+        },
+        "required": [
+          "item_id"
+        ]
+      }
+    },
+    {
+      "name": "get-order",
+      "description": "Get a specific order by ID.",
+      "http_method": "GET",
+      "endpoint": "/orders/{order_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "description": "The ID of the order to retrieve."
+          }
+        },
+        "required": [
+          "order_id"
+        ]
+      }
+    },
+    {
+      "name": "list-orders",
+      "description": "List all orders.",
+      "http_method": "GET",
+      "endpoint": "/orders",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of orders per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-order",
+      "description": "Create a new order.",
+      "http_method": "POST",
+      "endpoint": "/orders",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "string",
+            "description": "The ID of the customer."
+          }
+        },
+        "required": [
+          "customer_id"
+        ]
+      }
+    },
+    {
+      "name": "update-order",
+      "description": "Update an existing order.",
+      "http_method": "PUT",
+      "endpoint": "/orders/{order_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "description": "The ID of the order to update."
+          },
+          "status": {
+            "type": "string",
+            "description": "The new status of the order."
+          }
+        },
+        "required": [
+          "order_id"
+        ]
+      }
+    },
+    {
+      "name": "get-customer",
+      "description": "Get a specific customer by ID.",
+      "http_method": "GET",
+      "endpoint": "/contacts/{customer_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": { "customer_id": { "type": "string" } },
+        "required": ["customer_id"]
+      }
+    },
+    { "name": "list-customers", "description": "List all customers in Zoho Inventory.", "http_method": "GET", "endpoint": "/contacts", "input_schema": { "type": "object", "properties": { "page": { "type": "integer" }, "per_page": { "type": "integer" } } } },
+    { "name": "create-customer", "description": "Create a new customer.", "http_method": "POST", "endpoint": "/contacts", "input_schema": { "type": "object", "properties": { "contact_name": { "type": "string" }, "email": { "type": "string" }, "phone": { "type": "string" } }, "required": ["contact_name"] } },
+    { "name": "update-customer", "description": "Update an existing customer.", "http_method": "PUT", "endpoint": "/contacts/{customer_id}", "input_schema": { "type": "object", "properties": { "customer_id": { "type": "string" }, "contact_name": { "type": "string" }, "email": { "type": "string" } }, "required": ["customer_id"] } },
+    { "name": "delete-customer", "description": "Delete a customer.", "http_method": "DELETE", "endpoint": "/contacts/{customer_id}", "input_schema": { "type": "object", "properties": { "customer_id": { "type": "string" } }, "required": ["customer_id"] } },
+    { "name": "delete-order", "description": "Delete a sales order.", "http_method": "DELETE", "endpoint": "/salesorders/{order_id}", "input_schema": { "type": "object", "properties": { "order_id": { "type": "string" } }, "required": ["order_id"] } },
+    { "name": "list-warehouses", "description": "List all warehouses in Zoho Inventory.", "http_method": "GET", "endpoint": "/warehouses", "input_schema": { "type": "object", "properties": {} } },
+    { "name": "get-warehouse", "description": "Get a specific warehouse by ID.", "http_method": "GET", "endpoint": "/warehouses/{warehouse_id}", "input_schema": { "type": "object", "properties": { "warehouse_id": { "type": "string" } }, "required": ["warehouse_id"] } },
+    { "name": "list-purchase-orders", "description": "List all purchase orders.", "http_method": "GET", "endpoint": "/purchaseorders", "input_schema": { "type": "object", "properties": { "page": { "type": "integer" }, "per_page": { "type": "integer" }, "status": { "type": "string" } } } },
+    { "name": "get-purchase-order", "description": "Get a specific purchase order by ID.", "http_method": "GET", "endpoint": "/purchaseorders/{purchaseorder_id}", "input_schema": { "type": "object", "properties": { "purchaseorder_id": { "type": "string" } }, "required": ["purchaseorder_id"] } },
+    { "name": "create-purchase-order", "description": "Create a new purchase order.", "http_method": "POST", "endpoint": "/purchaseorders", "input_schema": { "type": "object", "properties": { "vendor_id": { "type": "string" }, "line_items": { "type": "array" }, "delivery_date": { "type": "string" } }, "required": ["vendor_id"] } }
+  ],
+  "syncs": [
+    {
+      "name": "items",
+      "description": "Sync all items from Zoho Inventory.",
+      "entity": "Item",
+      "frequency": "daily"
+    },
+    {
+      "name": "orders",
+      "description": "Sync all orders from Zoho Inventory.",
+      "entity": "Order",
+      "frequency": "hourly"
+    },
+    {
+      "name": "customers",
+      "description": "Sync all customers from Zoho Inventory.",
+      "entity": "Customer",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Zoho Inventory",
+    "authorization_url": "https://accounts.zoho.com/oauth/v2/auth",
+    "token_url": "https://accounts.zoho.com/oauth/v2/token",
+    "revocation_url": "https://accounts.zoho.com/oauth/v2/token/revoke",
+    "disable_pkce": false,
+    "default_scopes": "inventory.full_access",
+    "docs": "https://www.zoho.com/inventory/api/",
+    "setup_guide_url": "https://www.zoho.com/inventory/api/documentation.html",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://inventory.zoho.com/api/v1",
+      "headers": {
+        "authorization": "Bearer ${accessToken}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    },
+    "authorization_params": {
+      "prompt": "consent",
+      "access_type": "offline"
+    },
+    "connection_config": {
+      "extension": {
+        "type": "string",
+        "title": "Domain Extension",
+        "description": "The domain extension of your Zoho Inventory account",
+        "pattern": "^[a-z.]+$",
+        "prefix": "https://inventory.zoho.",
+        "example": "com",
+        "optional": true,
+        "suffix": "/"
+      }
+    },
+    "docs_connect": "https://connect.uplizd.ai/docs/integrations/all/zoho-inventory/connect"
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zoho-inventory-automation",
+    "display_name": "zoho-inventory-automation",
+    "description": "Automate Zoho Inventory tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "zoho_inventory",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

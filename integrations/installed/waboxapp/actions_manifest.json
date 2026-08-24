@@ -1,0 +1,244 @@
+{
+  "provider": "waboxapp",
+  "auth_type": "api_key",
+  "base_url": "https://api.waboxapp.com",
+  "category": "messaging",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-contact",
+      "description": "Get a specific contact by ID.",
+      "http_method": "GET",
+      "endpoint": "/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "list-contacts",
+      "description": "List all contacts.",
+      "http_method": "GET",
+      "endpoint": "/contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of contacts per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-contact",
+      "description": "Create a new contact.",
+      "http_method": "POST",
+      "endpoint": "/contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the contact."
+          },
+          "phone": {
+            "type": "string",
+            "description": "The phone number of the contact."
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the contact."
+          }
+        },
+        "required": [
+          "name",
+          "phone"
+        ]
+      }
+    },
+    {
+      "name": "update-contact",
+      "description": "Update an existing contact.",
+      "http_method": "PUT",
+      "endpoint": "/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name of the contact."
+          },
+          "phone": {
+            "type": "string",
+            "description": "The new phone number of the contact."
+          },
+          "email": {
+            "type": "string",
+            "description": "The new email address of the contact."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-contact",
+      "description": "Delete a contact.",
+      "http_method": "DELETE",
+      "endpoint": "/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "send-message",
+      "description": "Send a message to a contact.",
+      "http_method": "POST",
+      "endpoint": "/messages",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the recipient contact."
+          },
+          "message": {
+            "type": "string",
+            "description": "The message content."
+          }
+        },
+        "required": [
+          "contact_id",
+          "message"
+        ]
+      }
+    },
+    {
+      "name": "get-message",
+      "description": "Get a specific message by ID.",
+      "http_method": "GET",
+      "endpoint": "/messages/{message_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string",
+            "description": "The ID of the message."
+          }
+        },
+        "required": [
+          "message_id"
+        ]
+      }
+    },
+    {
+      "name": "list-messages",
+      "description": "List messages.",
+      "http_method": "GET",
+      "endpoint": "/messages",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "Filter messages by contact ID."
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of messages per page."
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "contacts",
+      "description": "Sync all contacts.",
+      "entity": "Contact",
+      "frequency": "hourly"
+    },
+    {
+      "name": "messages",
+      "description": "Sync recent messages.",
+      "entity": "Message",
+      "frequency": "15m"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Waboxapp",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://developers.waboxapp.com/",
+    "setup_guide_url": "https://developers.waboxapp.com/docs/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.waboxapp.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "waboxapp-automation",
+    "display_name": "waboxapp-automation",
+    "description": "Automate Waboxapp tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "waboxapp",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

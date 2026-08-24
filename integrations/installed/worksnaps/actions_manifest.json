@@ -1,0 +1,225 @@
+{
+  "provider": "worksnaps",
+  "auth_type": "api_key",
+  "base_url": "https://api.worksnaps.io",
+  "category": "hris",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-employee",
+      "description": "Get a specific employee by ID.",
+      "http_method": "GET",
+      "endpoint": "/employees/{employee_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "employee_id": {
+            "type": "integer",
+            "description": "The ID of the employee to retrieve."
+          }
+        },
+        "required": [
+          "employee_id"
+        ]
+      }
+    },
+    {
+      "name": "list-employees",
+      "description": "List all employees.",
+      "http_method": "GET",
+      "endpoint": "/employees",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of employees per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-employee",
+      "description": "Create a new employee.",
+      "http_method": "POST",
+      "endpoint": "/employees",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Employee's name."
+          },
+          "email": {
+            "type": "string",
+            "description": "Employee's email address."
+          }
+        },
+        "required": [
+          "name",
+          "email"
+        ]
+      }
+    },
+    {
+      "name": "update-employee",
+      "description": "Update an existing employee.",
+      "http_method": "PUT",
+      "endpoint": "/employees/{employee_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "employee_id": {
+            "type": "integer",
+            "description": "The ID of the employee to update."
+          },
+          "name": {
+            "type": "string",
+            "description": "Employee's name."
+          },
+          "email": {
+            "type": "string",
+            "description": "Employee's email address."
+          }
+        },
+        "required": [
+          "employee_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-employee",
+      "description": "Delete an employee.",
+      "http_method": "DELETE",
+      "endpoint": "/employees/{employee_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "employee_id": {
+            "type": "integer",
+            "description": "The ID of the employee to delete."
+          }
+        },
+        "required": [
+          "employee_id"
+        ]
+      }
+    },
+    {
+      "name": "get-attendance",
+      "description": "Get attendance records for a specific employee and date.",
+      "http_method": "GET",
+      "endpoint": "/attendances/{employee_id}/{date}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "employee_id": {
+            "type": "integer",
+            "description": "The ID of the employee."
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "The date for which to retrieve attendance (YYYY-MM-DD)."
+          }
+        },
+        "required": [
+          "employee_id",
+          "date"
+        ]
+      }
+    },
+    {
+      "name": "list-attendances",
+      "description": "List attendance records for a specific employee within a date range.",
+      "http_method": "GET",
+      "endpoint": "/attendances/{employee_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "employee_id": {
+            "type": "integer",
+            "description": "The ID of the employee."
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date of the range (YYYY-MM-DD)."
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The end date of the range (YYYY-MM-DD)."
+          }
+        },
+        "required": [
+          "employee_id",
+          "start_date",
+          "end_date"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "employees",
+      "description": "Sync all employees from Worksnaps.",
+      "entity": "Employee",
+      "frequency": "daily"
+    },
+    {
+      "name": "attendance",
+      "description": "Sync attendance records.",
+      "entity": "Attendance",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Worksnaps",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": null,
+    "default_scopes": null,
+    "docs": "https://developers.worksnaps.io/api-reference",
+    "setup_guide_url": "https://developers.worksnaps.io/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.worksnaps.io",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "worksnaps-automation",
+    "display_name": "worksnaps-automation",
+    "description": "Automate Worksnaps tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "worksnaps",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

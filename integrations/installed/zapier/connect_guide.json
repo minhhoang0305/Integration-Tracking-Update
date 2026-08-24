@@ -1,0 +1,46 @@
+{
+  "overview": "Zapier Natural Language Actions (NLA) uses an API key for authentication. You obtain a key from the Zapier NLA portal and include it in the x-api-key header for all NLA API requests. The NLA API allows you to trigger Zapier actions using natural language descriptions of what to do.",
+  "credential_help": {
+    "apiKey": {
+      "label": "NLA API Key",
+      "description": "Generated at https://nla.zapier.com/credentials/ after signing into your Zapier account.",
+      "url": "https://nla.zapier.com/credentials/",
+      "url_label": "Open Zapier NLA Credentials"
+    }
+  },
+  "steps": [
+    {
+      "title": "Sign in to Zapier",
+      "description": "Go to https://nla.zapier.com and sign in with your Zapier account.",
+      "url": "https://nla.zapier.com",
+      "url_label": "Open Zapier NLA",
+      "tip": "The NLA API is a separate product from Zapier's standard automation builder. Ensure your plan includes NLA API access."
+    },
+    {
+      "title": "Enable actions in the NLA portal",
+      "description": "In the Zapier NLA portal, browse the available actions (e.g., Gmail: Send Email, Slack: Send Message) and enable the ones your integration needs.",
+      "tip": "Actions are linked to your existing Zapier connected accounts. Make sure the relevant Zapier integrations are already set up in your Zapier account."
+    },
+    {
+      "title": "Get your NLA API key",
+      "description": "Go to https://nla.zapier.com/credentials/ to find or generate your NLA API key.",
+      "url": "https://nla.zapier.com/credentials/",
+      "url_label": "Open NLA Credentials",
+      "warning": "Store the API key securely. It grants access to all enabled NLA actions on your Zapier account."
+    },
+    {
+      "title": "Add the key to Nolixan",
+      "description": "In Nolixan, create a connection for Zapier NLA with the API key.",
+      "code": "POST /api/v1/connections\n{\n  \"provider_config_key\": \"zapier\",\n  \"connection_id\": \"your-user-or-account-id\",\n  \"credentials\": { \"apiKey\": \"...\" }\n}"
+    }
+  ],
+  "tips": [
+    "The NLA API base URL is https://nla.zapier.com/api/v1/. Use GET /exposed/ to list all enabled actions for a user.",
+    "NLA actions are invoked with a plain English description — Zapier maps the description to the correct action and fills in parameters.",
+    "For standard Zapier automation (Zaps), the NLA API is not needed. NLA is specifically for programmatic, AI-driven action execution."
+  ],
+  "warnings": [
+    "NLA actions execute real tasks (sending emails, posting to Slack, etc.). Test with low-impact actions before enabling high-consequence ones.",
+    "The Zapier NLA API is in limited availability. Check https://nla.zapier.com for current access status and API limits."
+  ]
+}

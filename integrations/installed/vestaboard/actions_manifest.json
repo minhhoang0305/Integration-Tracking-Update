@@ -1,0 +1,229 @@
+{
+  "provider": "vestaboard",
+  "auth_type": "api_key",
+  "base_url": "https://api.vestaboard.com",
+  "category": "project_management",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-board",
+      "description": "Get a specific board by ID.",
+      "http_method": "GET",
+      "endpoint": "/boards/{board_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "board_id": {
+            "type": "string",
+            "description": "The ID of the board."
+          }
+        },
+        "required": [
+          "board_id"
+        ]
+      }
+    },
+    {
+      "name": "list-boards",
+      "description": "List all boards.",
+      "http_method": "GET",
+      "endpoint": "/boards",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of boards to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-board",
+      "description": "Create a new board.",
+      "http_method": "POST",
+      "endpoint": "/boards",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the board."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the board."
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "update-board",
+      "description": "Update an existing board.",
+      "http_method": "PUT",
+      "endpoint": "/boards/{board_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "board_id": {
+            "type": "string",
+            "description": "The ID of the board."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name of the board."
+          },
+          "description": {
+            "type": "string",
+            "description": "The new description of the board."
+          }
+        },
+        "required": [
+          "board_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-board",
+      "description": "Delete a board.",
+      "http_method": "DELETE",
+      "endpoint": "/boards/{board_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "board_id": {
+            "type": "string",
+            "description": "The ID of the board."
+          }
+        },
+        "required": [
+          "board_id"
+        ]
+      }
+    },
+    {
+      "name": "get-column",
+      "description": "Get a specific column by ID.",
+      "http_method": "GET",
+      "endpoint": "/columns/{column_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "column_id": {
+            "type": "string",
+            "description": "The ID of the column."
+          }
+        },
+        "required": [
+          "column_id"
+        ]
+      }
+    },
+    {
+      "name": "list-columns",
+      "description": "List all columns for a board.",
+      "http_method": "GET",
+      "endpoint": "/boards/{board_id}/columns",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "board_id": {
+            "type": "string",
+            "description": "The ID of the board."
+          }
+        },
+        "required": [
+          "board_id"
+        ]
+      }
+    },
+    {
+      "name": "create-column",
+      "description": "Create a new column.",
+      "http_method": "POST",
+      "endpoint": "/boards/{board_id}/columns",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "board_id": {
+            "type": "string",
+            "description": "The ID of the board."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the column."
+          }
+        },
+        "required": [
+          "board_id",
+          "name"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "boards",
+      "description": "Sync all boards.",
+      "entity": "Board",
+      "frequency": "hourly"
+    },
+    {
+      "name": "columns",
+      "description": "Sync all columns.",
+      "entity": "Column",
+      "frequency": "hourly"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Vestaboard",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://vestaboard.com/docs",
+    "setup_guide_url": "https://vestaboard.com/docs/api",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.vestaboard.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "vestaboard-automation",
+    "display_name": "vestaboard-automation",
+    "description": "Automate Vestaboard tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "vestaboard",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

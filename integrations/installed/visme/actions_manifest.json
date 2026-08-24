@@ -1,0 +1,206 @@
+{
+  "provider": "visme",
+  "auth_type": "api_key",
+  "base_url": "https://api.visme.co",
+  "category": "design",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-project",
+      "description": "Get a specific project by ID.",
+      "http_method": "GET",
+      "endpoint": "/projects/{project_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "The ID of the project to retrieve."
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    },
+    {
+      "name": "list-projects",
+      "description": "List all projects.",
+      "http_method": "GET",
+      "endpoint": "/projects",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of projects to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-project",
+      "description": "Create a new project.",
+      "http_method": "POST",
+      "endpoint": "/projects",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the project."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the project."
+          }
+        },
+        "required": [
+          "title"
+        ]
+      }
+    },
+    {
+      "name": "update-project",
+      "description": "Update an existing project.",
+      "http_method": "PUT",
+      "endpoint": "/projects/{project_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "The ID of the project to update."
+          },
+          "title": {
+            "type": "string",
+            "description": "The new title of the project."
+          },
+          "description": {
+            "type": "string",
+            "description": "The new description of the project."
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-project",
+      "description": "Delete a project.",
+      "http_method": "DELETE",
+      "endpoint": "/projects/{project_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "The ID of the project to delete."
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    },
+    {
+      "name": "get-template",
+      "description": "Get a specific template by ID.",
+      "http_method": "GET",
+      "endpoint": "/templates/{template_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "description": "The ID of the template to retrieve."
+          }
+        },
+        "required": [
+          "template_id"
+        ]
+      }
+    },
+    {
+      "name": "list-templates",
+      "description": "List all templates.",
+      "http_method": "GET",
+      "endpoint": "/templates",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of templates to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "projects",
+      "description": "Sync all projects.",
+      "entity": "Project",
+      "frequency": "daily"
+    },
+    {
+      "name": "templates",
+      "description": "Sync all templates.",
+      "entity": "Template",
+      "frequency": "weekly"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Visme",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://developer.visme.co/docs",
+    "setup_guide_url": "https://developer.visme.co/docs/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.visme.co",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "visme-automation",
+    "display_name": "visme-automation",
+    "description": "Automate Visme tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "visme",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

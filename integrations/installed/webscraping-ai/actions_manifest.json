@@ -1,0 +1,205 @@
+{
+  "provider": "webscraping-ai",
+  "auth_type": "api_key",
+  "base_url": "https://api.webscraping-ai.com",
+  "category": "data_extraction",
+  "stub": false,
+  "actions": [
+    {
+      "name": "extract-data",
+      "description": "Extract data from a given URL using a specified scraping configuration.",
+      "http_method": "POST",
+      "endpoint": "/v1/scrape",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL to scrape."
+          },
+          "configuration": {
+            "type": "string",
+            "description": "The scraping configuration (JSON string)."
+          }
+        },
+        "required": [
+          "url",
+          "configuration"
+        ]
+      }
+    },
+    {
+      "name": "get-scrape-status",
+      "description": "Get the status of a scraping job.",
+      "http_method": "GET",
+      "endpoint": "/v1/scrape/{job_id}/status",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "description": "The ID of the scraping job."
+          }
+        },
+        "required": [
+          "job_id"
+        ]
+      }
+    },
+    {
+      "name": "get-scrape-results",
+      "description": "Get the results of a scraping job.",
+      "http_method": "GET",
+      "endpoint": "/v1/scrape/{job_id}/results",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "description": "The ID of the scraping job."
+          }
+        },
+        "required": [
+          "job_id"
+        ]
+      }
+    },
+    {
+      "name": "list-configurations",
+      "description": "List available scraping configurations.",
+      "http_method": "GET",
+      "endpoint": "/v1/configurations",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "get-configuration",
+      "description": "Get a specific scraping configuration by ID.",
+      "http_method": "GET",
+      "endpoint": "/v1/configurations/{configuration_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "configuration_id": {
+            "type": "string",
+            "description": "The ID of the scraping configuration."
+          }
+        },
+        "required": [
+          "configuration_id"
+        ]
+      }
+    },
+    {
+      "name": "create-configuration",
+      "description": "Create a new scraping configuration.",
+      "http_method": "POST",
+      "endpoint": "/v1/configurations",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the configuration."
+          },
+          "configuration": {
+            "type": "string",
+            "description": "The scraping configuration (JSON string)."
+          }
+        },
+        "required": [
+          "name",
+          "configuration"
+        ]
+      }
+    },
+    {
+      "name": "update-configuration",
+      "description": "Update an existing scraping configuration.",
+      "http_method": "PUT",
+      "endpoint": "/v1/configurations/{configuration_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "configuration_id": {
+            "type": "string",
+            "description": "The ID of the scraping configuration."
+          },
+          "configuration": {
+            "type": "string",
+            "description": "The updated scraping configuration (JSON string)."
+          }
+        },
+        "required": [
+          "configuration_id",
+          "configuration"
+        ]
+      }
+    },
+    {
+      "name": "delete-configuration",
+      "description": "Delete a scraping configuration.",
+      "http_method": "DELETE",
+      "endpoint": "/v1/configurations/{configuration_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "configuration_id": {
+            "type": "string",
+            "description": "The ID of the scraping configuration."
+          }
+        },
+        "required": [
+          "configuration_id"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Webscraping-AI",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": null,
+    "default_scopes": null,
+    "docs": "https://docs.webscraping-ai.com",
+    "setup_guide_url": "https://docs.webscraping-ai.com/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.webscraping-ai.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "none"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "webscraping-ai-automation",
+    "display_name": "webscraping-ai-automation",
+    "description": "Automate Webscraping AI tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "webscraping_ai",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

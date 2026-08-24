@@ -1,0 +1,182 @@
+{
+  "provider": "y-gy",
+  "auth_type": "api_key",
+  "base_url": "https://api.y-gy.com",
+  "category": "developer_tools",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-project",
+      "description": "Retrieve a specific project by ID.",
+      "http_method": "GET",
+      "endpoint": "/projects/{project_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "The ID of the project to retrieve."
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    },
+    {
+      "name": "list-projects",
+      "description": "List all projects.",
+      "http_method": "GET",
+      "endpoint": "/projects",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of projects to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-project",
+      "description": "Create a new project.",
+      "http_method": "POST",
+      "endpoint": "/projects",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the project."
+          },
+          "description": {
+            "type": "string",
+            "description": "A description of the project."
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "update-project",
+      "description": "Update an existing project.",
+      "http_method": "PUT",
+      "endpoint": "/projects/{project_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "The ID of the project to update."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name of the project."
+          },
+          "description": {
+            "type": "string",
+            "description": "The new description of the project."
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-project",
+      "description": "Delete a project.",
+      "http_method": "DELETE",
+      "endpoint": "/projects/{project_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "The ID of the project to delete."
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    },
+    {
+      "name": "search-projects",
+      "description": "Search for projects by name or description.",
+      "http_method": "GET",
+      "endpoint": "/projects/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "projects",
+      "description": "Sync all projects.",
+      "entity": "Project",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Y-GY",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://docs.y-gy.com",
+    "setup_guide_url": "https://docs.y-gy.com/setup",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.y-gy.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset",
+        "limit_param": "limit",
+        "offset_param": "offset"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "y-gy-automation",
+    "display_name": "y-gy-automation",
+    "description": "Automate Y Gy tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "y_gy",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "provider": "wafeq",
+  "auth_type": "api_key",
+  "api_key_header": "Authorization",
+  "base_url": "https://api.wafeq.com/v1",
+  "category": "accounting",
+  "actions": [
+    {
+      "name": "list-contacts",
+      "description": "List contacts (customers and vendors) in Wafeq accounting.",
+      "http_method": "GET",
+      "endpoint": "/contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number"
+          },
+          "page_size": {
+            "type": "integer",
+            "description": "Records per page"
+          },
+          "type": {
+            "type": "string",
+            "description": "Filter by type: customer or vendor"
+          },
+          "search": {
+            "type": "string",
+            "description": "Search query"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-invoices",
+      "description": "List invoices in Wafeq accounting.",
+      "http_method": "GET",
+      "endpoint": "/invoices",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number"
+          },
+          "page_size": {
+            "type": "integer",
+            "description": "Records per page"
+          },
+          "status": {
+            "type": "string",
+            "description": "Filter by status (draft, sent, paid, overdue)"
+          },
+          "issue_date_after": {
+            "type": "string",
+            "description": "Filter invoices issued after YYYY-MM-DD"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-accounts",
+      "description": "List chart of accounts in Wafeq.",
+      "http_method": "GET",
+      "endpoint": "/accounts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number"
+          },
+          "page_size": {
+            "type": "integer",
+            "description": "Records per page"
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Wafeq",
+    "docs": "https://api.wafeq.com/docs/",
+    "setup_guide_url": "https://api.wafeq.com/docs/authentication",
+    "proxy": {
+      "base_url": "https://api.wafeq.com/v1",
+      "headers": {
+        "Authorization": "Bearer ${apiKey}"
+      },
+      "retry": {
+        "at": [
+          "retry-after"
+        ],
+        "error_code": [
+          "429",
+          "500",
+          "502",
+          "503",
+          "504"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http"
+}

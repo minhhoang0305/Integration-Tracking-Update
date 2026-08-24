@@ -4,30 +4,50 @@ using IntegrationTracking.Api.Templates;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace IntegrationTracking.Api.Controllers;
 
 [ApiController]
 [Route("api/reviews")]
-public sealed class ReviewsController(IntegrationTrackingDbContext database, TemplateRegistryService registry, RabbitMqPublisher publisher) : ControllerBase
+public sealed class ReviewsController(IntegrationTrackingDbContext database, IIntegrationStorage storage, InstalledIntegrationCatalog catalog, RabbitMqPublisher publisher) : ControllerBase
 {
     [HttpGet]
-    public Task<List<TemplateProposal>> List(CancellationToken ct) => database.TemplateProposals.OrderByDescending(x => x.CreatedAt).ToListAsync(ct);
+    public async Task<List<ReviewListItem>> List(CancellationToken ct)
+    {
+        var proposals = await database.TemplateProposals.OrderByDescending(x => x.CreatedAt).ToListAsync(ct);
+        return proposals.Select(proposal =>
+        {
+            var impact = ParseJson(proposal.ImpactJson);
+            return new ReviewListItem(
+                ProposalMetadata.From(proposal),
+                impact?["affectedActions"]?.AsArray().Count ?? 0,
+                impact?["newActions"]?.AsArray().Count ?? 0);
+        }).ToList();
+    }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(string id, CancellationToken ct)
     {
         var proposal = await database.TemplateProposals.FindAsync([id], ct);
         if (proposal is null) return NotFound();
-        var directory = string.IsNullOrWhiteSpace(proposal.ArtifactDirectory) ? null : registry.ContentPath(proposal.ArtifactDirectory);
-        var registration = registry.Load().Providers.FirstOrDefault(x => x.Provider.Equals(proposal.Provider, StringComparison.OrdinalIgnoreCase))?.Integrations.FirstOrDefault(x => x.Id == proposal.IntegrationId);
-        var original = registration is null ? null : ReadAbsolute(registry.WorkspacePath(registration.ManifestPath));
+        var integration = catalog.Find(proposal.Provider, proposal.IntegrationId);
+        var original = integration is null ? null : ParseJson(catalog.ReadManifest(integration.IntegrationId));
         return Ok(new
         {
-            proposal,
+            proposal = ProposalMetadata.From(proposal),
+            evidence = ParseJson(proposal.EvidenceJson),
             impact = ParseJson(proposal.ImpactJson),
             originalManifest = original,
-            artifacts = directory is not null && Directory.Exists(directory) ? new { manifest = Read(directory, "actions_manifest.json"), changelog = Read(directory, "CHANGELOG.md"), diff = Read(directory, "diff.patch"), evidence = Read(directory, "evidence.json"), impact = Read(directory, "impact.json") } : null
+            artifacts = (string.IsNullOrWhiteSpace(proposal.ArtifactDirectory) ? null : new
+            {
+                proposedManifest = ParseJson(storage.ReadProposalText(proposal.Id, "actions_manifest.json")),
+                changelog = storage.ReadProposalText(proposal.Id, "CHANGELOG.md"),
+                diff = storage.ReadProposalText(proposal.Id, "diff.patch"),
+                diffModel = ParseJson(storage.ReadProposalText(proposal.Id, "diff.json")),
+                evidence = ParseJson(storage.ReadProposalText(proposal.Id, "evidence.json")),
+                impact = ParseJson(storage.ReadProposalText(proposal.Id, "impact.json"))
+            })
         });
     }
 
@@ -53,13 +73,43 @@ public sealed class ReviewsController(IntegrationTrackingDbContext database, Tem
         await publisher.PublishAuditEventAsync(RabbitMqTopology.IntegrationReviewRoutingKey, id, new { proposal.Id, proposal.Status, request.AdminIdentity }, ct);
         return Ok(new { proposal.Id, proposal.Status });
     }
-    private static string? Read(string directory, string name) { var path = Path.Combine(directory, name); return System.IO.File.Exists(path) ? System.IO.File.ReadAllText(path) : null; }
-    private static string? ReadAbsolute(string path) => System.IO.File.Exists(path) ? System.IO.File.ReadAllText(path) : null;
-    private static JsonElement? ParseJson(string json)
+    private static JsonNode? ParseJson(string? json)
     {
-        try { using var document = JsonDocument.Parse(json); return document.RootElement.Clone(); }
+        if (string.IsNullOrWhiteSpace(json)) return null;
+        try
+        {
+            var node = JsonNode.Parse(json);
+            NormalizeRawActions(node);
+            return node;
+        }
         catch (JsonException) { return null; }
+    }
+
+    private static void NormalizeRawActions(JsonNode? node)
+    {
+        switch (node)
+        {
+            case JsonObject obj:
+                if (obj["rawJson"] is JsonValue raw && raw.TryGetValue<string>(out var rawJson))
+                {
+                    try { obj["definition"] = JsonNode.Parse(rawJson); obj.Remove("rawJson"); }
+                    catch (JsonException) { /* Preserve the raw value when historical data is malformed. */ }
+                }
+                foreach (var child in obj.ToList()) NormalizeRawActions(child.Value);
+                break;
+            case JsonArray array:
+                foreach (var child in array) NormalizeRawActions(child);
+                break;
+        }
     }
 }
 
 public sealed class ReviewRequest { public string AdminIdentity { get; set; } = string.Empty; public string? Note { get; set; } }
+public sealed record ProposalMetadata(string Id, string EmailId, string Provider, string IntegrationId, string BaseManifestHash,
+    string Status, string? ErrorMessage, string ArtifactDirectory, string ImpactSeverity, DateTime CreatedAt, DateTime UpdatedAt)
+{
+    public static ProposalMetadata From(TemplateProposal proposal) => new(proposal.Id, proposal.EmailId, proposal.Provider,
+        proposal.IntegrationId, proposal.BaseManifestHash, proposal.Status, proposal.ErrorMessage, proposal.ArtifactDirectory,
+        proposal.ImpactSeverity, proposal.CreatedAt, proposal.UpdatedAt);
+}
+public sealed record ReviewListItem(ProposalMetadata Proposal, int AffectedActionsCount, int NewActionsCount);

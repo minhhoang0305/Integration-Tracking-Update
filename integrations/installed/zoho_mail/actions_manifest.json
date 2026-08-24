@@ -1,0 +1,219 @@
+{
+  "provider": "zoho_mail",
+  "auth_type": "oauth2",
+  "base_url": "https://mail.zoho.com/api/v1",
+  "category": "email",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-message",
+      "description": "Get a specific message by ID.",
+      "http_method": "GET",
+      "endpoint": "/messages/{message_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string",
+            "description": "The ID of the message to retrieve."
+          }
+        },
+        "required": [
+          "message_id"
+        ]
+      }
+    },
+    {
+      "name": "list-messages",
+      "description": "List messages in a mailbox.",
+      "http_method": "GET",
+      "endpoint": "/mailboxes/{mailbox_id}/messages",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "mailbox_id": {
+            "type": "string",
+            "description": "The ID of the mailbox."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of messages to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": [
+          "mailbox_id"
+        ]
+      }
+    },
+    {
+      "name": "send-message",
+      "description": "Send a new email message.",
+      "http_method": "POST",
+      "endpoint": "/messages",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "description": "Sender's email address."
+          },
+          "to": {
+            "type": "string",
+            "description": "Recipient's email address."
+          },
+          "subject": {
+            "type": "string",
+            "description": "Email subject."
+          },
+          "content": {
+            "type": "string",
+            "description": "Email content."
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "subject",
+          "content"
+        ]
+      }
+    },
+    {
+      "name": "update-message",
+      "description": "Update a message (e.g., mark as read).",
+      "http_method": "PATCH",
+      "endpoint": "/messages/{message_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string",
+            "description": "The ID of the message to update."
+          },
+          "flags": {
+            "type": "array",
+            "description": "Array of flags to set (e.g., 'read', 'flagged')."
+          }
+        },
+        "required": [
+          "message_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-message",
+      "description": "Delete a message.",
+      "http_method": "DELETE",
+      "endpoint": "/messages/{message_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string",
+            "description": "The ID of the message to delete."
+          }
+        },
+        "required": [
+          "message_id"
+        ]
+      }
+    },
+    {
+      "name": "list-mailboxes",
+      "description": "List all mailboxes.",
+      "http_method": "GET",
+      "endpoint": "/mailboxes",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of mailboxes to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        }
+      }
+    },
+    {
+      "name": "search-messages",
+      "description": "Search for messages based on criteria.",
+      "http_method": "GET",
+      "endpoint": "/messages/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query."
+          },
+          "mailbox_id": {
+            "type": "string",
+            "description": "Mailbox ID to search within."
+          }
+        }
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "messages",
+      "description": "Sync messages from a specific mailbox.",
+      "entity": "Message",
+      "frequency": "15m"
+    },
+    {
+      "name": "mailboxes",
+      "description": "Sync all mailboxes.",
+      "entity": "Mailbox",
+      "frequency": "1h"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Zoho Mail",
+    "authorization_url": "https://accounts.zoho.com/oauth/v2/auth",
+    "token_url": "https://accounts.zoho.com/oauth/v2/token",
+    "revocation_url": "https://accounts.zoho.com/oauth/v2/token/revoke",
+    "disable_pkce": false,
+    "default_scopes": "ZohoMail.messages.READ,ZohoMail.messages.WRITE,ZohoMail.mailboxes.READ",
+    "docs": "https://www.zoho.com/mail/api/",
+    "setup_guide_url": "",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://mail.zoho.com/api/v1",
+      "headers": {
+        "authorization": "Bearer ${accessToken}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zoho_mail-automation",
+    "display_name": "zoho_mail-automation",
+    "description": "Automate Zoho Mail tasks via Rube MCP (Composio): email sending, folders, labels, and mailbox management. Always search tools first for current schemas.",
+    "toolkit_slug": "zoho_mail",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE"
+    ]
+  }
+}

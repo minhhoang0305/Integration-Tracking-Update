@@ -1,0 +1,24 @@
+{
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "content": "YouTube Data API v3 enables access to YouTube resources such as videos, channels, playlists, and search results. It is part of Google APIs and uses OAuth2 for user-level access or API keys for public data. Quota limits are applied daily per project in Google Cloud Console."
+    },
+    {
+      "id": "prerequisites",
+      "title": "Prerequisites",
+      "content": "You need a Google account with access to Google Cloud Console. A Cloud project must exist with the YouTube Data API v3 enabled under APIs and Services. If you plan to access private user data, you must configure an OAuth2 consent screen with the appropriate YouTube scopes."
+    },
+    {
+      "id": "connect",
+      "title": "How to Connect",
+      "content": "Go to Google Cloud Console and enable the YouTube Data API v3 for your project. Create OAuth2 credentials in the Credentials section, selecting Web Application as the application type. Add your platform redirect URI to the authorized redirect URIs list in the OAuth2 client configuration. Enter the resulting client ID and client secret on this platform to complete the setup."
+    },
+    {
+      "id": "actions",
+      "title": "Available Actions",
+      "content": "list-videos returns details for one or more videos by ID, including title, description, statistics, and content details. search queries the YouTube catalog for videos, channels, or playlists matching a keyword or filter. list-channels retrieves metadata for YouTube channels associated with the authenticated user or specified by channel ID."
+    }
+  ]
+}

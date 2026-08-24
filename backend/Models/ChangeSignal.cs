@@ -43,4 +43,5 @@ public sealed class ChangeEvidence
 {
     public List<string> MatchedTerms { get; set; } = [];
     public List<string> Urls { get; set; } = [];
+    public List<string> ParserWarnings { get; set; } = [];
 }

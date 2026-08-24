@@ -16,5 +16,6 @@
     <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.72" />
     <PackageReference Include="Google.Apis.Gmail.v1" Version="1.70.0.3819" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.413" />
   </ItemGroup>
 </Project>

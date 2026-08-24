@@ -1,0 +1,243 @@
+{
+  "provider": "ynab",
+  "auth_type": "oauth2",
+  "base_url": "https://api.ynab.com/v1",
+  "category": "finance",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-budget",
+      "description": "Get a specific budget by ID.",
+      "http_method": "GET",
+      "endpoint": "/budgets/{budget_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "budget_id": {
+            "type": "string",
+            "description": "The ID of the budget."
+          }
+        },
+        "required": [
+          "budget_id"
+        ]
+      }
+    },
+    {
+      "name": "list-budgets",
+      "description": "List all budgets.",
+      "http_method": "GET",
+      "endpoint": "/budgets",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "create-transaction",
+      "description": "Create a new transaction.",
+      "http_method": "POST",
+      "endpoint": "/transactions",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "budget_id": {
+            "type": "string",
+            "description": "The ID of the budget."
+          },
+          "account_id": {
+            "type": "string",
+            "description": "The ID of the account."
+          },
+          "category_id": {
+            "type": "string",
+            "description": "The ID of the category."
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The amount of the transaction in cents."
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "The date of the transaction."
+          },
+          "payee": {
+            "type": "string",
+            "description": "The payee of the transaction."
+          }
+        },
+        "required": [
+          "budget_id",
+          "account_id",
+          "category_id",
+          "amount",
+          "date"
+        ]
+      }
+    },
+    {
+      "name": "update-transaction",
+      "description": "Update an existing transaction.",
+      "http_method": "PATCH",
+      "endpoint": "/transactions/{transaction_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "transaction_id": {
+            "type": "string",
+            "description": "The ID of the transaction."
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The amount of the transaction in cents."
+          },
+          "category_id": {
+            "type": "string",
+            "description": "The ID of the category."
+          }
+        },
+        "required": [
+          "transaction_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-transaction",
+      "description": "Delete a transaction.",
+      "http_method": "DELETE",
+      "endpoint": "/transactions/{transaction_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "transaction_id": {
+            "type": "string",
+            "description": "The ID of the transaction."
+          }
+        },
+        "required": [
+          "transaction_id"
+        ]
+      }
+    },
+    {
+      "name": "get-account",
+      "description": "Get a specific account by ID.",
+      "http_method": "GET",
+      "endpoint": "/accounts/{account_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "description": "The ID of the account."
+          }
+        },
+        "required": [
+          "account_id"
+        ]
+      }
+    },
+    {
+      "name": "list-accounts",
+      "description": "List all accounts.",
+      "http_method": "GET",
+      "endpoint": "/accounts",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "get-category",
+      "description": "Get a specific category by ID.",
+      "http_method": "GET",
+      "endpoint": "/categories/{category_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "category_id": {
+            "type": "string",
+            "description": "The ID of the category."
+          }
+        },
+        "required": [
+          "category_id"
+        ]
+      }
+    },
+    {
+      "name": "list-categories",
+      "description": "List all categories.",
+      "http_method": "GET",
+      "endpoint": "/categories",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "transactions",
+      "description": "Sync all transactions for a budget.",
+      "entity": "Transaction",
+      "frequency": "daily"
+    },
+    {
+      "name": "accounts",
+      "description": "Sync all accounts.",
+      "entity": "Account",
+      "frequency": "weekly"
+    },
+    {
+      "name": "budgets",
+      "description": "Sync all budgets.",
+      "entity": "Budget",
+      "frequency": "monthly"
+    }
+  ],
+  "provider_config": {
+    "display_name": "You Need A Budget",
+    "authorization_url": "https://app.ynab.com/oauth/authorize",
+    "token_url": "https://api.ynab.com/oauth/token",
+    "disable_pkce": false,
+    "default_scopes": "full_access",
+    "docs": "https://api.ynab.com/docs",
+    "setup_guide_url": "https://api.ynab.com/docs#getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.ynab.com/v1",
+      "headers": {
+        "authorization": "Bearer ${accessToken}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "ynab-automation",
+    "display_name": "ynab-automation",
+    "description": "Automate Ynab tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "ynab",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

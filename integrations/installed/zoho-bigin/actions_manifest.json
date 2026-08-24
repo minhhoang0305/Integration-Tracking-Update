@@ -1,0 +1,272 @@
+{
+  "provider": "zoho-bigin",
+  "auth_type": "oauth2",
+  "base_url": "https://www.zohoapis.com/bigin",
+  "category": "crm",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-contact",
+      "description": "Get a specific contact by ID.",
+      "http_method": "GET",
+      "endpoint": "/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact to retrieve."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "list-contacts",
+      "description": "List all contacts.",
+      "http_method": "GET",
+      "endpoint": "/contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of contacts per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-contact",
+      "description": "Create a new contact.",
+      "http_method": "POST",
+      "endpoint": "/contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "description": "The first name of the contact."
+          },
+          "last_name": {
+            "type": "string",
+            "description": "The last name of the contact."
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the contact."
+          },
+          "phone": {
+            "type": "string",
+            "description": "The phone number of the contact."
+          }
+        },
+        "required": [
+          "first_name",
+          "last_name"
+        ]
+      }
+    },
+    {
+      "name": "update-contact",
+      "description": "Update an existing contact.",
+      "http_method": "PUT",
+      "endpoint": "/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact to update."
+          },
+          "first_name": {
+            "type": "string",
+            "description": "The first name of the contact."
+          },
+          "last_name": {
+            "type": "string",
+            "description": "The last name of the contact."
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the contact."
+          },
+          "phone": {
+            "type": "string",
+            "description": "The phone number of the contact."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-contact",
+      "description": "Delete a contact.",
+      "http_method": "DELETE",
+      "endpoint": "/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact to delete."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "get-deal",
+      "description": "Get a specific deal by ID.",
+      "http_method": "GET",
+      "endpoint": "/deals/{deal_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "deal_id": {
+            "type": "string",
+            "description": "The ID of the deal to retrieve."
+          }
+        },
+        "required": [
+          "deal_id"
+        ]
+      }
+    },
+    {
+      "name": "list-deals",
+      "description": "List all deals.",
+      "http_method": "GET",
+      "endpoint": "/deals",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of deals per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-deal",
+      "description": "Create a new deal.",
+      "http_method": "POST",
+      "endpoint": "/v1/Deals",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "Deal_Name": { "type": "string" },
+          "Amount": { "type": "number" },
+          "Closing_Date": { "type": "string" },
+          "Stage": { "type": "string" }
+        },
+        "required": ["Deal_Name"]
+      }
+    },
+    { "name": "update-deal", "description": "Update an existing deal.", "http_method": "PUT", "endpoint": "/v1/Deals/{deal_id}", "input_schema": { "type": "object", "properties": { "deal_id": { "type": "string" }, "Deal_Name": { "type": "string" }, "Amount": { "type": "number" }, "Stage": { "type": "string" } }, "required": ["deal_id"] } },
+    { "name": "delete-deal", "description": "Delete a deal.", "http_method": "DELETE", "endpoint": "/v1/Deals/{deal_id}", "input_schema": { "type": "object", "properties": { "deal_id": { "type": "string" } }, "required": ["deal_id"] } },
+    { "name": "list-companies", "description": "List all companies in Zoho Bigin.", "http_method": "GET", "endpoint": "/v1/Companies", "input_schema": { "type": "object", "properties": { "page": { "type": "integer" }, "per_page": { "type": "integer" } } } },
+    { "name": "get-company", "description": "Get a specific company by ID.", "http_method": "GET", "endpoint": "/v1/Companies/{company_id}", "input_schema": { "type": "object", "properties": { "company_id": { "type": "string" } }, "required": ["company_id"] } },
+    { "name": "create-company", "description": "Create a new company.", "http_method": "POST", "endpoint": "/v1/Companies", "input_schema": { "type": "object", "properties": { "Company_Name": { "type": "string" }, "Phone": { "type": "string" }, "Website": { "type": "string" } }, "required": ["Company_Name"] } },
+    { "name": "update-company", "description": "Update an existing company.", "http_method": "PUT", "endpoint": "/v1/Companies/{company_id}", "input_schema": { "type": "object", "properties": { "company_id": { "type": "string" }, "Company_Name": { "type": "string" }, "Phone": { "type": "string" } }, "required": ["company_id"] } },
+    { "name": "delete-company", "description": "Delete a company.", "http_method": "DELETE", "endpoint": "/v1/Companies/{company_id}", "input_schema": { "type": "object", "properties": { "company_id": { "type": "string" } }, "required": ["company_id"] } },
+    { "name": "list-pipelines", "description": "List all pipelines in Zoho Bigin.", "http_method": "GET", "endpoint": "/v1/pipelines", "input_schema": { "type": "object", "properties": {} } },
+    { "name": "list-activities", "description": "List activities in Zoho Bigin.", "http_method": "GET", "endpoint": "/v1/Activities", "input_schema": { "type": "object", "properties": { "page": { "type": "integer" }, "per_page": { "type": "integer" } } } },
+    { "name": "create-activity", "description": "Create a new activity.", "http_method": "POST", "endpoint": "/v1/Activities", "input_schema": { "type": "object", "properties": { "Activity_Type": { "type": "string", "description": "Type: Call, Meeting, Task" }, "Subject": { "type": "string" }, "Due_Date": { "type": "string" } }, "required": ["Activity_Type", "Subject"] } },
+    { "name": "list-notes", "description": "List notes in Zoho Bigin.", "http_method": "GET", "endpoint": "/v1/Notes", "input_schema": { "type": "object", "properties": { "page": { "type": "integer" }, "per_page": { "type": "integer" } } } },
+    { "name": "create-note", "description": "Create a note in Zoho Bigin.", "http_method": "POST", "endpoint": "/v1/Notes", "input_schema": { "type": "object", "properties": { "Note_Title": { "type": "string" }, "Note_Content": { "type": "string" }, "Parent_Id": { "type": "string" }, "se_module": { "type": "string" } }, "required": ["Note_Title", "Parent_Id"] } },
+    { "name": "search", "description": "Search records in a Zoho Bigin module.", "http_method": "GET", "endpoint": "/v1/{module}/search", "input_schema": { "type": "object", "properties": { "module": { "type": "string" }, "criteria": { "type": "string" }, "word": { "type": "string" } }, "required": ["module"] } }
+  ],
+  "syncs": [
+    {
+      "name": "contacts",
+      "description": "Sync all contacts from Zoho Bigin.",
+      "entity": "Contact",
+      "frequency": "daily"
+    },
+    {
+      "name": "deals",
+      "description": "Sync all deals from Zoho Bigin.",
+      "entity": "Deal",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Zoho Bigin",
+    "authorization_url": "https://accounts.zoho.com/oauth/v2/auth",
+    "token_url": "https://accounts.zoho.com/oauth/v2/token",
+    "revocation_url": "https://accounts.zoho.com/oauth/v2/token/revoke",
+    "disable_pkce": false,
+    "default_scopes": "biginapi.contacts biginapi.deals",
+    "docs": "https://www.zoho.com/bigin/api/docs.html",
+    "setup_guide_url": "https://www.zoho.com/bigin/help/api/zoho-bigin-api.html",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://www.zohoapis.com/bigin",
+      "headers": {
+        "authorization": "Bearer ${accessToken}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    },
+    "authorization_params": {
+      "prompt": "consent",
+      "access_type": "offline"
+    },
+    "connection_config": {
+      "extension": {
+        "type": "string",
+        "title": "Domain Extension",
+        "description": "The domain extension of your Zoho Bigin account",
+        "pattern": "^[a-z.]+$",
+        "prefix": "https://bigin.zoho.",
+        "example": "com",
+        "optional": true,
+        "suffix": "/"
+      }
+    },
+    "docs_connect": "https://connect.uplizd.ai/docs/integrations/all/zoho-bigin/connect"
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zoho-bigin-automation",
+    "display_name": "zoho-bigin-automation",
+    "description": "Automate Zoho Bigin tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "zoho_bigin",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

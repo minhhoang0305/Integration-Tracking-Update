@@ -1,0 +1,187 @@
+{
+  "provider": "unione",
+  "auth_type": "api_key",
+  "base_url": "https://api.unione.io",
+  "category": "communication",
+  "stub": false,
+  "actions": [
+    {
+      "name": "send-message",
+      "description": "Send a message to a contact.",
+      "http_method": "POST",
+      "endpoint": "/messages",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string",
+            "description": "Recipient's phone number."
+          },
+          "body": {
+            "type": "string",
+            "description": "Message content."
+          }
+        },
+        "required": [
+          "to",
+          "body"
+        ]
+      }
+    },
+    {
+      "name": "get-message-status",
+      "description": "Retrieve the status of a sent message.",
+      "http_method": "GET",
+      "endpoint": "/messages/{message_id}/status",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string",
+            "description": "The ID of the message."
+          }
+        },
+        "required": [
+          "message_id"
+        ]
+      }
+    },
+    {
+      "name": "get-contact",
+      "description": "Retrieve contact information.",
+      "http_method": "GET",
+      "endpoint": "/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "create-contact",
+      "description": "Create a new contact.",
+      "http_method": "POST",
+      "endpoint": "/contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "description": "Contact's phone number."
+          },
+          "name": {
+            "type": "string",
+            "description": "Contact's name."
+          }
+        },
+        "required": [
+          "phone_number"
+        ]
+      }
+    },
+    {
+      "name": "update-contact",
+      "description": "Update existing contact information.",
+      "http_method": "PUT",
+      "endpoint": "/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact."
+          },
+          "name": {
+            "type": "string",
+            "description": "Contact's name."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "list-contacts",
+      "description": "List all contacts.",
+      "http_method": "GET",
+      "endpoint": "/contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of contacts per page."
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "contacts",
+      "description": "Sync all contacts.",
+      "entity": "Contact",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Unione",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://docs.unione.io",
+    "setup_guide_url": "https://docs.unione.io/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.unione.io",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "page",
+        "param_name": "page",
+        "param_offset": 0,
+        "param_limit": "per_page",
+        "limit_param": "per_page"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "unione-automation",
+    "display_name": "unione-automation",
+    "description": "Automate Unione tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "unione",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "provider": "ukg-ready",
+  "auth_type": "oauth2",
+  "base_url": "https://api.ukg.com",
+  "category": "hr",
+  "stub": false,
+  "actions": [
+    {
+      "name": "list-employees",
+      "description": "List all employees.",
+      "http_method": "GET",
+      "endpoint": "/api/personnel/v1/employees",
+      "input_schema": { "type": "object", "properties": {}, "required": [] }
+    },
+    {
+      "name": "get-employee",
+      "description": "Get details of a specific employee.",
+      "http_method": "GET",
+      "endpoint": "/api/personnel/v1/employees/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": { "id": { "type": "string", "description": "Employee ID" } },
+        "required": ["id"]
+      }
+    },
+    {
+      "name": "list-timesheets",
+      "description": "List timesheets for employees.",
+      "http_method": "GET",
+      "endpoint": "/api/timekeeping/v1/timesheets",
+      "input_schema": { "type": "object", "properties": {}, "required": [] }
+    },
+    {
+      "name": "list-schedules",
+      "description": "List employee schedules.",
+      "http_method": "GET",
+      "endpoint": "/api/scheduling/v1/schedules",
+      "input_schema": { "type": "object", "properties": {}, "required": [] }
+    }
+  ],
+  "syncs": [
+    { "name": "employees", "description": "Sync all employees from UKG Ready.", "entity": "Employee", "frequency": "daily" },
+    { "name": "timesheets", "description": "Sync timesheets from UKG Ready.", "entity": "Timesheet", "frequency": "1h" }
+  ],
+  "provider_config": {
+    "display_name": "UKG Ready",
+    "authorization_url": "https://api.ukg.com/oauth2/authorize",
+    "token_url": "https://api.ukg.com/oauth2/token",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://developer.ukg.com/",
+    "setup_guide_url": "https://developer.ukg.com/",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.ukg.com",
+      "headers": { "authorization": "Bearer ${accessToken}" },
+      "retry": { "error_code": ["401", "429", "5xx"] }
+    },
+    "authorization_params": {},
+    "connection_config": {}
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "ukg-ready-automation",
+    "display_name": "UKG Ready Automation",
+    "description": "Automate HR and workforce management with UKG Ready (formerly Kronos) including employee data, timekeeping, and scheduling.",
+    "toolkit_slug": "ukg_ready",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": []
+  }
+}

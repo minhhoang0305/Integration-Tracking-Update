@@ -1,0 +1,106 @@
+{
+  "provider": "zucchetti",
+  "auth_type": "api_key",
+  "api_key_header": "Authorization",
+  "base_url": "https://api.zucchetti.it/v1",
+  "category": "accounting",
+  "actions": [
+    {
+      "name": "list-customers",
+      "description": "List customers in Zucchetti business software.",
+      "http_method": "GET",
+      "endpoint": "/anagrafiche/clienti",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "pagina": {
+            "type": "integer",
+            "description": "Page number"
+          },
+          "righePerPagina": {
+            "type": "integer",
+            "description": "Records per page"
+          },
+          "ricerca": {
+            "type": "string",
+            "description": "Search keyword"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-invoices",
+      "description": "List sales invoices in Zucchetti.",
+      "http_method": "GET",
+      "endpoint": "/fatture/attive",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "pagina": {
+            "type": "integer",
+            "description": "Page number"
+          },
+          "righePerPagina": {
+            "type": "integer",
+            "description": "Records per page"
+          },
+          "dataInizio": {
+            "type": "string",
+            "description": "Start date YYYY-MM-DD"
+          },
+          "dataFine": {
+            "type": "string",
+            "description": "End date YYYY-MM-DD"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-employees",
+      "description": "List employees in Zucchetti HR module.",
+      "http_method": "GET",
+      "endpoint": "/hr/dipendenti",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "pagina": {
+            "type": "integer",
+            "description": "Page number"
+          },
+          "righePerPagina": {
+            "type": "integer",
+            "description": "Records per page"
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Zucchetti",
+    "docs": "https://developer.zucchetti.it/",
+    "setup_guide_url": "https://developer.zucchetti.it/docs/authentication",
+    "proxy": {
+      "base_url": "https://api.zucchetti.it/v1",
+      "headers": {
+        "Authorization": "Bearer ${apiKey}"
+      },
+      "retry": {
+        "at": [
+          "retry-after"
+        ],
+        "error_code": [
+          "429",
+          "500",
+          "502",
+          "503",
+          "504"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http"
+}

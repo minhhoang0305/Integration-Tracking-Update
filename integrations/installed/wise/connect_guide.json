@@ -1,0 +1,22 @@
+{
+  "provider": "wise",
+  "display_name": "Wise",
+  "sections": [
+    {
+      "title": "Overview",
+      "content": "Wise (formerly TransferWise) is a global money transfer platform supporting 80+ currencies and international business payments. This integration provides access to profiles, transfers, and multi-currency balances via OAuth2."
+    },
+    {
+      "title": "Prerequisites",
+      "content": "You need a Wise account (personal or business). Register your application at sandbox.transferwise.tech/register to obtain OAuth2 credentials."
+    },
+    {
+      "title": "How to Connect",
+      "content": "1. Sign in to the Wise Developer Portal.\n2. Create a new application and set the redirect URI to your OAuth callback URL.\n3. Note your Client ID and Client Secret.\n4. Request the required scopes (transfers:read, balances:read, profiles:read).\n5. Click Connect and authorize with your Wise credentials."
+    },
+    {
+      "title": "Available Actions",
+      "content": "list-profiles: List personal and business profiles for the authenticated user.\nlist-transfers: List international money transfers for a specific profile.\nlist-accounts: List multi-currency balances for a profile."
+    }
+  ]
+}

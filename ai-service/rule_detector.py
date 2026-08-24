@@ -69,13 +69,22 @@ NEW_ENDPOINT_MARKERS = ("new v3 endpoints", "latest api resources are now availa
 
 def extract_endpoint_changes(subject: str, body: str) -> tuple[list[ApiEndpoint], list[ApiEndpoint]]:
     """Extract announced endpoint paths from both Markdown and plain-text provider notices."""
+    deprecated, announced, _ = extract_endpoint_changes_with_warnings(subject, body)
+    return deprecated, announced
+
+
+def extract_endpoint_changes_with_warnings(subject: str, body: str) -> tuple[list[ApiEndpoint], list[ApiEndpoint], list[str]]:
     text = f"{subject}\n{body}"
     normalized = text.lower()
     marker_positions = [normalized.find(marker) for marker in NEW_ENDPOINT_MARKERS if normalized.find(marker) >= 0]
     split_at = min(marker_positions) if marker_positions else len(text)
     deprecated = _unique_endpoints(text[:split_at])
     announced = _unique_endpoints(text[split_at:]) if split_at < len(text) else []
-    return deprecated, announced
+    deprecated_keys = {(endpoint.method, endpoint.path) for endpoint in deprecated}
+    conflicts = [endpoint for endpoint in announced if (endpoint.method, endpoint.path) in deprecated_keys]
+    announced = [endpoint for endpoint in announced if (endpoint.method, endpoint.path) not in deprecated_keys]
+    warnings = [] if not conflicts else ["Deprecated endpoints were repeated after the new-endpoints marker and were ignored: " + ", ".join(f"{x.method} {x.path}" for x in conflicts)]
+    return deprecated, announced, warnings
 
 
 def _unique_endpoints(text: str) -> list[ApiEndpoint]:

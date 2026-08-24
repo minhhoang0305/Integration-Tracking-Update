@@ -1,0 +1,121 @@
+{
+  "provider": "whatsapp-business",
+  "auth_type": "api_key",
+  "base_url": "https://graph.facebook.com/v18.0",
+  "category": "communication",
+  "api_key_header": "Authorization",
+  "connection_config_base_url_key": "phone_number_id",
+  "actions": [
+    {
+      "name": "send-text-message",
+      "description": "Send a text message via WhatsApp Business Cloud API.",
+      "http_method": "POST",
+      "endpoint": "/{phone_number_id}/messages",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "phone_number_id": {
+            "type": "string",
+            "description": "Your WhatsApp Business phone number ID"
+          },
+          "to": {
+            "type": "string",
+            "description": "Recipient's phone number in E.164 format (e.g. +15555551234)"
+          },
+          "text": {
+            "type": "object",
+            "description": "Text message object with body (string) and optional preview_url (boolean)"
+          }
+        },
+        "required": [
+          "phone_number_id",
+          "to",
+          "text"
+        ]
+      }
+    },
+    {
+      "name": "send-template-message",
+      "description": "Send a pre-approved template message via WhatsApp.",
+      "http_method": "POST",
+      "endpoint": "/{phone_number_id}/messages",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "phone_number_id": {
+            "type": "string",
+            "description": "Your WhatsApp Business phone number ID"
+          },
+          "to": {
+            "type": "string",
+            "description": "Recipient's phone number in E.164 format"
+          },
+          "template": {
+            "type": "object",
+            "description": "Template object with name, language, and optional components"
+          }
+        },
+        "required": [
+          "phone_number_id",
+          "to",
+          "template"
+        ]
+      }
+    },
+    {
+      "name": "get-business-profile",
+      "description": "Get the WhatsApp Business profile information.",
+      "http_method": "GET",
+      "endpoint": "/{phone_number_id}/whatsapp_business_profile",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "phone_number_id": {
+            "type": "string",
+            "description": "Your WhatsApp Business phone number ID"
+          },
+          "fields": {
+            "type": "string",
+            "description": "Comma-separated fields to return (e.g. about,address,description,email,websites)"
+          }
+        },
+        "required": [
+          "phone_number_id"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "WhatsApp Business",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": true,
+    "default_scopes": "",
+    "docs": "https://developers.facebook.com/docs/whatsapp/cloud-api",
+    "setup_guide_url": "https://developers.facebook.com/docs/whatsapp/cloud-api/get-started",
+    "proxy": {
+      "base_url": "https://graph.facebook.com/v18.0",
+      "headers": {
+        "Authorization": "Bearer ${apiKey}"
+      }
+    },
+    "credentials": {
+      "apiKey": {
+        "type": "string",
+        "title": "System User Access Token",
+        "description": "Provide as 'Bearer <access-token>' — your Meta system user permanent access token",
+        "doc_section": "#step-1-create-a-system-user-access-token"
+      }
+    },
+    "connection_config": {
+      "phone_number_id": {
+        "type": "string",
+        "title": "Phone Number ID",
+        "description": "Your WhatsApp Business phone number ID from Meta Business Suite",
+        "example": "123456789012345"
+      }
+    }
+  },
+  "executor": "generic_http"
+}

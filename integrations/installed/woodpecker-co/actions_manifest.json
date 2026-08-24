@@ -1,0 +1,202 @@
+{
+  "provider": "woodpecker-co",
+  "auth_type": "api_key",
+  "base_url": "https://api.woodpecker.co/v1",
+  "category": "code_quality",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-analysis",
+      "description": "Retrieve a specific code analysis report.",
+      "http_method": "GET",
+      "endpoint": "/analyses/{analysis_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "analysis_id": {
+            "type": "string",
+            "description": "The ID of the analysis report."
+          }
+        },
+        "required": [
+          "analysis_id"
+        ]
+      }
+    },
+    {
+      "name": "list-analyses",
+      "description": "List all code analysis reports.",
+      "http_method": "GET",
+      "endpoint": "/analyses",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "repo_id": {
+            "type": "string",
+            "description": "Filter analyses by repository ID."
+          },
+          "status": {
+            "type": "string",
+            "description": "Filter analyses by status (e.g., 'pending', 'completed', 'failed')."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-analysis",
+      "description": "Trigger a new code analysis for a repository.",
+      "http_method": "POST",
+      "endpoint": "/analyses",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "repo_id": {
+            "type": "string",
+            "description": "The ID of the repository to analyze."
+          },
+          "branch": {
+            "type": "string",
+            "description": "The branch to analyze."
+          }
+        },
+        "required": [
+          "repo_id",
+          "branch"
+        ]
+      }
+    },
+    {
+      "name": "get-repo",
+      "description": "Retrieve details for a specific repository.",
+      "http_method": "GET",
+      "endpoint": "/repos/{repo_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "repo_id": {
+            "type": "string",
+            "description": "The ID of the repository."
+          }
+        },
+        "required": [
+          "repo_id"
+        ]
+      }
+    },
+    {
+      "name": "list-repos",
+      "description": "List all repositories.",
+      "http_method": "GET",
+      "endpoint": "/repos",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "organization_id": {
+            "type": "string",
+            "description": "Filter repositories by organization ID."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-repo",
+      "description": "Create a new repository.",
+      "http_method": "POST",
+      "endpoint": "/repos",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the repository."
+          },
+          "organization_id": {
+            "type": "string",
+            "description": "The ID of the organization."
+          }
+        },
+        "required": [
+          "name",
+          "organization_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-repo",
+      "description": "Delete a repository.",
+      "http_method": "DELETE",
+      "endpoint": "/repos/{repo_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "repo_id": {
+            "type": "string",
+            "description": "The ID of the repository."
+          }
+        },
+        "required": [
+          "repo_id"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "sync_analyses",
+      "description": "Sync all code analysis reports.",
+      "entity": "Analysis",
+      "frequency": "15m"
+    },
+    {
+      "name": "sync_repos",
+      "description": "Sync all repositories.",
+      "entity": "Repository",
+      "frequency": "30m"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Woodpecker",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://docs.woodpecker.co/api",
+    "setup_guide_url": "https://docs.woodpecker.co/api/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.woodpecker.co/v1",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "woodpecker-co-automation",
+    "display_name": "woodpecker-co-automation",
+    "description": "Automate Woodpecker co tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "woodpecker_co",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

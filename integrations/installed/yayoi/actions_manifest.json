@@ -1,0 +1,111 @@
+{
+  "provider": "yayoi",
+  "auth_type": "api_key",
+  "api_key_header": "Authorization",
+  "base_url": "https://api.yayoi-kk.co.jp",
+  "category": "accounting",
+  "connection_config_base_url_key": "api_url",
+  "actions": [
+    {
+      "name": "list-invoices",
+      "description": "List invoices from Yayoi accounting.",
+      "http_method": "GET",
+      "endpoint": "/invoices",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Number of records to return"
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Number of records to skip"
+          },
+          "fiscal_year": {
+            "type": "string",
+            "description": "Fiscal year filter (YYYY)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-journals",
+      "description": "List journal entries from Yayoi accounting.",
+      "http_method": "GET",
+      "endpoint": "/journals",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Number of records to return"
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Number of records to skip"
+          },
+          "start_date": {
+            "type": "string",
+            "description": "Start date (YYYY-MM-DD)"
+          },
+          "end_date": {
+            "type": "string",
+            "description": "End date (YYYY-MM-DD)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-accounts",
+      "description": "List chart of accounts from Yayoi.",
+      "http_method": "GET",
+      "endpoint": "/accounts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Number of records to return"
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Yayoi",
+    "docs": "https://www.yayoi-kk.co.jp/support/api/",
+    "setup_guide_url": "https://www.yayoi-kk.co.jp/support/api/",
+    "connection_config": {
+      "api_url": {
+        "type": "string",
+        "title": "API URL",
+        "description": "Yayoi API base URL",
+        "example": "https://api.yayoi-kk.co.jp"
+      }
+    },
+    "proxy": {
+      "base_url": "https://api.yayoi-kk.co.jp",
+      "headers": {
+        "Authorization": "Bearer ${apiKey}"
+      },
+      "retry": {
+        "at": [
+          "retry-after"
+        ],
+        "error_code": [
+          "429",
+          "500",
+          "502",
+          "503",
+          "504"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http"
+}

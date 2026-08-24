@@ -1,0 +1,222 @@
+{
+  "provider": "webhooks",
+  "auth_type": "api_key",
+  "base_url": "",
+  "category": "utilities",
+  "stub": false,
+  "actions": [
+    {
+      "name": "http-request",
+      "description": "Send an HTTP request to any URL. Universal interoperability action.",
+      "http_method": "POST",
+      "endpoint": "/",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Full URL to send the request to"
+          },
+          "method": {
+            "type": "string",
+            "description": "HTTP method: GET, POST, PUT, PATCH, DELETE"
+          },
+          "headers": {
+            "type": "object",
+            "description": "Key-value pairs for request headers"
+          },
+          "body": {
+            "type": "object",
+            "description": "JSON body (for POST/PUT/PATCH)"
+          },
+          "query_params": {
+            "type": "object",
+            "description": "URL query parameters"
+          },
+          "timeout": {
+            "type": "integer",
+            "description": "Request timeout in seconds (default 30)"
+          }
+        },
+        "required": [
+          "url",
+          "method"
+        ]
+      }
+    },
+    {
+      "name": "http-get",
+      "description": "Send a GET request to any URL.",
+      "http_method": "GET",
+      "endpoint": "/",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object"
+          },
+          "query_params": {
+            "type": "object"
+          },
+          "timeout": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      }
+    },
+    {
+      "name": "http-post",
+      "description": "Send a POST request with JSON body to any URL.",
+      "http_method": "POST",
+      "endpoint": "/",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object"
+          },
+          "body": {
+            "type": "object"
+          },
+          "query_params": {
+            "type": "object"
+          },
+          "timeout": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      }
+    },
+    {
+      "name": "http-put",
+      "description": "Send a PUT request with JSON body to any URL.",
+      "http_method": "PUT",
+      "endpoint": "/",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object"
+          },
+          "body": {
+            "type": "object"
+          },
+          "timeout": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      }
+    },
+    {
+      "name": "http-delete",
+      "description": "Send a DELETE request to any URL.",
+      "http_method": "DELETE",
+      "endpoint": "/",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object"
+          },
+          "query_params": {
+            "type": "object"
+          },
+          "timeout": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      }
+    },
+    {
+      "name": "http-form-post",
+      "description": "Send a POST request with form-encoded body.",
+      "http_method": "POST",
+      "endpoint": "/",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object"
+          },
+          "form_data": {
+            "type": "object",
+            "description": "Key-value pairs for form-encoded body"
+          },
+          "timeout": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "url",
+          "form_data"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "sync-poll-endpoint",
+      "description": "Poll a URL periodically and return the response",
+      "entity": "PollResult",
+      "frequency": "hourly"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Webhooks / HTTP Requests",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": true,
+    "default_scopes": "",
+    "docs": "https://connect.uplizd.ai/docs/integrations/all/webhooks",
+    "setup_guide_url": "",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "",
+      "headers": {}
+    },
+    "credentials": {
+      "apiKey": {
+        "type": "string",
+        "title": "Authorization Header Value",
+        "description": "Optional: value to send as Authorization header (e.g., 'Bearer token123' or 'Basic abc==')"
+      }
+    },
+    "connection_config": {
+      "base_url": {
+        "type": "string",
+        "title": "Base URL",
+        "description": "Optional default base URL to prepend to relative paths"
+      }
+    },
+    "docs_connect": "https://connect.uplizd.ai/docs/integrations/all/webhooks/connect"
+  },
+  "executor": "generic_http"
+}

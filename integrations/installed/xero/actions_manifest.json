@@ -1,0 +1,326 @@
+{
+  "provider": "xero",
+  "executor": "custom",
+  "auth_type": "oauth2",
+  "base_url": "https://api.xero.com/api.xro/2.0",
+  "category": "accounting",
+  "stub": false,
+  "actions": [
+    {
+      "name": "list-contacts",
+      "description": "List contacts (customers and suppliers) in Xero.",
+      "http_method": "GET",
+      "endpoint": "/Contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination (100 contacts per page)"
+          },
+          "where": {
+            "type": "string",
+            "description": "Xero filter expression (e.g. 'IsCustomer==true')"
+          },
+          "include_archived": {
+            "type": "boolean",
+            "description": "Include archived contacts"
+          }
+        }
+      }
+    },
+    {
+      "name": "create-contact",
+      "description": "Create a new contact (customer or supplier) in Xero.",
+      "http_method": "PUT",
+      "endpoint": "/Contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string", 
+            "description": "Contact name (must be unique)"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Phone number"
+          },
+          "is_customer": {
+            "type": "boolean",
+            "description": "Flag as a customer"
+          },
+          "is_supplier": {
+            "type": "boolean",
+            "description": "Flag as a supplier"
+          }
+        },
+        "required": ["name"]
+      }
+    },
+    {
+      "name": "update-contact",
+      "description": "Update an existing contact in Xero.",
+      "http_method": "POST",
+      "endpoint": "/Contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "Xero contact ID (UUID)"
+          },
+          "name": {
+            "type": "string",
+            "description": "New contact name"
+          },
+          "email": {
+            "type": "string",
+            "description": "New email address"
+          },
+          "phone": {
+            "type": "string",
+            "description": "New phone number"
+          }
+        },
+        "required": ["contact_id"]
+      }
+    },
+    {
+      "name": "create-invoice",
+      "description": "Create an invoice (ACCREC) or bill (ACCPAY) in Xero.",
+      "http_method": "PUT",
+      "endpoint": "/Invoices",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "Xero contact ID (UUID)"
+          },
+          "type": {
+            "type": "string",
+            "description": "ACCREC (invoice to customer) or ACCPAY (bill from supplier)",
+            "enum": ["ACCREC", "ACCPAY"]
+          },
+          "line_items": {
+            "type": "array",
+            "description": "Invoice line items",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": { "type": "string" },
+                "quantity": { "type": "number", "description": "Quantity (default 1)" },
+                "unit_amount": { "type": "number", "description": "Unit price" },
+                "account_code": { "type": "string", "description": "Xero account code (e.g. '200' for Sales)" },
+                "tax_type": { "type": "string", "description": "Tax type (e.g. OUTPUT, INPUT, NONE)" }
+              },
+              "required": ["unit_amount"]
+            }
+          },
+          "due_date": {
+            "type": "string",
+            "description": "Due date in YYYY-MM-DD format"
+          },
+          "invoice_number": {
+            "type": "string",
+            "description": "Custom invoice number"
+          },
+          "status": {
+            "type": "string",
+            "description": "DRAFT, SUBMITTED, or AUTHORISED",
+            "enum": ["DRAFT", "SUBMITTED", "AUTHORISED"]
+          },
+          "reference": {
+            "type": "string",
+            "description": "Customer reference / PO number"
+          }
+        },
+        "required": ["contact_id", "line_items"]
+      }
+    },
+    {
+      "name": "list-invoices",
+      "description": "List invoices in Xero.",
+      "http_method": "GET",
+      "endpoint": "/Invoices",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number (100 per page)"
+          },
+          "status": {
+            "type": "string",
+            "description": "Filter by status: DRAFT, SUBMITTED, AUTHORISED, PAID, VOIDED, DELETED"
+          },
+          "contact_id": {
+            "type": "string",
+            "description": "Filter by contact ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-invoice",
+      "description": "Get a specific invoice by ID.",
+      "http_method": "GET",
+      "endpoint": "/Invoices/{invoice_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "description": "Xero invoice ID (UUID)"
+          }
+        },
+        "required": ["invoice_id"]
+      }
+    },
+    {
+      "name": "send-invoice",
+      "description": "Send an invoice to the contact's email address.",
+      "http_method": "POST",
+      "endpoint": "/Invoices/{invoice_id}/Email",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "description": "Xero invoice ID (UUID)"
+          },
+          "email": {
+            "type": "string",
+            "description": "Override recipient email (defaults to contact's email)"
+          }
+        },
+        "required": ["invoice_id"]
+      }
+    },
+    {
+      "name": "create-payment",
+      "description": "Record a payment against an invoice in Xero.",
+      "http_method": "PUT",
+      "endpoint": "/Payments",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "description": "Invoice ID to apply the payment to"
+          },
+          "account_id": {
+            "type": "string",
+            "description": "Bank account ID to record the payment from"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Payment amount"
+          },
+          "date": {
+            "type": "string",
+            "description": "Payment date in YYYY-MM-DD format"
+          },
+          "reference": {
+            "type": "string",
+            "description": "Payment reference (e.g. cheque number, transaction ID)"
+          }
+        },
+        "required": ["invoice_id", "account_id", "amount"]
+      }
+    },
+    {
+      "name": "list-payments",
+      "description": "List payments in Xero.",
+      "http_method": "GET",
+      "endpoint": "/Payments",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number"
+          },
+          "status": {
+            "type": "string",
+            "description": "Filter by status: AUTHORISED or DELETED"
+          }
+        }
+      }
+    },
+    {
+      "name": "list-accounts",
+      "description": "List chart of accounts in Xero.",
+      "http_method": "GET",
+      "endpoint": "/Accounts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Filter by account type (e.g. BANK, CURRENT, REVENUE, EXPENSE)"
+          }
+        }
+      }
+    },
+    {
+      "name": "get-balance-sheet",
+      "description": "Retrieve the Balance Sheet report from Xero.",
+      "http_method": "GET",
+      "endpoint": "/Reports/BalanceSheet",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "Balance sheet date in YYYY-MM-DD format (defaults to today)"
+          },
+          "periods": {
+            "type": "integer",
+            "description": "Number of periods to compare (1-11)"
+          },
+          "timeframe": {
+            "type": "string",
+            "description": "Period timeframe: MONTH, QUARTER, or YEAR",
+            "enum": ["MONTH", "QUARTER", "YEAR"]
+          }
+        }
+      }
+    }
+  ],
+  "syncs": [],
+  "documentation_url": "https://developer.xero.com/documentation/api/accounting/overview",
+  "provider_config": {
+    "authorization_url": "https://login.xero.com/identity/connect/authorize",
+    "token_url": "https://identity.xero.com/connect/token",
+    "authorization_params": {
+      "response_type": "code"
+    },
+    "default_scopes": "offline_access openid accounting.contacts accounting.invoices accounting.settings accounting.payments",
+    "display_name": "Xero",
+    "connection_config": {
+      "tenant_id": {
+        "type": "string",
+        "title": "Xero Tenant ID",
+        "optional": true,
+        "description": "Xero organisation tenant ID (UUID). If omitted, the first connected organisation is used automatically.",
+        "example": "b2c12345-abcd-1234-efgh-123456789abc"
+      }
+    },
+    "docs": "https://connect.uplizd.ai/docs/api-integrations/xero",
+    "setup_guide_url": "https://connect.uplizd.ai/docs/api-integrations/xero/how-to-register-your-own-xero-api-oauth-app",
+    "proxy": {
+      "base_url": "https://api.xero.com",
+      "headers": {
+        "authorization": "Bearer ${accessToken}"
+      },
+      "retry": {
+        "after": ["retry-after"]
+      }
+    }
+  }
+}

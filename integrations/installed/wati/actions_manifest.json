@@ -1,0 +1,227 @@
+{
+  "provider": "wati",
+  "auth_type": "api_key",
+  "base_url": "https://api.wati.io/v1",
+  "category": "chat",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-contact",
+      "description": "Get a specific contact by ID.",
+      "http_method": "GET",
+      "endpoint": "/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "list-contacts",
+      "description": "List all contacts.",
+      "http_method": "GET",
+      "endpoint": "/contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of contacts per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-contact",
+      "description": "Create a new contact.",
+      "http_method": "POST",
+      "endpoint": "/contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "description": "The phone number of the contact."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the contact."
+          }
+        },
+        "required": [
+          "phone_number"
+        ]
+      }
+    },
+    {
+      "name": "update-contact",
+      "description": "Update an existing contact.",
+      "http_method": "PUT",
+      "endpoint": "/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name of the contact."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-contact",
+      "description": "Delete a contact.",
+      "http_method": "DELETE",
+      "endpoint": "/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "get-message",
+      "description": "Get a specific message by ID.",
+      "http_method": "GET",
+      "endpoint": "/messages/{message_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string",
+            "description": "The ID of the message."
+          }
+        },
+        "required": [
+          "message_id"
+        ]
+      }
+    },
+    {
+      "name": "list-messages",
+      "description": "List messages.",
+      "http_method": "GET",
+      "endpoint": "/messages",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of messages per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "send-message",
+      "description": "Send a message.",
+      "http_method": "POST",
+      "endpoint": "/messages",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "description": "The recipient's phone number."
+          },
+          "message": {
+            "type": "string",
+            "description": "The message content."
+          }
+        },
+        "required": [
+          "phone_number",
+          "message"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "contacts",
+      "description": "Sync all contacts.",
+      "entity": "Contact",
+      "frequency": "hourly"
+    },
+    {
+      "name": "messages",
+      "description": "Sync recent messages.",
+      "entity": "Message",
+      "frequency": "hourly"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Wati",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://docs.wati.io/",
+    "setup_guide_url": "https://docs.wati.io/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.wati.io/v1",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "wati-automation",
+    "display_name": "wati-automation",
+    "description": "Automate Wati tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "wati",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

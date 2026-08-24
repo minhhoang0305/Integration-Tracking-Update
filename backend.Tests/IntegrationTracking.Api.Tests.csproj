@@ -11,7 +11,7 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <None Include="../integrations/u301/actions_manifest.json" Link="fixtures/actions_manifest.old.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../integrations/installed/u301/actions_manifest.json" Link="fixtures/actions_manifest.old.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../test-fixtures/u301/actions_manifest.new.json" Link="fixtures/actions_manifest.new.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

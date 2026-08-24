@@ -1,0 +1,111 @@
+{
+  "provider": "yonyou",
+  "auth_type": "api_key",
+  "api_key_header": "Authorization",
+  "base_url": "https://api.yonyoucloud.com",
+  "category": "accounting",
+  "connection_config_base_url_key": "api_url",
+  "actions": [
+    {
+      "name": "list-vouchers",
+      "description": "List accounting vouchers from Yonyou.",
+      "http_method": "GET",
+      "endpoint": "/iuap/api/voucher/list",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "description": "Number of records per page"
+          },
+          "pageIndex": {
+            "type": "integer",
+            "description": "Page index (starting from 1)"
+          },
+          "beginDate": {
+            "type": "string",
+            "description": "Start date (YYYY-MM-DD)"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date (YYYY-MM-DD)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-customers",
+      "description": "List customers (档案) from Yonyou.",
+      "http_method": "GET",
+      "endpoint": "/iuap/api/customer/list",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "description": "Number of records per page"
+          },
+          "pageIndex": {
+            "type": "integer",
+            "description": "Page index"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-products",
+      "description": "List inventory items/products from Yonyou.",
+      "http_method": "GET",
+      "endpoint": "/iuap/api/inventory/list",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "description": "Number of records per page"
+          },
+          "pageIndex": {
+            "type": "integer",
+            "description": "Page index"
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Yonyou",
+    "docs": "https://open.yonyoucloud.com/open-platform/doc",
+    "setup_guide_url": "https://open.yonyoucloud.com/open-platform/doc",
+    "connection_config": {
+      "api_url": {
+        "type": "string",
+        "title": "API URL",
+        "description": "Yonyou cloud API URL",
+        "example": "https://api.yonyoucloud.com"
+      }
+    },
+    "proxy": {
+      "base_url": "https://api.yonyoucloud.com",
+      "headers": {
+        "Authorization": "Bearer ${apiKey}"
+      },
+      "retry": {
+        "at": [
+          "retry-after"
+        ],
+        "error_code": [
+          "429",
+          "500",
+          "502",
+          "503",
+          "504"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http"
+}

@@ -1,0 +1,79 @@
+{
+  "provider": "wildix-pbx",
+  "auth_type": "api_key",
+  "base_url": "https://{pbx_domain}/api/v2",
+  "category": "communication",
+  "stub": false,
+  "actions": [
+    {
+      "name": "list-users",
+      "description": "List all PBX users/extensions.",
+      "http_method": "GET",
+      "endpoint": "/users",
+      "input_schema": { "type": "object", "properties": {}, "required": [] }
+    },
+    {
+      "name": "get-user",
+      "description": "Get details of a specific PBX user.",
+      "http_method": "GET",
+      "endpoint": "/users/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": { "id": { "type": "string" } },
+        "required": ["id"]
+      }
+    },
+    {
+      "name": "list-calls",
+      "description": "List recent call records.",
+      "http_method": "GET",
+      "endpoint": "/calls",
+      "input_schema": { "type": "object", "properties": {}, "required": [] }
+    },
+    {
+      "name": "list-extensions",
+      "description": "List all phone extensions.",
+      "http_method": "GET",
+      "endpoint": "/extensions",
+      "input_schema": { "type": "object", "properties": {}, "required": [] }
+    }
+  ],
+  "syncs": [
+    { "name": "calls", "description": "Sync call records from Wildix PBX.", "entity": "Call", "frequency": "1h" },
+    { "name": "users", "description": "Sync PBX users from Wildix.", "entity": "User", "frequency": "daily" }
+  ],
+  "provider_config": {
+    "display_name": "Wildix PBX",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": true,
+    "default_scopes": "",
+    "docs": "https://wilder.wildix.com/docs",
+    "setup_guide_url": "https://wildix.com/",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://{pbx_domain}/api/v2",
+      "headers": { "Authorization": "Bearer ${apiKey}" },
+      "retry": { "error_code": ["401", "429", "5xx"] }
+    },
+    "authorization_params": {},
+    "connection_config": {
+      "pbx_domain": {
+        "type": "string",
+        "title": "PBX Domain",
+        "description": "Your Wildix PBX domain or IP address",
+        "example": "pbx.yourcompany.com"
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "wildix-pbx-automation",
+    "display_name": "Wildix PBX Automation",
+    "description": "Manage Wildix PBX communications including users, extensions, and call records.",
+    "toolkit_slug": "wildix_pbx",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": []
+  }
+}

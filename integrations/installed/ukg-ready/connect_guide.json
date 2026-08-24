@@ -1,0 +1,45 @@
+{
+  "overview": "UKG Ready uses OAuth 2.0. You register an application through the UKG developer portal, receive a Client ID and Client Secret, and redirect users through UKG Ready's authorisation flow.",
+  "credential_help": {
+    "oauth_client_id": {
+      "label": "Client ID",
+      "description": "Issued after registering your application at developer.ukg.com.",
+      "url": "https://developer.ukg.com/",
+      "url_label": "Open UKG Developer Portal"
+    },
+    "oauth_client_secret": {
+      "label": "Client Secret",
+      "description": "Issued with the Client ID. Keep it confidential.",
+      "url": "https://developer.ukg.com/",
+      "url_label": "Open UKG Developer Portal"
+    }
+  },
+  "steps": [
+    {
+      "title": "Apply for API access",
+      "description": "Go to developer.ukg.com and register an application. UKG Ready API access requires approval.",
+      "url": "https://developer.ukg.com/",
+      "url_label": "Open UKG Developer Portal"
+    },
+    {
+      "title": "Configure your application",
+      "description": "Once approved, configure your app with the Nolixan callback URL as the redirect URI.",
+      "warning": "Redirect URI must match exactly during the OAuth flow."
+    },
+    {
+      "title": "Copy credentials",
+      "description": "Copy the Client ID and Client Secret from your application settings.",
+      "warning": "Keep the Client Secret secure. Never expose it in client-side code."
+    },
+    {
+      "title": "Connect",
+      "description": "Create the integration in Nolixan with the Client ID and Client Secret, then initiate the OAuth flow.",
+      "code": "GET /api/v1/oauth/request/ukg-ready?provider=ukg-ready&connection_id=user-123&environment_id=1"
+    }
+  ],
+  "tips": [
+    "UKG Ready API access typically requires a formal approval process — allow lead time.",
+    "Tokens expire and Nolixan handles auto-refresh.",
+    "Contact UKG support if you need elevated API access for workforce management features."
+  ]
+}

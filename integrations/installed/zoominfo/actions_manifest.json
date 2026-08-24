@@ -1,0 +1,178 @@
+{
+  "provider": "zoominfo",
+  "auth_type": "api_key",
+  "base_url": "https://api.zoominfo.com",
+  "category": "business_information",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-company",
+      "description": "Retrieve company information by ZoomInfo ID.",
+      "http_method": "GET",
+      "endpoint": "/companies/{companyId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "The ZoomInfo ID of the company."
+          }
+        },
+        "required": [
+          "companyId"
+        ]
+      }
+    },
+    {
+      "name": "search-companies",
+      "description": "Search for companies based on various criteria.",
+      "http_method": "GET",
+      "endpoint": "/companies/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "The keyword to search for."
+          },
+          "location": {
+            "type": "string",
+            "description": "The location to search in."
+          },
+          "industry": {
+            "type": "string",
+            "description": "The industry to search for."
+          }
+        },
+        "required": [
+          "keyword"
+        ]
+      }
+    },
+    {
+      "name": "get-people",
+      "description": "Retrieve people information by ZoomInfo ID.",
+      "http_method": "GET",
+      "endpoint": "/people/{personId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "personId": {
+            "type": "string",
+            "description": "The ZoomInfo ID of the person."
+          }
+        },
+        "required": [
+          "personId"
+        ]
+      }
+    },
+    {
+      "name": "search-people",
+      "description": "Search for people based on various criteria.",
+      "http_method": "GET",
+      "endpoint": "/people/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "The keyword to search for."
+          },
+          "title": {
+            "type": "string",
+            "description": "The job title to search for."
+          },
+          "company": {
+            "type": "string",
+            "description": "The company to search within."
+          }
+        },
+        "required": [
+          "keyword"
+        ]
+      }
+    },
+    {
+      "name": "get-enrichment",
+      "description": "Enrich a company or person based on email or domain.",
+      "http_method": "POST",
+      "endpoint": "/enrich",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address to enrich."
+          },
+          "domain": {
+            "type": "string",
+            "description": "The domain to enrich."
+          }
+        },
+        "required": [
+          "email",
+          "domain"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "companies",
+      "description": "Sync companies from ZoomInfo.",
+      "entity": "Company",
+      "frequency": "daily"
+    },
+    {
+      "name": "people",
+      "description": "Sync people from ZoomInfo.",
+      "entity": "Person",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "ZoomInfo",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://developers.zoominfo.com/",
+    "setup_guide_url": "https://developers.zoominfo.com/docs/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.zoominfo.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    },
+    "docs_connect": "https://connect.uplizd.ai/docs/integrations/all/zoominfo/connect"
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zoominfo-automation",
+    "display_name": "zoominfo-automation",
+    "description": "Automate Zoominfo tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "zoominfo",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

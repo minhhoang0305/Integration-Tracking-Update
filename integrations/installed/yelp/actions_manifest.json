@@ -1,0 +1,159 @@
+{
+  "provider": "yelp",
+  "auth_type": "api_key",
+  "base_url": "https://api.yelp.com/v3",
+  "category": "local_business",
+  "stub": false,
+  "actions": [
+    {
+      "name": "search-businesses",
+      "description": "Search for businesses based on location, term, and other criteria.",
+      "http_method": "GET",
+      "endpoint": "/businesses/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "term": {
+            "type": "string",
+            "description": "The search term."
+          },
+          "location": {
+            "type": "string",
+            "description": "The search location."
+          },
+          "latitude": {
+            "type": "number",
+            "description": "Latitude for location-based search."
+          },
+          "longitude": {
+            "type": "number",
+            "description": "Longitude for location-based search."
+          },
+          "radius": {
+            "type": "integer",
+            "description": "Search radius in meters."
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of category aliases."
+          }
+        },
+        "required": [
+          "term",
+          "location"
+        ]
+      }
+    },
+    {
+      "name": "get-business-details",
+      "description": "Retrieve details for a specific business.",
+      "http_method": "GET",
+      "endpoint": "/businesses/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The business ID."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "get-business-reviews",
+      "description": "Retrieve reviews for a specific business.",
+      "http_method": "GET",
+      "endpoint": "/businesses/{id}/reviews",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The business ID."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "search-business-categories",
+      "description": "Search for business categories.",
+      "http_method": "GET",
+      "endpoint": "/categories",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "term": {
+            "type": "string",
+            "description": "The search term for categories."
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "businesses",
+      "description": "Sync businesses within a specified location.",
+      "entity": "Business",
+      "frequency": "daily"
+    },
+    {
+      "name": "categories",
+      "description": "Sync business categories.",
+      "entity": "Category",
+      "frequency": "weekly"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Yelp",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://www.yelp.com/developers/documentation/v3",
+    "setup_guide_url": "https://www.yelp.com/developers/documentation/v3/authentication",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.yelp.com/v3",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor",
+        "param": "offset"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "yelp-automation",
+    "display_name": "yelp-automation",
+    "description": "Automate Yelp tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "yelp",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

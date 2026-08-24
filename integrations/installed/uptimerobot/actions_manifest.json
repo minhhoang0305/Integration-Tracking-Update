@@ -1,0 +1,179 @@
+{
+  "provider": "uptimerobot",
+  "auth_type": "api_key",
+  "base_url": "https://api.uptimerobot.com",
+  "category": "monitoring",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-monitors",
+      "description": "Get a list of all monitors.",
+      "http_method": "GET",
+      "endpoint": "/v2/monitors",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "create-monitor",
+      "description": "Create a new monitor.",
+      "http_method": "POST",
+      "endpoint": "/v2/monitors",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "friendly_name": {
+            "type": "string",
+            "description": "The friendly name of the monitor."
+          },
+          "url": {
+            "type": "string",
+            "description": "The URL to monitor."
+          }
+        },
+        "required": [
+          "friendly_name",
+          "url"
+        ]
+      }
+    },
+    {
+      "name": "get-monitor",
+      "description": "Get details for a specific monitor.",
+      "http_method": "GET",
+      "endpoint": "/v2/monitors/{monitor_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "monitor_id": {
+            "type": "integer",
+            "description": "The ID of the monitor."
+          }
+        },
+        "required": [
+          "monitor_id"
+        ]
+      }
+    },
+    {
+      "name": "update-monitor",
+      "description": "Update an existing monitor.",
+      "http_method": "PATCH",
+      "endpoint": "/v2/monitors/{monitor_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "monitor_id": {
+            "type": "integer",
+            "description": "The ID of the monitor."
+          },
+          "friendly_name": {
+            "type": "string",
+            "description": "The new friendly name of the monitor."
+          }
+        },
+        "required": [
+          "monitor_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-monitor",
+      "description": "Delete a monitor.",
+      "http_method": "DELETE",
+      "endpoint": "/v2/monitors/{monitor_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "monitor_id": {
+            "type": "integer",
+            "description": "The ID of the monitor."
+          }
+        },
+        "required": [
+          "monitor_id"
+        ]
+      }
+    },
+    {
+      "name": "get-alerts",
+      "description": "Get a list of alerts.",
+      "http_method": "GET",
+      "endpoint": "/v2/alerts",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "get-logs",
+      "description": "Get uptime logs.",
+      "http_method": "GET",
+      "endpoint": "/v2/logs",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "monitors",
+      "description": "Sync all monitors.",
+      "entity": "Monitor",
+      "frequency": "60m"
+    },
+    {
+      "name": "alerts",
+      "description": "Sync all alerts.",
+      "entity": "Alert",
+      "frequency": "5m"
+    }
+  ],
+  "provider_config": {
+    "display_name": "UptimeRobot",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://uptimerobot.com/api",
+    "setup_guide_url": "https://uptimerobot.com/api/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.uptimerobot.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor",
+        "param": "page"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "uptimerobot-automation",
+    "display_name": "uptimerobot-automation",
+    "description": "Automate Uptimerobot tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "uptimerobot",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

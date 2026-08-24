@@ -1,0 +1,209 @@
+{
+  "provider": "zenserp",
+  "auth_type": "api_key",
+  "base_url": "https://api.zenserp.com",
+  "category": "seo",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-serp-data",
+      "description": "Get SERP data for a given query.",
+      "http_method": "GET",
+      "endpoint": "/serp",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "The search query."
+          },
+          "location": {
+            "type": "string",
+            "description": "The location for the search."
+          },
+          "hl": {
+            "type": "string",
+            "description": "The language code."
+          }
+        },
+        "required": [
+          "q"
+        ]
+      }
+    },
+    {
+      "name": "get-image-results",
+      "description": "Get image results for a given query.",
+      "http_method": "GET",
+      "endpoint": "/images",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "q"
+        ]
+      }
+    },
+    {
+      "name": "get-video-results",
+      "description": "Get video results for a given query.",
+      "http_method": "GET",
+      "endpoint": "/videos",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "q"
+        ]
+      }
+    },
+    {
+      "name": "get-news-results",
+      "description": "Get news results for a given query.",
+      "http_method": "GET",
+      "endpoint": "/news",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "q"
+        ]
+      }
+    },
+    {
+      "name": "get-shopping-results",
+      "description": "Get shopping results for a given query.",
+      "http_method": "GET",
+      "endpoint": "/shopping",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "q"
+        ]
+      }
+    },
+    {
+      "name": "get-local-results",
+      "description": "Get local results for a given query.",
+      "http_method": "GET",
+      "endpoint": "/local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "The search query."
+          },
+          "location": {
+            "type": "string",
+            "description": "The location for the search."
+          }
+        },
+        "required": [
+          "q"
+        ]
+      }
+    },
+    {
+      "name": "get-related-questions",
+      "description": "Get related questions for a given query.",
+      "http_method": "GET",
+      "endpoint": "/related_questions",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "q"
+        ]
+      }
+    },
+    {
+      "name": "get-serp-overview",
+      "description": "Get an overview of the SERP for a given query.",
+      "http_method": "GET",
+      "endpoint": "/overview",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "q"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Zenserp",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://zenserp.com/documentation",
+    "setup_guide_url": "https://zenserp.com/documentation/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.zenserp.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zenserp-automation",
+    "display_name": "zenserp-automation",
+    "description": "Automate Zenserp tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "zenserp",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

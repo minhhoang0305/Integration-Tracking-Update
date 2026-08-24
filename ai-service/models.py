@@ -46,6 +46,7 @@ class ChangeSignal(BaseModel):
 class ChangeEvidence(BaseModel):
     matchedTerms: list[str] = Field(default_factory=list)
     urls: list[str] = Field(default_factory=list)
+    parserWarnings: list[str] = Field(default_factory=list)
 
 
 class ApiEndpoint(BaseModel):

@@ -2,8 +2,19 @@ namespace IntegrationTracking.Api.Templates;
 
 public sealed class TemplateOptions
 {
+    // Retained only to read historical proposals/configuration during migration to installed packages.
     public string RegistryPath { get; set; } = "Configuration/provider-integrations.json";
+    public string IntegrationsRoot { get; set; } = "integrations/installed";
     public string ArtifactRoot { get; set; } = "proposals";
+}
+
+public sealed class ObjectStorageOptions
+{
+    public string ServiceUrl { get; set; } = string.Empty;
+    public string AccessKey { get; set; } = string.Empty;
+    public string SecretKey { get; set; } = string.Empty;
+    public string CatalogBucket { get; set; } = "integration-catalog";
+    public string ArtifactBucket { get; set; } = "proposal-artifacts";
 }
 
 public sealed class ProposalLlmOptions

@@ -1,0 +1,22 @@
+{
+  "provider": "uber-api",
+  "display_name": "Uber API",
+  "sections": [
+    {
+      "title": "Overview",
+      "content": "The Uber API allows you to access rider profiles, trip history, and available products in a given area. This integration uses OAuth2 for secure user-level access."
+    },
+    {
+      "title": "Prerequisites",
+      "content": "You need an Uber developer account. Register your application at developer.uber.com to obtain client credentials. Your app must be approved by Uber for production access."
+    },
+    {
+      "title": "How to Connect",
+      "content": "1. Sign in at developer.uber.com and create a new app.\n2. Set the redirect URI to your OAuth callback URL.\n3. Note your Client ID and Client Secret from the app dashboard.\n4. Request the required OAuth scopes: profile, history, ride_widgets.\n5. Click Connect and authorize with your Uber account credentials."
+    },
+    {
+      "title": "Available Actions",
+      "content": "get-profile: Retrieve the profile of the authenticated Uber user.\nget-trip-history: Get a list of recent trips for the authenticated user.\nlist-products: List available Uber products (ride types) for a given location."
+    }
+  ]
+}

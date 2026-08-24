@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Integration Review</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/diff.css">
+</head>
+<body>
+  <header class="topbar"><div><p class="eyebrow">INTEGRATION TRACKING</p><h1>Proposal review</h1></div><button id="refresh" class="button secondary">Refresh</button></header>
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="filters"><label>Status<select id="status-filter"><option value="">All statuses</option><option>Pending</option><option>NeedsReview</option><option>Approved</option><option>Rejected</option></select></label><label>Severity<select id="severity-filter"><option value="">All severities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option><option>Unknown</option></select></label></div>
+      <p id="list-state" class="muted">Loading proposals…</p><div id="proposal-list" class="proposal-list"></div>
+    </aside>
+    <section id="detail" class="detail" aria-live="polite"><div class="empty"><h2>Select a proposal</h2><p>Choose a proposal to inspect its impact and make a review decision.</p></div></section>
+  </main>
+  <dialog id="decision-dialog"><form method="dialog" id="decision-form"><h2 id="decision-title">Review decision</h2><input id="decision" type="hidden"><label>Admin identity<input id="admin-identity" required placeholder="e.g. nolanpham"></label><label>Note <span class="muted">(optional)</span><textarea id="decision-note" rows="4" placeholder="Reason for this decision"></textarea></label><p id="decision-error" class="error" hidden></p><div class="dialog-actions"><button id="decision-cancel" type="button" class="button secondary">Cancel</button><button id="decision-submit" type="submit" class="button">Confirm</button></div></form></dialog>
+  <template id="detail-template"><div class="proposal-detail"><div class="detail-header"><div><p id="provider" class="eyebrow"></p><h2 id="integration"></h2><p id="proposal-status"></p></div><div class="decision-actions"><button data-action="approve" class="button approve">Approve</button><button data-action="reject" class="button reject">Reject</button></div></div><div id="metrics" class="metrics"></div><nav class="tabs" aria-label="Proposal detail"><button class="tab active" data-tab="overview">Overview</button><button class="tab" data-tab="impact">Impact</button><button class="tab" data-tab="manifest">Manifest diff</button><button class="tab" data-tab="evidence">Evidence</button></nav><div id="panels"><section data-panel="overview"></section><section data-panel="impact" hidden></section><section data-panel="manifest" hidden></section><section data-panel="evidence" hidden></section></div></div></template>
+  <script src="/app.js"></script>
+</body>
+</html>

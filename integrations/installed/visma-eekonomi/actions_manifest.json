@@ -1,0 +1,106 @@
+{
+  "provider": "visma-eekonomi",
+  "auth_type": "oauth2",
+  "base_url": "https://eaccounting.vismaonline.com/v2",
+  "category": "accounting",
+  "actions": [
+    {
+      "name": "list-customers",
+      "description": "List customers in Visma eEkonomi (Swedish cloud accounting).",
+      "http_method": "GET",
+      "endpoint": "/customers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "$top": {
+            "type": "integer",
+            "description": "Maximum number of customers to return"
+          },
+          "$skip": {
+            "type": "integer",
+            "description": "Number of records to skip"
+          },
+          "$filter": {
+            "type": "string",
+            "description": "OData filter expression"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-invoices",
+      "description": "List customer invoices in Visma eEkonomi.",
+      "http_method": "GET",
+      "endpoint": "/customerinvoices",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "$top": {
+            "type": "integer",
+            "description": "Maximum number of invoices"
+          },
+          "$skip": {
+            "type": "integer",
+            "description": "Records to skip"
+          },
+          "$filter": {
+            "type": "string",
+            "description": "OData filter (e.g. InvoiceDate ge 2024-01-01)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-articles",
+      "description": "List articles (products/services) in Visma eEkonomi.",
+      "http_method": "GET",
+      "endpoint": "/articles",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "$top": {
+            "type": "integer",
+            "description": "Maximum number of articles"
+          },
+          "$skip": {
+            "type": "integer",
+            "description": "Records to skip"
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Visma eEkonomi",
+    "authorization_url": "https://identity.vismaonline.com/connect/authorize",
+    "token_url": "https://identity.vismaonline.com/connect/token",
+    "disable_pkce": false,
+    "default_scopes": "ea:api offline_access",
+    "scope_separator": " ",
+    "docs": "https://developer.vismaonline.com/",
+    "setup_guide_url": "https://developer.vismaonline.com/docs/authentication",
+    "proxy": {
+      "base_url": "https://eaccounting.vismaonline.com/v2",
+      "headers": {
+        "Authorization": "Bearer ${accessToken}"
+      },
+      "retry": {
+        "at": [
+          "retry-after"
+        ],
+        "error_code": [
+          "429",
+          "500",
+          "502",
+          "503",
+          "504"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http"
+}

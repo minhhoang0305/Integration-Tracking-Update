@@ -1,0 +1,168 @@
+{
+  "provider": "wakatime",
+  "auth_type": "api_key",
+  "base_url": "https://api.wakatime.com/api/v1",
+  "category": "developer_tools",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-user-stats",
+      "description": "Get statistics for a specific user.",
+      "http_method": "GET",
+      "endpoint": "/users/{user_id}/stats",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "The user ID."
+          }
+        },
+        "required": [
+          "user_id"
+        ]
+      }
+    },
+    {
+      "name": "get-project-stats",
+      "description": "Get statistics for a specific project.",
+      "http_method": "GET",
+      "endpoint": "/projects/{project_id}/stats",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "The project ID."
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    },
+    {
+      "name": "get-daily-stats",
+      "description": "Get daily statistics for a user.",
+      "http_method": "GET",
+      "endpoint": "/users/{user_id}/stats/daily",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "The user ID."
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "The date for which to retrieve statistics (YYYY-MM-DD)."
+          }
+        },
+        "required": [
+          "user_id",
+          "date"
+        ]
+      }
+    },
+    {
+      "name": "get-heartbeats",
+      "description": "Get heartbeats for a user within a date range.",
+      "http_method": "GET",
+      "endpoint": "/users/{user_id}/heartbeats",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "The user ID."
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date (YYYY-MM-DD)."
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The end date (YYYY-MM-DD)."
+          }
+        },
+        "required": [
+          "user_id",
+          "start_date",
+          "end_date"
+        ]
+      }
+    },
+    {
+      "name": "get-user-projects",
+      "description": "Get a list of projects for a user.",
+      "http_method": "GET",
+      "endpoint": "/users/{user_id}/projects",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "The user ID."
+          }
+        },
+        "required": [
+          "user_id"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "user_projects",
+      "description": "Sync user projects.",
+      "entity": "Project",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Wakatime",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://wakatime.com/docs/",
+    "setup_guide_url": "https://wakatime.com/docs/api/",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.wakatime.com/api/v1",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "wakatime-automation",
+    "display_name": "wakatime-automation",
+    "description": "Automate Wakatime tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "wakatime",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

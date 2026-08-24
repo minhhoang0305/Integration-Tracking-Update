@@ -1,0 +1,21 @@
+{
+  "provider": "yonyou",
+  "sections": [
+    {
+      "title": "Overview",
+      "content": "Yonyou (用友) is a leading Chinese enterprise software provider offering ERP, accounting, and business management solutions. This integration connects to the Yonyou Cloud API to access accounting vouchers, customer records, and inventory data."
+    },
+    {
+      "title": "Prerequisites",
+      "content": "You need a Yonyou Cloud account with API access enabled. Log in to the Yonyou developer portal at open.yonyoucloud.com and register your application. Obtain an App Key and App Secret from the portal. You will also need the API base URL for your Yonyou cloud instance."
+    },
+    {
+      "title": "How to Connect",
+      "content": "In the connection form, paste your Yonyou App Key or access token in the API Key field. Provide your Yonyou Cloud API base URL in the api_url connection config field. The integration authenticates using a Bearer token in the Authorization header."
+    },
+    {
+      "title": "Available Actions",
+      "content": "list-vouchers: List accounting vouchers with optional date range and pagination. list-customers: List customer master data (档案) with pagination. list-products: List inventory items and products with pagination support."
+    }
+  ]
+}

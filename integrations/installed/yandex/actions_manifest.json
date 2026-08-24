@@ -1,0 +1,218 @@
+{
+  "provider": "yandex",
+  "auth_type": "api_key",
+  "base_url": "https://api.yandex.net",
+  "category": "cloud",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-folder-info",
+      "description": "Get information about a specific folder in Yandex Disk.",
+      "http_method": "GET",
+      "endpoint": "/disk/v1/resources/folders/{folder_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "folder_id": {
+            "type": "string",
+            "description": "The ID of the folder."
+          }
+        },
+        "required": [
+          "folder_id"
+        ]
+      }
+    },
+    {
+      "name": "upload-file",
+      "description": "Upload a file to Yandex Disk.",
+      "http_method": "POST",
+      "endpoint": "/disk/v1/resources/upload",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "The path to save the file."
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "The file content."
+          }
+        },
+        "required": [
+          "path",
+          "file"
+        ]
+      }
+    },
+    {
+      "name": "download-file",
+      "description": "Download a file from Yandex Disk.",
+      "http_method": "GET",
+      "endpoint": "/disk/v1/resources/download?path={file_path}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "file_path": {
+            "type": "string",
+            "description": "The path to the file."
+          }
+        },
+        "required": [
+          "file_path"
+        ]
+      }
+    },
+    {
+      "name": "delete-file",
+      "description": "Delete a file from Yandex Disk.",
+      "http_method": "DELETE",
+      "endpoint": "/disk/v1/resources/files/{file_path}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "file_path": {
+            "type": "string",
+            "description": "The path to the file."
+          }
+        },
+        "required": [
+          "file_path"
+        ]
+      }
+    },
+    {
+      "name": "list-folder-contents",
+      "description": "List the contents of a folder in Yandex Disk.",
+      "http_method": "GET",
+      "endpoint": "/disk/v1/resources/folders/{folder_id}/contents",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "folder_id": {
+            "type": "string",
+            "description": "The ID of the folder."
+          }
+        },
+        "required": [
+          "folder_id"
+        ]
+      }
+    },
+    {
+      "name": "create-folder",
+      "description": "Create a new folder in Yandex Disk.",
+      "http_method": "POST",
+      "endpoint": "/disk/v1/resources/folders",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the folder."
+          },
+          "parent": {
+            "type": "string",
+            "description": "The ID of the parent folder."
+          }
+        },
+        "required": [
+          "name",
+          "parent"
+        ]
+      }
+    },
+    {
+      "name": "get-disk-space",
+      "description": "Get information about disk space usage.",
+      "http_method": "GET",
+      "endpoint": "/disk/v1/resources/storage",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "copy-file",
+      "description": "Copy a file in Yandex Disk.",
+      "http_method": "POST",
+      "endpoint": "/disk/v1/resources/copy",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "from_path": {
+            "type": "string",
+            "description": "The path of the source file."
+          },
+          "to_path": {
+            "type": "string",
+            "description": "The path of the destination file."
+          }
+        },
+        "required": [
+          "from_path",
+          "to_path"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "disk_files",
+      "description": "Sync files and folders in Yandex Disk.",
+      "entity": "File",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Yandex Disk",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://cloud.yandex.com/docs/disk/api-reference",
+    "setup_guide_url": "https://cloud.yandex.com/docs/disk/quickstart",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.yandex.net",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset",
+        "limit_param": "limit",
+        "offset_param": "offset"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-limit",
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    },
+    "authorization_params": {
+      "response_type": "code"
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "yandex-automation",
+    "display_name": "yandex-automation",
+    "description": "Automate Yandex tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "yandex",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

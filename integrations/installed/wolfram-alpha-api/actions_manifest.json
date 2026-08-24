@@ -1,0 +1,135 @@
+{
+  "provider": "wolfram-alpha-api",
+  "auth_type": "api_key",
+  "base_url": "https://api.wolframalpha.com/v2",
+  "category": "knowledge_graph",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-entity",
+      "description": "Retrieve information about a specific entity.",
+      "http_method": "GET",
+      "endpoint": "/query",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "The query string."
+          },
+          "outputformat": {
+            "type": "string",
+            "description": "The desired output format (e.g., plaintext, XML, JSON).",
+            "default": "JSON"
+          },
+          "appid": {
+            "type": "string",
+            "description": "Your Wolfram Alpha App ID."
+          }
+        },
+        "required": [
+          "input",
+          "appid"
+        ]
+      }
+    },
+    {
+      "name": "search-entities",
+      "description": "Search for entities based on a query.",
+      "http_method": "GET",
+      "endpoint": "/query",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "The search query."
+          },
+          "outputformat": {
+            "type": "string",
+            "description": "The desired output format (e.g., plaintext, XML, JSON).",
+            "default": "JSON"
+          },
+          "appid": {
+            "type": "string",
+            "description": "Your Wolfram Alpha App ID."
+          }
+        },
+        "required": [
+          "input",
+          "appid"
+        ]
+      }
+    },
+    {
+      "name": "get-image",
+      "description": "Retrieve an image related to a query.",
+      "http_method": "GET",
+      "endpoint": "/query",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "The query for the image."
+          },
+          "outputformat": {
+            "type": "string",
+            "description": "The desired output format (e.g., plaintext, XML, JSON).",
+            "default": "JSON"
+          },
+          "appid": {
+            "type": "string",
+            "description": "Your Wolfram Alpha App ID."
+          }
+        },
+        "required": [
+          "input",
+          "appid"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Wolfram Alpha",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://products.wolframalpha.com/api/",
+    "setup_guide_url": "https://products.wolframalpha.com/api/documentation/",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.wolframalpha.com/v2",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "none"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "wolfram-alpha-api-automation",
+    "display_name": "wolfram-alpha-api-automation",
+    "description": "Automate Wolfram Alpha API tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "wolfram_alpha_api",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "overview": "Zoom uses OAuth 2.0. You create a Zoom OAuth app in the Zoom Marketplace, receive a Client ID and Client Secret, and redirect users through Zoom's authorisation flow. Zoom issues a scoped access token on completion.",
+  "credential_help": {
+    "oauth_client_id": {
+      "label": "Client ID",
+      "description": "Found on your app's credentials page in the Zoom Marketplace App Dashboard.",
+      "url": "https://marketplace.zoom.us/",
+      "url_label": "Open Zoom Marketplace"
+    },
+    "oauth_client_secret": {
+      "label": "Client Secret",
+      "description": "Found alongside the Client ID. Keep it confidential — it authenticates server-side calls.",
+      "url": "https://marketplace.zoom.us/",
+      "url_label": "Open Zoom Marketplace"
+    }
+  },
+  "steps": [
+    {
+      "title": "Open Zoom Marketplace",
+      "description": "Go to marketplace.zoom.us and sign in with your Zoom account.",
+      "url": "https://marketplace.zoom.us/",
+      "url_label": "Open Zoom Marketplace"
+    },
+    {
+      "title": "Create an OAuth app",
+      "description": "Click 'Build App' → 'OAuth'. Choose 'User-managed app' for end-user authorisation. Enter the app name and whether it is intended for account-level or user-level access.",
+      "tip": "Choose 'User-managed' for integrations where individual users grant access to their Zoom accounts."
+    },
+    {
+      "title": "Set the redirect URL",
+      "description": "In the app's 'App Credentials' section, add the Nolixan callback URL as an OAuth Redirect URL.",
+      "warning": "The redirect URL must match exactly. Zoom returns an error if it does not match."
+    },
+    {
+      "title": "Add scopes",
+      "description": "Go to 'Scopes' and add the required permissions: meeting:read, meeting:write, user:read, recording:read.",
+      "tip": "Request only the scopes your integration needs. Users see these during authorisation."
+    },
+    {
+      "title": "Copy Client ID and Client Secret",
+      "description": "From the 'App Credentials' page, copy the Client ID and Client Secret.",
+      "warning": "Never expose the Client Secret in client-side code."
+    },
+    {
+      "title": "Connect",
+      "description": "In Nolixan, create the integration with the Client ID and Client Secret. Initiate the OAuth flow for each user.",
+      "code": "GET /api/v1/oauth/request/zoom?provider=zoom&connection_id=user-123&environment_id=1"
+    }
+  ],
+  "tips": [
+    "Zoom access tokens expire after 1 hour — Nolixan auto-refreshes them using the refresh token.",
+    "Zoom requires app review/approval before you can use the app with users outside your account.",
+    "For internal tools (only your own account), you can use a Server-to-Server OAuth app instead."
+  ],
+  "warnings": [
+    "Zoom apps require approval before being available to other Zoom users — plan for the review process.",
+    "Never expose the Client Secret. Rotate it immediately if compromised via Zoom Marketplace → App Credentials."
+  ]
+}

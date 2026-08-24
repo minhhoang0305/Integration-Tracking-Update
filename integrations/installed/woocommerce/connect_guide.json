@@ -1,0 +1,39 @@
+{
+  "overview": "WooCommerce uses Consumer Key and Consumer Secret for REST API authentication (HTTP Basic). You generate these keys from the WordPress admin panel. No OAuth flow is required.",
+  "steps": [
+    {
+      "title": "Log in to WordPress admin",
+      "description": "Access your WordPress site's admin dashboard at https://yourstore.com/wp-admin.",
+      "url": "https://woocommerce.com/document/woocommerce-rest-api/",
+      "url_label": "Open WooCommerce REST API Docs"
+    },
+    {
+      "title": "Generate API credentials",
+      "description": "Go to WooCommerce → Settings → Advanced → REST API. Click 'Add key'. Enter a description, select the user, choose the permissions (Read/Write/Read-Write), and click 'Generate API key'.",
+      "tip": "Select 'Read/Write' for full integration access including order updates."
+    },
+    {
+      "title": "Copy the Consumer Key and Consumer Secret",
+      "description": "WooCommerce displays the Consumer Key and Consumer Secret once. Copy both immediately and store them securely.",
+      "warning": "The Consumer Secret is shown only once. If you navigate away without copying it, you must regenerate the key."
+    },
+    {
+      "title": "Note your store URL",
+      "description": "Your store URL is the base domain of your WooCommerce site, e.g. mystore.com. This is required as connection config."
+    },
+    {
+      "title": "Create the connection",
+      "description": "POST to /api/v1/connections with the Consumer Key as username and Consumer Secret as password:\n{\n  \"provider_config_key\": \"woocommerce\",\n  \"connection_id\": \"your-store-id\",\n  \"credentials\": { \"username\": \"ck_...\", \"password\": \"cs_...\" },\n  \"connection_config\": { \"store_url\": \"mystore.com\" }\n}",
+      "tip": "Use a unique connection_id per WooCommerce store."
+    }
+  ],
+  "tips": [
+    "WooCommerce REST API requires HTTPS — make sure your store has SSL enabled.",
+    "Consumer Keys are tied to a specific WordPress user — use a dedicated admin user for API integrations.",
+    "WooCommerce supports webhook delivery for real-time events like new orders."
+  ],
+  "warnings": [
+    "The Consumer Secret is only shown once at creation — copy it immediately.",
+    "Ensure the API user has sufficient WordPress role permissions for the operations you need."
+  ]
+}

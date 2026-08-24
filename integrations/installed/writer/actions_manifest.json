@@ -1,0 +1,186 @@
+{
+  "provider": "writer",
+  "auth_type": "api_key",
+  "base_url": "https://api.writer.com",
+  "category": "content_creation",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-content",
+      "description": "Retrieve a specific content item by ID.",
+      "http_method": "GET",
+      "endpoint": "/contents/{contentId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contentId": {
+            "type": "string",
+            "description": "The ID of the content to retrieve."
+          }
+        },
+        "required": [
+          "contentId"
+        ]
+      }
+    },
+    {
+      "name": "create-content",
+      "description": "Create a new content item.",
+      "http_method": "POST",
+      "endpoint": "/contents",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the content."
+          },
+          "body": {
+            "type": "string",
+            "description": "The content body."
+          },
+          "contentType": {
+            "type": "string",
+            "description": "The type of content (e.g., article, blog post)."
+          }
+        },
+        "required": [
+          "title",
+          "body",
+          "contentType"
+        ]
+      }
+    },
+    {
+      "name": "update-content",
+      "description": "Update an existing content item.",
+      "http_method": "PUT",
+      "endpoint": "/contents/{contentId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contentId": {
+            "type": "string",
+            "description": "The ID of the content to update."
+          },
+          "title": {
+            "type": "string",
+            "description": "The updated title of the content."
+          },
+          "body": {
+            "type": "string",
+            "description": "The updated content body."
+          }
+        },
+        "required": [
+          "contentId"
+        ]
+      }
+    },
+    {
+      "name": "delete-content",
+      "description": "Delete a content item.",
+      "http_method": "DELETE",
+      "endpoint": "/contents/{contentId}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contentId": {
+            "type": "string",
+            "description": "The ID of the content to delete."
+          }
+        },
+        "required": [
+          "contentId"
+        ]
+      }
+    },
+    {
+      "name": "list-contents",
+      "description": "List all content items.",
+      "http_method": "GET",
+      "endpoint": "/contents",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "The maximum number of contents to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "The offset to start listing contents from."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "search-contents",
+      "description": "Search for content items based on keywords.",
+      "http_method": "GET",
+      "endpoint": "/contents/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "sync_contents",
+      "description": "Sync all content items.",
+      "entity": "Content",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Writer",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://developer.writer.com/docs",
+    "setup_guide_url": "https://developer.writer.com/docs/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.writer.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "writer-automation",
+    "display_name": "writer-automation",
+    "description": "Automate Writer tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "writer",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

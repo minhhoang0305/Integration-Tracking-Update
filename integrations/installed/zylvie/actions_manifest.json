@@ -1,0 +1,229 @@
+{
+  "provider": "zylvie",
+  "auth_type": "api_key",
+  "base_url": "https://api.zylvie.com",
+  "category": "marketing",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-campaign",
+      "description": "Retrieve a specific marketing campaign.",
+      "http_method": "GET",
+      "endpoint": "/campaigns/{campaign_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "campaign_id": {
+            "type": "string",
+            "description": "The ID of the campaign to retrieve."
+          }
+        },
+        "required": [
+          "campaign_id"
+        ]
+      }
+    },
+    {
+      "name": "list-campaigns",
+      "description": "List all marketing campaigns.",
+      "http_method": "GET",
+      "endpoint": "/campaigns",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of campaigns to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-campaign",
+      "description": "Create a new marketing campaign.",
+      "http_method": "POST",
+      "endpoint": "/campaigns",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the campaign."
+          },
+          "description": {
+            "type": "string",
+            "description": "A description of the campaign."
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date of the campaign."
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The end date of the campaign."
+          }
+        },
+        "required": [
+          "name",
+          "start_date",
+          "end_date"
+        ]
+      }
+    },
+    {
+      "name": "update-campaign",
+      "description": "Update an existing marketing campaign.",
+      "http_method": "PUT",
+      "endpoint": "/campaigns/{campaign_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "campaign_id": {
+            "type": "string",
+            "description": "The ID of the campaign to update."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name of the campaign."
+          },
+          "description": {
+            "type": "string",
+            "description": "The new description of the campaign."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "paused",
+              "completed"
+            ],
+            "description": "The new status of the campaign."
+          }
+        },
+        "required": [
+          "campaign_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-campaign",
+      "description": "Delete a marketing campaign.",
+      "http_method": "DELETE",
+      "endpoint": "/campaigns/{campaign_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "campaign_id": {
+            "type": "string",
+            "description": "The ID of the campaign to delete."
+          }
+        },
+        "required": [
+          "campaign_id"
+        ]
+      }
+    },
+    {
+      "name": "get-contact",
+      "description": "Retrieve a specific contact.",
+      "http_method": "GET",
+      "endpoint": "/contacts/{contact_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "string",
+            "description": "The ID of the contact to retrieve."
+          }
+        },
+        "required": [
+          "contact_id"
+        ]
+      }
+    },
+    {
+      "name": "list-contacts",
+      "description": "List all contacts.",
+      "http_method": "GET",
+      "endpoint": "/contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of contacts to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination."
+          }
+        },
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "campaigns",
+      "description": "Sync all marketing campaigns.",
+      "entity": "Campaign",
+      "frequency": "hourly"
+    },
+    {
+      "name": "contacts",
+      "description": "Sync all contacts.",
+      "entity": "Contact",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Zylvie",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://www.zylvie.com/api-docs",
+    "setup_guide_url": "https://www.zylvie.com/api-setup",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.zylvie.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_offset",
+        "limit_param": "limit",
+        "offset_param": "offset"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zylvie-automation",
+    "display_name": "zylvie-automation",
+    "description": "Automate Zylvie tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "zylvie",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

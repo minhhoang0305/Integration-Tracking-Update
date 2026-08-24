@@ -1,0 +1,207 @@
+{
+  "provider": "v0",
+  "auth_type": "api_key",
+  "base_url": "https://api.v0.com",
+  "category": "developer_tools",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-account",
+      "description": "Retrieve account details.",
+      "http_method": "GET",
+      "endpoint": "/account",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "create-project",
+      "description": "Create a new project.",
+      "http_method": "POST",
+      "endpoint": "/projects",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Project name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Project description"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "get-project",
+      "description": "Retrieve a specific project.",
+      "http_method": "GET",
+      "endpoint": "/projects/{project_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "Project ID"
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    },
+    {
+      "name": "update-project",
+      "description": "Update an existing project.",
+      "http_method": "PUT",
+      "endpoint": "/projects/{project_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "Project ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "New project name"
+          },
+          "description": {
+            "type": "string",
+            "description": "New project description"
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-project",
+      "description": "Delete a project.",
+      "http_method": "DELETE",
+      "endpoint": "/projects/{project_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "description": "Project ID"
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      }
+    },
+    {
+      "name": "list-projects",
+      "description": "List all projects.",
+      "http_method": "GET",
+      "endpoint": "/projects",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of projects to return"
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "search-projects",
+      "description": "Search for projects by name.",
+      "http_method": "GET",
+      "endpoint": "/projects/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    },
+    {
+      "name": "get-api-usage",
+      "description": "Get API usage statistics.",
+      "http_method": "GET",
+      "endpoint": "/usage",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "projects",
+      "description": "Sync all projects.",
+      "entity": "Project",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "v0 API",
+    "authorization_url": null,
+    "token_url": null,
+    "disable_pkce": false,
+    "default_scopes": null,
+    "docs": "https://docs.v0.com",
+    "setup_guide_url": "https://docs.v0.com/setup",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.v0.com",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "limit_and_offset",
+        "limit_param": "limit",
+        "offset_param": "offset",
+        "default_limit": 100
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "v0-automation",
+    "display_name": "v0-automation",
+    "description": "Automate V0 tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "v0",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

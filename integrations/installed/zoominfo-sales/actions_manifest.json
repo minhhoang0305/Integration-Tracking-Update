@@ -1,0 +1,126 @@
+{
+  "provider": "zoominfo-sales",
+  "auth_type": "api_key",
+  "base_url": "https://api.zoominfo.com",
+  "category": "sales_intelligence",
+  "api_key_header": "Authorization",
+  "actions": [
+    {
+      "name": "search-contacts",
+      "description": "Search for contacts in ZoomInfo.",
+      "http_method": "POST",
+      "endpoint": "/search/contact",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "matchPersonInput": {
+            "type": "array",
+            "description": "Array of person criteria objects (firstName, lastName, email, phone)"
+          },
+          "outputFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Fields to return (e.g. id, firstName, lastName, email, phone)"
+          },
+          "rpp": {
+            "type": "integer",
+            "description": "Results per page (max 25)"
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination"
+          }
+        },
+        "required": [
+          "outputFields"
+        ]
+      }
+    },
+    {
+      "name": "search-companies",
+      "description": "Search for companies in ZoomInfo.",
+      "http_method": "POST",
+      "endpoint": "/search/company",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "matchCompanyInput": {
+            "type": "array",
+            "description": "Array of company criteria objects (name, website, ticker)"
+          },
+          "outputFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Fields to return (e.g. id, name, website, employeeCount, revenue)"
+          },
+          "rpp": {
+            "type": "integer",
+            "description": "Results per page (max 25)"
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination"
+          }
+        },
+        "required": [
+          "outputFields"
+        ]
+      }
+    },
+    {
+      "name": "enrich-company",
+      "description": "Enrich company data using ZoomInfo.",
+      "http_method": "POST",
+      "endpoint": "/enrich/company",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "matchCompanyInput": {
+            "type": "array",
+            "description": "Array of company identifiers to enrich"
+          },
+          "outputFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Fields to return in the enriched response"
+          }
+        },
+        "required": [
+          "matchCompanyInput",
+          "outputFields"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "ZoomInfo Sales",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": true,
+    "default_scopes": "",
+    "docs": "https://api-docs.zoominfo.com/",
+    "setup_guide_url": "https://api-docs.zoominfo.com/#authentication",
+    "proxy": {
+      "base_url": "https://api.zoominfo.com",
+      "headers": {
+        "Authorization": "Bearer ${apiKey}"
+      }
+    },
+    "credentials": {
+      "apiKey": {
+        "type": "string",
+        "title": "JWT Access Token",
+        "description": "Provide as 'Bearer <jwt-token>' — obtain via the /authenticate endpoint with username+password",
+        "doc_section": "#step-1-authenticate-to-get-access-token"
+      }
+    }
+  },
+  "executor": "generic_http"
+}

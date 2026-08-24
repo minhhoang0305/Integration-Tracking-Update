@@ -1,0 +1,191 @@
+{
+  "provider": "virustotal",
+  "auth_type": "api_key",
+  "base_url": "https://www.virustotal.com/api/v3",
+  "category": "security",
+  "stub": false,
+  "actions": [
+    {
+      "name": "analyze-file",
+      "description": "Analyze a file for malicious content.",
+      "http_method": "POST",
+      "endpoint": "/files",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "base64",
+            "description": "The file content as a base64 encoded string."
+          }
+        },
+        "required": [
+          "file"
+        ]
+      }
+    },
+    {
+      "name": "get-file-report",
+      "description": "Retrieve the analysis report for a specific file.",
+      "http_method": "GET",
+      "endpoint": "/files/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the file to retrieve."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "analyze-url",
+      "description": "Analyze a URL for malicious content.",
+      "http_method": "POST",
+      "endpoint": "/urls",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL to analyze."
+          }
+        },
+        "required": [
+          "url"
+        ]
+      }
+    },
+    {
+      "name": "get-url-report",
+      "description": "Retrieve the analysis report for a specific URL.",
+      "http_method": "GET",
+      "endpoint": "/urls/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the URL to retrieve."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "search-files",
+      "description": "Search for files based on various criteria.",
+      "http_method": "GET",
+      "endpoint": "/files",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get-domain-report",
+      "description": "Retrieve the analysis report for a specific domain.",
+      "http_method": "GET",
+      "endpoint": "/domains/{domain}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "The domain to retrieve."
+          }
+        },
+        "required": [
+          "domain"
+        ]
+      }
+    },
+    {
+      "name": "analyze-domain",
+      "description": "Analyze a domain for malicious content.",
+      "http_method": "POST",
+      "endpoint": "/domains",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "The domain to analyze."
+          }
+        },
+        "required": [
+          "value"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "recent-files",
+      "description": "Sync recently analyzed files.",
+      "entity": "File",
+      "frequency": "hourly"
+    },
+    {
+      "name": "recent-urls",
+      "description": "Sync recently analyzed URLs.",
+      "entity": "URL",
+      "frequency": "hourly"
+    }
+  ],
+  "provider_config": {
+    "display_name": "VirusTotal",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://developers.virustotal.com/reference/overview",
+    "setup_guide_url": "https://developers.virustotal.com/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://www.virustotal.com/api/v3",
+      "headers": {
+        "x-apikey": "${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "virustotal-automation",
+    "display_name": "virustotal-automation",
+    "description": "Automate Virustotal tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "virustotal",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

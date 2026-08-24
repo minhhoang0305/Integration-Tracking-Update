@@ -1,0 +1,21 @@
+{
+  "provider": "visma-business-nw",
+  "sections": [
+    {
+      "title": "Overview",
+      "content": "Visma Business NW is Visma's ERP and accounting solution for Nordic countries, particularly Norway. It offers invoicing, order management, and financial reporting. This integration uses OAuth 2.0 to access the Visma Online API for invoices, customers, and orders."
+    },
+    {
+      "title": "Prerequisites",
+      "content": "You need a Visma Business subscription. Register your application in the Visma Developer Portal at developer.vismaonline.com to obtain a Client ID and Client Secret. Configure your app with the redirect URI matching your integration platform callback URL."
+    },
+    {
+      "title": "How to Connect",
+      "content": "Click Connect to initiate the OAuth 2.0 authorization flow. You will be redirected to the Visma sign-in page where you log in with your Visma credentials and authorize the application. After authorization, the integration receives access and refresh tokens automatically."
+    },
+    {
+      "title": "Available Actions",
+      "content": "list-invoices: List invoices with optional date range and pagination filters. list-customers: List customers with pagination support. list-orders: List orders with optional status filter and pagination."
+    }
+  ]
+}

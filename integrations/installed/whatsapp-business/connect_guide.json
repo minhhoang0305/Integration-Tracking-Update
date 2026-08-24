@@ -1,0 +1,24 @@
+{
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "content": "WhatsApp Business Platform (Cloud API) allows businesses to send and receive WhatsApp messages programmatically via Meta's Graph API. This integration uses Bearer token authentication with a system user access token. It supports sending text messages, template messages, and retrieving business profile information."
+    },
+    {
+      "id": "prerequisites",
+      "title": "Prerequisites",
+      "content": "You need a Meta Business account with a verified WhatsApp Business account set up through Meta Business Suite. A WhatsApp Business app must be created in the Meta Developer Portal and associated with your business. Note your Phone Number ID from the WhatsApp setup page, as it is required to send messages from a specific number."
+    },
+    {
+      "id": "connect",
+      "title": "How to Connect",
+      "content": "In Meta Business Suite, create a system user and generate a permanent access token with the whatsapp_business_messaging and whatsapp_business_management permissions. Include the access token in all API requests using the Authorization header in the format: Bearer <access_token>. Temporary tokens generated during app testing will expire; use a system user token for production integrations. All API calls are made to the Meta Graph API base URL (https://graph.facebook.com/v17.0 or later)."
+    },
+    {
+      "id": "actions",
+      "title": "Available Actions",
+      "content": "send-text-message sends a plain text WhatsApp message to a specified recipient phone number using your registered business number. send-template-message delivers a pre-approved message template with dynamic variable substitution, required for initiating conversations outside the 24-hour window. get-business-profile retrieves your WhatsApp Business profile details including display name, description, address, and category."
+    }
+  ]
+}

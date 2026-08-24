@@ -1,0 +1,239 @@
+{
+  "provider": "zoho_books",
+  "auth_type": "oauth2",
+  "base_url": "https://books.zoho.com/api/v1",
+  "category": "accounting",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-organization",
+      "description": "Get details of the Zoho Books organization.",
+      "http_method": "GET",
+      "endpoint": "/organization",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "list-customers",
+      "description": "List all customers in Zoho Books.",
+      "http_method": "GET",
+      "endpoint": "/customers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of customers per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-customer",
+      "description": "Create a new customer in Zoho Books.",
+      "http_method": "POST",
+      "endpoint": "/customers",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_name": {
+            "type": "string",
+            "description": "Name of the customer."
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of the customer."
+          }
+        },
+        "required": [
+          "customer_name",
+          "email"
+        ]
+      }
+    },
+    {
+      "name": "get-customer",
+      "description": "Get details of a specific customer.",
+      "http_method": "GET",
+      "endpoint": "/customers/{customer_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "integer",
+            "description": "ID of the customer."
+          }
+        },
+        "required": [
+          "customer_id"
+        ]
+      }
+    },
+    {
+      "name": "update-customer",
+      "description": "Update an existing customer.",
+      "http_method": "PUT",
+      "endpoint": "/customers/{customer_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "integer",
+            "description": "ID of the customer."
+          },
+          "customer_name": {
+            "type": "string",
+            "description": "New name of the customer."
+          }
+        },
+        "required": [
+          "customer_id"
+        ]
+      }
+    },
+    {
+      "name": "delete-customer",
+      "description": "Delete a customer.",
+      "http_method": "DELETE",
+      "endpoint": "/customers/{customer_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "integer",
+            "description": "ID of the customer."
+          }
+        },
+        "required": [
+          "customer_id"
+        ]
+      }
+    },
+    {
+      "name": "list-invoices",
+      "description": "List all invoices.",
+      "http_method": "GET",
+      "endpoint": "/invoices",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number for pagination."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of invoices per page."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-invoice",
+      "description": "Create a new invoice.",
+      "http_method": "POST",
+      "endpoint": "/invoices",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "integer",
+            "description": "ID of the customer."
+          },
+          "invoice_number": {
+            "type": "string",
+            "description": "Invoice number."
+          }
+        },
+        "required": [
+          "customer_id",
+          "invoice_number"
+        ]
+      }
+    },
+    {
+      "name": "get-invoice",
+      "description": "Get details of a specific invoice.",
+      "http_method": "GET",
+      "endpoint": "/invoices/{invoice_id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "invoice_id": {
+            "type": "integer",
+            "description": "ID of the invoice."
+          }
+        },
+        "required": [
+          "invoice_id"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "customers",
+      "description": "Sync all customers from Zoho Books.",
+      "entity": "Customer",
+      "frequency": "daily"
+    },
+    {
+      "name": "invoices",
+      "description": "Sync all invoices from Zoho Books.",
+      "entity": "Invoice",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Zoho Books",
+    "authorization_url": "https://accounts.zoho.com/oauth/v2/auth",
+    "token_url": "https://accounts.zoho.com/oauth/v2/token",
+    "revocation_url": "https://accounts.zoho.com/oauth/v2/token/revoke",
+    "disable_pkce": false,
+    "default_scopes": "ZohoBooks.full_access",
+    "docs": "https://www.zoho.com/books/api/",
+    "setup_guide_url": "",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://books.zoho.com/api/v1",
+      "headers": {
+        "authorization": "Bearer ${accessToken}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [
+          "x-ratelimit-reset"
+        ],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "zoho_books-automation",
+    "display_name": "zoho_books-automation",
+    "description": "Automate Zoho Books tasks via Rube MCP (Composio): invoices, expenses, contacts, payments, and accounting. Always search tools first for current schemas.",
+    "toolkit_slug": "zoho_books",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE"
+    ]
+  }
+}

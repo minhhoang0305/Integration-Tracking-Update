@@ -1,0 +1,115 @@
+{
+  "provider": "unanet",
+  "auth_type": "api_key",
+  "base_url": "https://{instance}.unanet.biz/api",
+  "category": "project_management",
+  "stub": false,
+  "actions": [
+    {
+      "name": "list-projects",
+      "description": "List all projects.",
+      "http_method": "GET",
+      "endpoint": "/projects",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "get-project",
+      "description": "Get details of a specific project.",
+      "http_method": "GET",
+      "endpoint": "/projects/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "list-people",
+      "description": "List all people (employees/contacts).",
+      "http_method": "GET",
+      "endpoint": "/people",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "list-timesheets",
+      "description": "List timesheet entries.",
+      "http_method": "GET",
+      "endpoint": "/timesheets",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "projects",
+      "description": "Sync all projects from Unanet.",
+      "entity": "Project",
+      "frequency": "daily"
+    },
+    {
+      "name": "people",
+      "description": "Sync all people from Unanet.",
+      "entity": "Person",
+      "frequency": "daily"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Unanet",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": true,
+    "default_scopes": "",
+    "docs": "https://unanet.com/resources/",
+    "setup_guide_url": "https://unanet.com/",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://{instance}.unanet.biz/api",
+      "headers": {
+        "Authorization": "Bearer ${apiKey}"
+      },
+      "retry": {
+        "error_code": [
+          "401",
+          "429",
+          "5xx"
+        ]
+      }
+    },
+    "authorization_params": {},
+    "connection_config": {
+      "instance": {
+        "type": "string",
+        "title": "Instance Name",
+        "description": "Your Unanet instance name",
+        "example": "mycompany"
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "unanet-automation",
+    "display_name": "Unanet Automation",
+    "description": "Automate project management and ERP workflows with Unanet including project tracking, time management, and personnel data.",
+    "toolkit_slug": "unanet",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": []
+  }
+}

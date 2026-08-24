@@ -14,7 +14,7 @@ public sealed class AnalysisResultConsumer(
     RabbitMqTopology topology,
     IServiceScopeFactory scopeFactory,
     RabbitMqPublisher publisher,
-    TemplateRegistryService registry,
+    InstalledIntegrationCatalog catalog,
     ILogger<AnalysisResultConsumer> logger) : BackgroundService
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
@@ -46,9 +46,9 @@ public sealed class AnalysisResultConsumer(
                 var analysis = database.EmailAnalyses.Find(message.CorrelationId);
                 if (analysis is not null && analysis.Status != AnalysisStatuses.Completed)
                 {
-                    var providerRegistration = registry.FindProvider(analysis.Sender);
-                    var provider = providerRegistration?.Provider ?? TemplateRegistryService.SenderDomain(analysis.Sender);
-                    var integrationId = providerRegistration?.Integrations.Count == 1 ? providerRegistration.Integrations[0].Id : null;
+                    var resolution = catalog.Resolve(analysis, message.Payload);
+                    var provider = resolution.Integration?.Provider ?? (resolution.Status == "Ambiguous" ? "ambiguous" : "unknown");
+                    var integrationId = resolution.Integration?.IntegrationId;
                     var providerUpdate = new ProviderUpdateEvent
                     {
                         EventId = analysis.EmailId,
@@ -75,6 +75,8 @@ public sealed class AnalysisResultConsumer(
                     analysis.ResultJson = JsonSerializer.Serialize(message.Payload, JsonOptions);
                     analysis.ErrorMessage = null;
                     analysis.UpdatedAt = DateTime.UtcNow;
+                    var source = database.EmailSourceRecords.Find(analysis.EmailId);
+                    if (source is not null) source.Status = "Completed";
                     database.SaveChanges();
                     proposals.GenerateAsync(analysis, message.Payload, CancellationToken.None).GetAwaiter().GetResult();
                 }
@@ -90,6 +92,8 @@ public sealed class AnalysisResultConsumer(
                     analysis.Status = AnalysisStatuses.Failed;
                     analysis.ErrorMessage = message.Payload.Error;
                     analysis.UpdatedAt = DateTime.UtcNow;
+                    var source = database.EmailSourceRecords.Find(analysis.EmailId);
+                    if (source is not null) source.Status = "Failed";
                     database.SaveChanges();
                 }
                 logger.LogWarning("Analysis {EmailId} failed after {Attempts} attempts.",

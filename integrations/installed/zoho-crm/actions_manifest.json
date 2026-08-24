@@ -1,0 +1,239 @@
+{
+  "provider": "zoho-crm",
+  "auth_type": "oauth2",
+  "base_url": "https://www.zohoapis.com/crm/v3",
+  "category": "crm",
+  "stub": false,
+  "executor": "generic_http",
+  "actions": [
+    {
+      "name": "list-contacts",
+      "description": "List all CRM contacts.",
+      "http_method": "GET",
+      "endpoint": "/Contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": { "type": "integer" },
+          "per_page": { "type": "integer", "default": 200 }
+        }
+      }
+    },
+    {
+      "name": "get-contact",
+      "description": "Get details of a specific contact.",
+      "http_method": "GET",
+      "endpoint": "/Contacts/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": { "id": { "type": "string" } },
+        "required": ["id"]
+      }
+    },
+    {
+      "name": "create-contact",
+      "description": "Create a new contact in Zoho CRM.",
+      "http_method": "POST",
+      "endpoint": "/Contacts",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "Last_Name": { "type": "string" },
+          "First_Name": { "type": "string" },
+          "Email": { "type": "string" },
+          "Phone": { "type": "string" },
+          "Account_Name": { "type": "string" }
+        },
+        "required": ["Last_Name"]
+      }
+    },
+    {
+      "name": "update-contact",
+      "description": "Update an existing contact in Zoho CRM.",
+      "http_method": "PUT",
+      "endpoint": "/Contacts/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "Contact record ID" },
+          "Last_Name": { "type": "string" },
+          "First_Name": { "type": "string" },
+          "Email": { "type": "string" },
+          "Phone": { "type": "string" }
+        },
+        "required": ["id"]
+      }
+    },
+    {
+      "name": "list-leads",
+      "description": "List all leads.",
+      "http_method": "GET",
+      "endpoint": "/Leads",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": { "type": "integer" },
+          "per_page": { "type": "integer", "default": 200 }
+        }
+      }
+    },
+    {
+      "name": "get-lead",
+      "description": "Get a specific lead by ID.",
+      "http_method": "GET",
+      "endpoint": "/Leads/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": { "id": { "type": "string", "description": "Lead record ID" } },
+        "required": ["id"]
+      }
+    },
+    {
+      "name": "create-lead",
+      "description": "Create a new lead.",
+      "http_method": "POST",
+      "endpoint": "/Leads",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "Last_Name": { "type": "string" },
+          "Company": { "type": "string" },
+          "Email": { "type": "string" },
+          "Phone": { "type": "string" }
+        },
+        "required": ["Last_Name", "Company"]
+      }
+    },
+    {
+      "name": "update-lead",
+      "description": "Update an existing lead in Zoho CRM.",
+      "http_method": "PUT",
+      "endpoint": "/Leads/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "Lead record ID" },
+          "Last_Name": { "type": "string" },
+          "Company": { "type": "string" },
+          "Email": { "type": "string" },
+          "Lead_Status": { "type": "string" }
+        },
+        "required": ["id"]
+      }
+    },
+    {
+      "name": "list-deals",
+      "description": "List all deals/opportunities.",
+      "http_method": "GET",
+      "endpoint": "/Deals",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "page": { "type": "integer" },
+          "per_page": { "type": "integer", "default": 200 }
+        }
+      }
+    },
+    {
+      "name": "create-deal",
+      "description": "Create a new deal/opportunity in Zoho CRM.",
+      "http_method": "POST",
+      "endpoint": "/Deals",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "Deal_Name": { "type": "string", "description": "Deal name" },
+          "Stage": { "type": "string", "description": "Deal stage (e.g. Qualification, Proposal, Closed Won)" },
+          "Amount": { "type": "number", "description": "Deal amount" },
+          "Closing_Date": { "type": "string", "description": "Expected close date (YYYY-MM-DD)" },
+          "Account_Name": { "type": "string" }
+        },
+        "required": ["Deal_Name", "Stage"]
+      }
+    },
+    {
+      "name": "update-deal",
+      "description": "Update an existing deal in Zoho CRM.",
+      "http_method": "PUT",
+      "endpoint": "/Deals/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "Deal record ID" },
+          "Deal_Name": { "type": "string" },
+          "Stage": { "type": "string" },
+          "Amount": { "type": "number" },
+          "Closing_Date": { "type": "string" }
+        },
+        "required": ["id"]
+      }
+    },
+    {
+      "name": "delete-record",
+      "description": "Delete a record from any Zoho CRM module.",
+      "http_method": "DELETE",
+      "endpoint": "/{module}/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "module": { "type": "string", "description": "Module name (Contacts, Leads, Deals, Accounts, etc.)" },
+          "id": { "type": "string", "description": "Record ID to delete" }
+        },
+        "required": ["module", "id"]
+      }
+    },
+    {
+      "name": "search",
+      "description": "Search records in a Zoho CRM module.",
+      "http_method": "GET",
+      "endpoint": "/{module}/search",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "module": { "type": "string", "description": "Module name (Contacts, Leads, Deals, etc.)" },
+          "criteria": { "type": "string", "description": "Search criteria e.g. (Email:equals:test@example.com)" },
+          "word": { "type": "string", "description": "Word search across all fields" }
+        },
+        "required": ["module"]
+      }
+    },
+    { "name": "get-deal", "description": "Get a specific deal by ID.", "http_method": "GET", "endpoint": "/Deals/{id}", "input_schema": { "type": "object", "properties": { "id": { "type": "string" } }, "required": ["id"] } },
+    { "name": "list-accounts", "description": "List all accounts in Zoho CRM.", "http_method": "GET", "endpoint": "/Accounts", "input_schema": { "type": "object", "properties": { "page": { "type": "integer" }, "per_page": { "type": "integer" } } } },
+    { "name": "get-account", "description": "Get a specific account by ID.", "http_method": "GET", "endpoint": "/Accounts/{id}", "input_schema": { "type": "object", "properties": { "id": { "type": "string" } }, "required": ["id"] } },
+    { "name": "create-account", "description": "Create a new account in Zoho CRM.", "http_method": "POST", "endpoint": "/Accounts", "input_schema": { "type": "object", "properties": { "Account_Name": { "type": "string" }, "Phone": { "type": "string" }, "Website": { "type": "string" }, "Industry": { "type": "string" } }, "required": ["Account_Name"] } },
+    { "name": "update-account", "description": "Update an existing account in Zoho CRM.", "http_method": "PUT", "endpoint": "/Accounts/{id}", "input_schema": { "type": "object", "properties": { "id": { "type": "string" }, "Account_Name": { "type": "string" }, "Phone": { "type": "string" } }, "required": ["id"] } },
+    { "name": "list-notes", "description": "List notes in Zoho CRM.", "http_method": "GET", "endpoint": "/Notes", "input_schema": { "type": "object", "properties": { "page": { "type": "integer" }, "per_page": { "type": "integer" } } } },
+    { "name": "create-note", "description": "Create a note in Zoho CRM.", "http_method": "POST", "endpoint": "/Notes", "input_schema": { "type": "object", "properties": { "Note_Title": { "type": "string" }, "Note_Content": { "type": "string" }, "Parent_Id": { "type": "string", "description": "ID of the related record" }, "se_module": { "type": "string", "description": "Module of the related record (Contacts, Leads, Deals, etc.)" } }, "required": ["Note_Title", "Parent_Id"] } },
+    { "name": "list-tasks", "description": "List tasks in Zoho CRM.", "http_method": "GET", "endpoint": "/Tasks", "input_schema": { "type": "object", "properties": { "page": { "type": "integer" }, "per_page": { "type": "integer" } } } },
+    { "name": "create-task", "description": "Create a task in Zoho CRM.", "http_method": "POST", "endpoint": "/Tasks", "input_schema": { "type": "object", "properties": { "Subject": { "type": "string" }, "Due_Date": { "type": "string" }, "Status": { "type": "string" }, "Priority": { "type": "string" } }, "required": ["Subject"] } },
+    { "name": "list-users", "description": "List users in the Zoho CRM account.", "http_method": "GET", "endpoint": "/users", "input_schema": { "type": "object", "properties": { "type": { "type": "string", "description": "User type: AllUsers, ActiveUsers, DeactiveUsers, etc." } } } },
+    { "name": "list-modules", "description": "List all available modules in Zoho CRM.", "http_method": "GET", "endpoint": "/settings/modules", "input_schema": { "type": "object", "properties": {} } },
+    { "name": "convert-lead", "description": "Convert a lead to contact, account, and/or deal.", "http_method": "POST", "endpoint": "/Leads/{id}/actions/convert", "input_schema": { "type": "object", "properties": { "id": { "type": "string", "description": "Lead record ID" }, "Contacts": { "type": "object" }, "Accounts": { "type": "object" }, "Deals": { "type": "object" } }, "required": ["id"] } },
+    { "name": "get-related-records", "description": "Get related records for a given record in Zoho CRM.", "http_method": "GET", "endpoint": "/{module}/{id}/{related_module}", "input_schema": { "type": "object", "properties": { "module": { "type": "string" }, "id": { "type": "string" }, "related_module": { "type": "string" } }, "required": ["module", "id", "related_module"] } }
+  ],
+  "syncs": [
+    { "name": "contacts", "description": "Sync contacts from Zoho CRM.", "entity": "Contact", "frequency": "daily" },
+    { "name": "leads", "description": "Sync leads from Zoho CRM.", "entity": "Lead", "frequency": "daily" },
+    { "name": "deals", "description": "Sync deals from Zoho CRM.", "entity": "Deal", "frequency": "1h" }
+  ],
+  "provider_config": {
+    "display_name": "Zoho CRM",
+    "authorization_url": "https://accounts.zoho.com/oauth/v2/auth",
+    "token_url": "https://accounts.zoho.com/oauth/v2/token",
+    "revocation_url": "https://accounts.zoho.com/oauth/v2/token/revoke",
+    "disable_pkce": false,
+    "default_scopes": "ZohoCRM.modules.ALL ZohoCRM.settings.ALL",
+    "docs": "https://www.zoho.com/crm/developer/docs/api/v3/",
+    "setup_guide_url": "https://api-console.zoho.com/",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://www.zohoapis.com/crm/v3",
+      "headers": { "authorization": "Bearer ${accessToken}" },
+      "paginate": { "type": "offset", "limit_param": "per_page", "offset_param": "page" },
+      "retry": { "at": ["x-ratelimit-reset"], "error_code": ["401", "429", "5xx"] }
+    },
+    "authorization_params": { "access_type": "offline" },
+    "connection_config": {}
+  }
+}

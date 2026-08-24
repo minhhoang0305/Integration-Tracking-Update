@@ -1,0 +1,184 @@
+{
+  "provider": "userlist",
+  "auth_type": "api_key",
+  "base_url": "https://api.userlist.com/v1",
+  "category": "crm",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-user",
+      "description": "Retrieve a specific user by ID.",
+      "http_method": "GET",
+      "endpoint": "/users/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the user to retrieve."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "create-user",
+      "description": "Create a new user.",
+      "http_method": "POST",
+      "endpoint": "/users",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address of the user."
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the user."
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the user."
+          }
+        },
+        "required": [
+          "email"
+        ]
+      }
+    },
+    {
+      "name": "update-user",
+      "description": "Update an existing user.",
+      "http_method": "PATCH",
+      "endpoint": "/users/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the user to update."
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the user."
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the user."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "delete-user",
+      "description": "Delete a user.",
+      "http_method": "DELETE",
+      "endpoint": "/users/{id}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the user to delete."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "list-users",
+      "description": "List all users.",
+      "http_method": "GET",
+      "endpoint": "/users",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "The maximum number of users to return."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "The offset to start the list from."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "search-users",
+      "description": "Search for users based on email.",
+      "http_method": "GET",
+      "endpoint": "/users/search?email={email}",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address to search for."
+          }
+        },
+        "required": [
+          "email"
+        ]
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "name": "users",
+      "description": "Sync all users.",
+      "entity": "User",
+      "frequency": "hourly"
+    }
+  ],
+  "provider_config": {
+    "display_name": "Userlist",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://docs.userlist.com/api",
+    "setup_guide_url": "https://docs.userlist.com/api/getting-started",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.userlist.com/v1",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "cursor"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "userlist-automation",
+    "display_name": "userlist-automation",
+    "description": "Automate Userlist tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "userlist",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

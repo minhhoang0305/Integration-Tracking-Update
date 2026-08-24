@@ -1,0 +1,176 @@
+{
+  "provider": "weathermap",
+  "auth_type": "api_key",
+  "base_url": "https://api.openweathermap.org/data/2.5",
+  "category": "weather",
+  "stub": false,
+  "actions": [
+    {
+      "name": "get-current-weather",
+      "description": "Get current weather data for a city.",
+      "http_method": "GET",
+      "endpoint": "/weather",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "City name, e.g., London"
+          },
+          "units": {
+            "type": "string",
+            "description": "Units of measurement (metric, imperial)",
+            "default": "metric"
+          }
+        },
+        "required": [
+          "q"
+        ]
+      }
+    },
+    {
+      "name": "get-weather-forecast",
+      "description": "Get 5-day/3-hour forecast data for a city.",
+      "http_method": "GET",
+      "endpoint": "/forecast",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "City name, e.g., London"
+          },
+          "units": {
+            "type": "string",
+            "description": "Units of measurement (metric, imperial)",
+            "default": "metric"
+          }
+        },
+        "required": [
+          "q"
+        ]
+      }
+    },
+    {
+      "name": "get-weather-forecast-daily",
+      "description": "Get daily forecast data for a city.",
+      "http_method": "GET",
+      "endpoint": "/forecast/daily",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "City name, e.g., London"
+          },
+          "units": {
+            "type": "string",
+            "description": "Units of measurement (metric, imperial)",
+            "default": "metric"
+          }
+        },
+        "required": [
+          "q"
+        ]
+      }
+    },
+    {
+      "name": "get-weather-by-coordinates",
+      "description": "Get current weather data by latitude and longitude.",
+      "http_method": "GET",
+      "endpoint": "/weather",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "lat": {
+            "type": "number",
+            "description": "Latitude"
+          },
+          "lon": {
+            "type": "number",
+            "description": "Longitude"
+          },
+          "units": {
+            "type": "string",
+            "description": "Units of measurement (metric, imperial)",
+            "default": "metric"
+          }
+        },
+        "required": [
+          "lat",
+          "lon"
+        ]
+      }
+    },
+    {
+      "name": "get-weather-forecast-by-coordinates",
+      "description": "Get forecast data by latitude and longitude.",
+      "http_method": "GET",
+      "endpoint": "/forecast",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "lat": {
+            "type": "number",
+            "description": "Latitude"
+          },
+          "lon": {
+            "type": "number",
+            "description": "Longitude"
+          },
+          "units": {
+            "type": "string",
+            "description": "Units of measurement (metric, imperial)",
+            "default": "metric"
+          }
+        },
+        "required": [
+          "lat",
+          "lon"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "OpenWeatherMap",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": false,
+    "default_scopes": "",
+    "docs": "https://openweathermap.org/api",
+    "setup_guide_url": "https://openweathermap.org/current",
+    "webhook_routing_script": null,
+    "post_connection_script": null,
+    "proxy": {
+      "base_url": "https://api.openweathermap.org/data/2.5",
+      "headers": {
+        "authorization": "Bearer ${apiKey}"
+      },
+      "paginate": {
+        "type": "none"
+      },
+      "retry": {
+        "at": [],
+        "error_code": [
+          "401",
+          "403",
+          "429",
+          "5xx"
+        ]
+      }
+    }
+  },
+  "executor": "generic_http",
+  "skill_source": {
+    "composio_skill_folder": "weathermap-automation",
+    "display_name": "weathermap-automation",
+    "description": "Automate Weathermap tasks via Rube MCP (Composio). Always search tools first for current schemas.",
+    "toolkit_slug": "weathermap",
+    "composio_tool_slugs": [],
+    "tool_slugs_hint": [
+      "ACTIVE",
+      "TOOL_SLUG_FROM_SEARCH"
+    ]
+  }
+}

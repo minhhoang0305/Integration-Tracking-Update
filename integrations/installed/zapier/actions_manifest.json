@@ -1,0 +1,95 @@
+{
+  "provider": "zapier",
+  "auth_type": "api_key",
+  "base_url": "https://nla.zapier.com/api/v1",
+  "category": "automation",
+  "api_key_header": "x-api-key",
+  "actions": [
+    {
+      "name": "list-actions",
+      "description": "List all exposed actions available in the Zapier NLA account.",
+      "http_method": "GET",
+      "endpoint": "/exposed/",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "execute-action",
+      "description": "Execute a specific Zapier NLA action by its ID.",
+      "http_method": "POST",
+      "endpoint": "/exposed/{action_id}/execute/",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "description": "The unique identifier of the action to execute"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Natural language instructions describing what to do"
+          },
+          "params": {
+            "type": "object",
+            "description": "Input parameters for the action"
+          },
+          "preview_only": {
+            "type": "boolean",
+            "description": "If true, preview the action without executing it"
+          }
+        },
+        "required": [
+          "action_id",
+          "instructions"
+        ]
+      }
+    },
+    {
+      "name": "check-action-result",
+      "description": "Check the result of a previously executed Zapier NLA action.",
+      "http_method": "GET",
+      "endpoint": "/check/{execution_log_id}/",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "execution_log_id": {
+            "type": "string",
+            "description": "The execution log ID returned from a previous action execution"
+          }
+        },
+        "required": [
+          "execution_log_id"
+        ]
+      }
+    }
+  ],
+  "syncs": [],
+  "provider_config": {
+    "display_name": "Zapier NLA",
+    "authorization_url": "",
+    "token_url": "",
+    "disable_pkce": true,
+    "default_scopes": "",
+    "docs": "https://nla.zapier.com/docs/",
+    "docs_connect": "https://connect.uplizd.ai/docs/api-integrations/zapier/connect",
+    "setup_guide_url": "https://nla.zapier.com/docs/authentication/",
+    "proxy": {
+      "base_url": "https://nla.zapier.com/api/v1",
+      "headers": {
+        "x-api-key": "${apiKey}"
+      }
+    },
+    "credentials": {
+      "apiKey": {
+        "type": "string",
+        "title": "NLA API Key",
+        "description": "The Zapier NLA API key from your Zapier account settings",
+        "doc_section": "#step-1-get-your-nla-api-key"
+      }
+    }
+  },
+  "executor": "generic_http"
+}
