@@ -24,4 +24,17 @@ public sealed class ManifestDiffServiceTests
         Assert.DoesNotContain("base_url", diff.TopLevelChanges);
         Assert.Contains(diff.AddedActions, action => action.HttpMethod == "POST" && action.Endpoint == "/v3/shorten/bulk");
     }
+
+    [Fact]
+    public void CreateLineDiff_ProducesFocusedUnifiedHunk()
+    {
+        var lineDiff = ManifestDiffService.CreateLineDiff("one\ntwo\nthree\n", "one\nchanged\nthree\n");
+        var patch = ManifestDiffService.BuildUnifiedDiff(lineDiff);
+
+        Assert.Single(lineDiff.Hunks);
+        Assert.Contains("-two", patch);
+        Assert.Contains("+changed", patch);
+        Assert.Contains(" one", patch);
+        Assert.DoesNotContain("--- a/actions_manifest.json\n+++ b/actions_manifest.json\n@@ -1,3 +1,3 @@\n-one", patch);
+    }
 }

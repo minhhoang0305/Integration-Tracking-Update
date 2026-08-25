@@ -39,12 +39,14 @@ public sealed class TemplateProposalService(
             var proposed = CreatePatch(current, signal);
             var diff = diffService.Compare(current, proposed);
             var impact = impactService.Analyze(integration.Provider, integration.IntegrationId, diff, signal);
+            var lineDiff = ManifestDiffService.CreateLineDiff(current, proposed);
             var relative = $"proposals/{proposal.Id}";
             var evidence = new { source = "email_endpoint_patch", label = "Email-derived test proposal — unverified", resolution,
                 signal.DeprecatedEndpoints, signal.AnnouncedEndpoints, warnings = signal.Evidence.ParserWarnings, diff, impact };
             await storage.WriteProposalTextAsync(proposal.Id, "actions_manifest.json", proposed, ct);
             await storage.WriteProposalTextAsync(proposal.Id, "CHANGELOG.md", Changelog(analysis, signal, diff, impact, integration), ct);
-            await storage.WriteProposalTextAsync(proposal.Id, "diff.patch", ManifestDiffService.BuildUnifiedDiff(current, proposed), ct);
+            await storage.WriteProposalTextAsync(proposal.Id, "diff.patch", ManifestDiffService.BuildUnifiedDiff(lineDiff), ct);
+            await storage.WriteProposalTextAsync(proposal.Id, "diff.json", JsonSerializer.Serialize(lineDiff, JsonOptions), ct);
             await storage.WriteProposalTextAsync(proposal.Id, "evidence.json", JsonSerializer.Serialize(evidence, JsonOptions), ct);
             await storage.WriteProposalTextAsync(proposal.Id, "impact.json", JsonSerializer.Serialize(impact, JsonOptions), ct);
             proposal.ArtifactDirectory = relative; proposal.EvidenceJson = JsonSerializer.Serialize(evidence, JsonOptions);
